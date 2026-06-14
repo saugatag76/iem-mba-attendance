@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { haversineMeters } from "@/lib/geo";
 
 export interface SubjectStat {
   offeringId: string;
@@ -122,10 +123,19 @@ export async function sessionRegister(sessionId: string) {
   });
   if (!session) return null;
 
+  const anchorLat = session.geoLat;
+  const anchorLng = session.geoLng;
   const present = new Map(session.records.map((r) => [r.studentId, r]));
   const rows = session.offering.classSection.enrollments
     .map((e) => {
       const rec = present.get(e.studentId);
+      const lat = rec?.geoLat ?? null;
+      const lng = rec?.geoLng ?? null;
+      // Distance from the classroom anchor, if we have both points.
+      const distanceM =
+        lat != null && lng != null && anchorLat != null && anchorLng != null
+          ? Math.round(haversineMeters(anchorLat, anchorLng, lat, lng))
+          : null;
       return {
         name: e.student.name,
         email: e.student.email,
@@ -133,6 +143,10 @@ export async function sessionRegister(sessionId: string) {
         method: rec?.method ?? null,
         flagged: rec?.flagged ?? false,
         scannedAt: rec?.scannedAt ?? null,
+        lat,
+        lng,
+        distanceM,
+        outOfRange: distanceM != null ? distanceM > session.geoRadiusM : false,
       };
     })
     .sort((a, b) => a.name.localeCompare(b.name));

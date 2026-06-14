@@ -20,7 +20,18 @@ export async function GET(
   if (session.user.role !== "ADMIN" && data.session.teacherId !== session.user.id)
     return new Response("forbidden", { status: 403 });
 
-  const header = ["Name", "Email", "Status", "Method", "Flagged", "ScannedAt"];
+  const header = [
+    "Name",
+    "Email",
+    "Status",
+    "Method",
+    "Flagged",
+    "ScannedAt",
+    "Lat",
+    "Lng",
+    "DistanceM",
+    "OutOfRange",
+  ];
   const lines = [header.join(",")];
   for (const r of data.rows) {
     lines.push(
@@ -31,6 +42,10 @@ export async function GET(
         r.method ?? "",
         r.flagged ? "YES" : "",
         r.scannedAt ? new Date(r.scannedAt).toISOString() : "",
+        r.lat ?? "",
+        r.lng ?? "",
+        r.distanceM ?? "",
+        r.outOfRange ? "YES" : "",
       ]
         .map(csvCell)
         .join(","),
