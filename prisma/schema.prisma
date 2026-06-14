@@ -1,0 +1,170 @@
+// QR Attendance Tracker — data model
+// Postgres + Prisma. See plan: rotating-QR primary flow + personal-QR fallback.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER
+  STUDENT
+}
+
+// MBA specialisation streams. COMMON = Year-1 (all common) and Year-2 shared
+// subjects such as Marketing. Year-2 specialisations are the other three.
+enum Stream {
+  COMMON
+  FINANCE
+  HR
+  TECH_MANAGEMENT
+}
+
+enum SessionStatus {
+  OPEN
+  CLOSED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  LATE
+  ABSENT
+}
+
+enum AttendanceMethod {
+  QR // student scanned the teacher's rotating QR
+  MANUAL // teacher scanned the student's personal QR (fallback)
+}
+
+model Department {
+  id        String         @id @default(cuid())
+  name      String         @unique
+  classes   ClassSection[]
+  subjects  Subject[]
+  createdAt DateTime       @default(now())
+}
+
+// A group of students who attend together. For MBA:
+//  - Year 1: four common sections (stream = COMMON, year = 1)
+//  - Year 2: stream sections (FINANCE/HR/TECH_MANAGEMENT, year = 2)
+//  - Year 2 "Common" group (stream = COMMON, year = 2) that every Year-2 student is
+//    ALSO enrolled in, used for shared subjects like Marketing.
+model ClassSection {
+  id           String       @id @default(cuid())
+  name         String // e.g. "Year 1 — Sec A", "Year 2 Finance — Sec A"
+  year         Int          @default(1) // 1 or 2
+  stream       Stream       @default(COMMON)
+  department   Department   @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId String
+  offerings    Offering[]
+  enrollments  Enrollment[]
+  createdAt    DateTime     @default(now())
+
+  @@unique([departmentId, name])
+}
+
+model Subject {
+  id           String     @id @default(cuid())
+  name         String
+  code         String
+  semester     Int        @default(1) // 1..6 (trimester)
+  stream       Stream     @default(COMMON)
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId String
+  offerings    Offering[]
+  createdAt    DateTime   @default(now())
+
+  @@unique([departmentId, code])
+}
+
+// A subject taught to a particular class by a particular teacher in a term.
+model Offering {
+  id             String       @id @default(cuid())
+  subject        Subject      @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  subjectId      String
+  classSection   ClassSection @relation(fields: [classSectionId], references: [id], onDelete: Cascade)
+  classSectionId String
+  teacher        User         @relation("TeacherOfferings", fields: [teacherId], references: [id])
+  teacherId      String
+  term           String       @default("2026-ODD")
+  sessions       Session[]
+  createdAt      DateTime     @default(now())
+
+  @@unique([subjectId, classSectionId, term])
+}
+
+model User {
+  id              String       @id @default(cuid())
+  email           String       @unique
+  name            String
+  role            Role         @default(STUDENT)
+  passwordHash    String
+  // Device binding: account is locked to the first device that logs in.
+  deviceId        String?
+  // Per-account secret used to sign the student's permanent personal QR (digital ID / fallback).
+  personalQrSecret String      @default(cuid())
+  createdAt       DateTime     @default(now())
+
+  taughtOfferings   Offering[]         @relation("TeacherOfferings")
+  taughtSessions    Session[]          @relation("TeacherSessions")
+  enrollments       Enrollment[]
+  attendanceRecords AttendanceRecord[]
+}
+
+model Enrollment {
+  id             String       @id @default(cuid())
+  student        User         @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId      String
+  classSection   ClassSection @relation(fields: [classSectionId], references: [id], onDelete: Cascade)
+  classSectionId String
+  createdAt      DateTime     @default(now())
+
+  @@unique([studentId, classSectionId])
+}
+
+model Session {
+  id          String        @id @default(cuid())
+  offering    Offering      @relation(fields: [offeringId], references: [id], onDelete: Cascade)
+  offeringId  String
+  teacher     User          @relation("TeacherSessions", fields: [teacherId], references: [id])
+  teacherId   String
+  date        DateTime      @default(now())
+  startTime   DateTime      @default(now())
+  endTime     DateTime?
+  status      SessionStatus @default(OPEN)
+  // Class anchor for the geofence (captured from teacher's device when opening).
+  geoLat      Float?
+  geoLng      Float?
+  geoRadiusM  Int           @default(75)
+  // Secret used to sign rotating QR tokens for THIS session only.
+  qrSecret    String        @default(cuid())
+  createdAt   DateTime      @default(now())
+
+  records AttendanceRecord[]
+
+  @@index([offeringId, date])
+}
+
+model AttendanceRecord {
+  id        String           @id @default(cuid())
+  session   Session          @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String
+  student   User             @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  studentId String
+  status    AttendanceStatus @default(PRESENT)
+  method    AttendanceMethod @default(QR)
+  scannedAt DateTime         @default(now())
+  geoLat    Float?
+  geoLng    Float?
+  // Set when a scan looked suspicious (e.g. device mismatch) but was recorded for review.
+  flagged   Boolean          @default(false)
+  flagReason String?
+
+  @@unique([sessionId, studentId])
+  @@index([studentId])
+}
