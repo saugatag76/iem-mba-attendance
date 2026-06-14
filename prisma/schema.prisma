@@ -22,7 +22,18 @@ enum Stream {
   COMMON
   FINANCE
   HR
+  MARKETING
+  SUPPLY_CHAIN
   TECH_MANAGEMENT
+  ENTREPRENEURSHIP
+}
+
+enum Weekday {
+  MON
+  TUE
+  WED
+  THU
+  FRI
 }
 
 enum SessionStatus {
@@ -63,6 +74,7 @@ model ClassSection {
   departmentId String
   offerings    Offering[]
   enrollments  Enrollment[]
+  schedule     ScheduledClass[]
   createdAt    DateTime     @default(now())
 
   @@unique([departmentId, name])
@@ -93,9 +105,30 @@ model Offering {
   teacherId      String
   term           String       @default("2026-ODD")
   sessions       Session[]
+  schedule       ScheduledClass[]
   createdAt      DateTime     @default(now())
 
   @@unique([subjectId, classSectionId, term])
+}
+
+// A recurring weekly timetable slot for a section (from the routine spreadsheet).
+model ScheduledClass {
+  id             String       @id @default(cuid())
+  classSection   ClassSection @relation(fields: [classSectionId], references: [id], onDelete: Cascade)
+  classSectionId String
+  day            Weekday
+  slotIndex      Int // 1..8 across the day
+  startTime      String // "HH:MM"
+  endTime        String // "HH:MM"
+  offering       Offering? @relation(fields: [offeringId], references: [id], onDelete: SetNull)
+  offeringId     String?
+  subgroup       String? // e.g. "A1", "F2" for split labs
+  room           String?
+  rawLabel       String // original spreadsheet cell text (for traceability / review)
+  createdAt      DateTime  @default(now())
+
+  @@index([classSectionId, day, slotIndex])
+  @@index([offeringId])
 }
 
 model User {

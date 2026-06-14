@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { FileBarChart, ChevronRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
-import { Card } from "@/app/_components/ui";
+import { Card, PageHeader, EmptyState } from "@/app/_components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -21,23 +22,35 @@ export default async function ReportsHome() {
 
   return (
     <div>
-      <h1 className="mb-4 text-lg font-semibold">Attendance reports</h1>
-      {offerings.length === 0 && <p className="text-sm text-gray-500">Nothing to report yet.</p>}
-      {offerings.map((o) => (
-        <Card key={o.id}>
-          <Link href={`/reports/offering/${o.id}`} className="flex items-center justify-between">
-            <div>
-              <p className="font-medium">
-                {o.subject.code} · {o.subject.name}
-              </p>
-              <p className="text-sm text-gray-500">
-                {o.classSection.name} · {o.teacher.name} · {o._count.sessions} sessions
-              </p>
-            </div>
-            <span className="text-sm text-gray-400">View →</span>
+      <PageHeader title="Attendance reports" subtitle="Per-subject attendance, registers and scan locations." />
+
+      {offerings.length === 0 && (
+        <EmptyState icon={<FileBarChart className="h-8 w-8" />} title="Nothing to report yet" />
+      )}
+
+      <div className="grid gap-3 sm:grid-cols-2">
+        {offerings.map((o) => (
+          <Link key={o.id} href={`/reports/offering/${o.id}`}>
+            <Card className="mb-0 transition hover:border-brand-300 hover:shadow-md">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+                    <FileBarChart className="h-5 w-5" />
+                  </span>
+                  <div>
+                    <p className="font-semibold text-slate-900">{o.subject.name}</p>
+                    <p className="text-xs text-slate-500">
+                      {o.subject.code} · {o.classSection.name} · {o._count.sessions} sessions
+                    </p>
+                    <p className="text-xs text-slate-400">{o.teacher.name}</p>
+                  </div>
+                </div>
+                <ChevronRight className="h-5 w-5 text-slate-300" />
+              </div>
+            </Card>
           </Link>
-        </Card>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

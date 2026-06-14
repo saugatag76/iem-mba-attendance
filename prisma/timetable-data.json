@@ -1,0 +1,4871 @@
+{
+  "sections": [
+    {
+      "name": "Sec A",
+      "year": 1,
+      "stream": "COMMON"
+    },
+    {
+      "name": "Sec B",
+      "year": 1,
+      "stream": "COMMON"
+    },
+    {
+      "name": "Sec C",
+      "year": 1,
+      "stream": "COMMON"
+    },
+    {
+      "name": "Sec D",
+      "year": 1,
+      "stream": "COMMON"
+    },
+    {
+      "name": "Finance 1",
+      "year": 2,
+      "stream": "FINANCE"
+    },
+    {
+      "name": "Finance 2",
+      "year": 2,
+      "stream": "FINANCE"
+    },
+    {
+      "name": "HR",
+      "year": 2,
+      "stream": "HR"
+    },
+    {
+      "name": "SC",
+      "year": 2,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
+      "name": "MM",
+      "year": 2,
+      "stream": "MARKETING"
+    },
+    {
+      "name": "TM",
+      "year": 2,
+      "stream": "TECH_MANAGEMENT"
+    }
+  ],
+  "subjects": [
+    {
+      "code": "ACT-apti",
+      "name": "APTI",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "ACT-case-study",
+      "name": "Case Study",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "ACT-crm-with-agentic-ai-hands-on",
+      "name": "CRM with agentic AI Hands on",
+      "semester": 4,
+      "stream": "MARKETING"
+    },
+    {
+      "code": "ACT-domain-expertise-for-placement",
+      "name": "Domain Expertise for placement",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "ACT-esp-sdp",
+      "name": "ESP / SDP",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "ACT-financial-market-hands-on",
+      "name": "Financial Market Hands on",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "ACT-hr-analytics-hands-on",
+      "name": "HR Analytics Hands on",
+      "semester": 4,
+      "stream": "HR"
+    },
+    {
+      "code": "ACT-mentoring",
+      "name": "Mentoring",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "ACT-soft-skill-and-grooming-for-placement",
+      "name": "Soft skill and grooming for Placement",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "ACT-sports",
+      "name": "Sports",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "ACT-supply-chain-analytics-hands-on",
+      "name": "Supply Chain Analytics Hands on",
+      "semester": 4,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
+      "code": "CM401",
+      "name": "B2B",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "CM402",
+      "name": "Retail Strategy",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "FM401",
+      "name": "FM401",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "FM402",
+      "name": "FM 402",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "HR401",
+      "name": "HR 401",
+      "semester": 4,
+      "stream": "HR"
+    },
+    {
+      "code": "HR402",
+      "name": "HR 402",
+      "semester": 4,
+      "stream": "HR"
+    },
+    {
+      "code": "MBA101",
+      "name": "Mathematics",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA102",
+      "name": "FRSA",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA103",
+      "name": "Micro Economics",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA104",
+      "name": "LBECE",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA105",
+      "name": "Marketing Mgmt.",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA171",
+      "name": "OB",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA172",
+      "name": "Communication",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA173",
+      "name": "CAB",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA174",
+      "name": "Research Methodology",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA191",
+      "name": "Excel Lab",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA192",
+      "name": "Entrepreneurship Lab",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA193",
+      "name": "Language Lab",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA194",
+      "name": "Tally Lab",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA195",
+      "name": "Entrepreneurship Masterclass",
+      "semester": 1,
+      "stream": "COMMON"
+    },
+    {
+      "code": "MBA471",
+      "name": "Corporate Strategy",
+      "semester": 4,
+      "stream": "HR"
+    },
+    {
+      "code": "MBA491",
+      "name": "Tech enablers for Digital Business",
+      "semester": 4,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
+      "code": "MBA492",
+      "name": "Advanced Excel",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "MBA493",
+      "name": "Boardroom Simulation",
+      "semester": 4,
+      "stream": "FINANCE"
+    },
+    {
+      "code": "MM401",
+      "name": "MM401",
+      "semester": 4,
+      "stream": "MARKETING"
+    },
+    {
+      "code": "MM402",
+      "name": "MM 402",
+      "semester": 4,
+      "stream": "MARKETING"
+    },
+    {
+      "code": "SC401",
+      "name": "SC 401",
+      "semester": 4,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
+      "code": "SC402",
+      "name": "SC 402",
+      "semester": 4,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
+      "code": "TM401",
+      "name": "TM 401",
+      "semester": 4,
+      "stream": "TECH_MANAGEMENT"
+    },
+    {
+      "code": "TM402",
+      "name": "TM 402",
+      "semester": 4,
+      "stream": "TECH_MANAGEMENT"
+    }
+  ],
+  "teachers": [
+    {
+      "initials": "AB",
+      "name": "Prof. Anupam Bhattacharya",
+      "email": "ab@iem.edu"
+    },
+    {
+      "initials": "AG",
+      "name": "Prof. Abhijit Ganguly",
+      "email": "ag@iem.edu"
+    },
+    {
+      "initials": "AKH",
+      "name": "Dr. Anik Kumar Hazra",
+      "email": "akh@iem.edu"
+    },
+    {
+      "initials": "BM",
+      "name": "Dr. Bikash Chandra Mandal",
+      "email": "bm@iem.edu"
+    },
+    {
+      "initials": "CM",
+      "name": "Prof. Chirabrata Majumdar",
+      "email": "cm@iem.edu"
+    },
+    {
+      "initials": "DBS",
+      "name": "Prof. Debasree Saha",
+      "email": "dbs@iem.edu"
+    },
+    {
+      "initials": "DD",
+      "name": "Prof. Diptiman Dasgupta",
+      "email": "dd@iem.edu"
+    },
+    {
+      "initials": "DM",
+      "name": "Prof. Debjit Mukherjee",
+      "email": "dm@iem.edu"
+    },
+    {
+      "initials": "DS",
+      "name": "Dr. Dipak Saha",
+      "email": "ds@iem.edu"
+    },
+    {
+      "initials": "GUEST",
+      "name": "Guest Faculty",
+      "email": "guest@iem.edu"
+    },
+    {
+      "initials": "KKG",
+      "name": "Prof. Kaushik Kumar Ganguly",
+      "email": "kkg@iem.edu"
+    },
+    {
+      "initials": "NA",
+      "name": "Staff / NA",
+      "email": "staff@iem.edu"
+    },
+    {
+      "initials": "NM",
+      "name": "Dr. Nivedita Mandal",
+      "email": "nm@iem.edu"
+    },
+    {
+      "initials": "PB",
+      "name": "Prof. Prarthana Banerjee",
+      "email": "pb@iem.edu"
+    },
+    {
+      "initials": "PC",
+      "name": "Dr. Pritha Chanda",
+      "email": "pc@iem.edu"
+    },
+    {
+      "initials": "PK",
+      "name": "Prof. Prasenjit Kundu",
+      "email": "pk@iem.edu"
+    },
+    {
+      "initials": "RB",
+      "name": "Dr. Rana Basu",
+      "email": "rb@iem.edu"
+    },
+    {
+      "initials": "SAG",
+      "name": "Prof. Saugata Ghosh",
+      "email": "sag@iem.edu"
+    },
+    {
+      "initials": "SBC",
+      "name": "Dr. Subrata Chattopadhyay",
+      "email": "sbc@iem.edu"
+    },
+    {
+      "initials": "SC",
+      "name": "Prof. Shouvik Chattopadhyay",
+      "email": "sc@iem.edu"
+    },
+    {
+      "initials": "SD",
+      "name": "Dr. Sujit Dutta",
+      "email": "sd@iem.edu"
+    },
+    {
+      "initials": "SHD",
+      "name": "Prof. Sohini Dutta",
+      "email": "shd@iem.edu"
+    },
+    {
+      "initials": "SM",
+      "name": "Dr. Swati Mukherjee",
+      "email": "sm@iem.edu"
+    },
+    {
+      "initials": "SNG",
+      "name": "Prof. Sanhita Ghosh",
+      "email": "sng@iem.edu"
+    },
+    {
+      "initials": "SRN",
+      "name": "Dr. Srividya Nadindla",
+      "email": "srn@iem.edu"
+    },
+    {
+      "initials": "UDC",
+      "name": "Dr. Udit Chawla",
+      "email": "udc@iem.edu"
+    },
+    {
+      "initials": "WM",
+      "name": "Prof. Writaparna Mukherjee",
+      "email": "wm@iem.edu"
+    }
+  ],
+  "offerings": [
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec A",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec A",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec A",
+      "teacherInitials": "PK",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec A",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA195",
+      "sectionName": "Sec A",
+      "teacherInitials": "DD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec A",
+      "teacherInitials": "KKG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec A",
+      "teacherInitials": "AB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec B",
+      "teacherInitials": "PB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA195",
+      "sectionName": "Sec B",
+      "teacherInitials": "DD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec B",
+      "teacherInitials": "UDC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec B",
+      "teacherInitials": "SM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec B",
+      "teacherInitials": "AB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec B",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec B",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec C",
+      "teacherInitials": "AB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec C",
+      "teacherInitials": "PK",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec C",
+      "teacherInitials": "RB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec C",
+      "teacherInitials": "PB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec C",
+      "teacherInitials": "KKG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec C",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Sec C",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec D",
+      "teacherInitials": "UDC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec D",
+      "teacherInitials": "AB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec D",
+      "teacherInitials": "SM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec D",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec D",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec D",
+      "teacherInitials": "PB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec D",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-sports",
+      "sectionName": "Sec D",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-apti",
+      "sectionName": "Finance 1",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM401",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SD",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM401",
+      "sectionName": "Finance 2",
+      "teacherInitials": "NM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "HR401",
+      "sectionName": "HR",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MM401",
+      "sectionName": "MM",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "SC401",
+      "sectionName": "SC",
+      "teacherInitials": "PK",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "TM401",
+      "sectionName": "TM",
+      "teacherInitials": "UDC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-apti",
+      "sectionName": "Finance 2",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Finance 2",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "HR",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "HR",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "HR",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "SC",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "SC",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-apti",
+      "sectionName": "MM",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "MM",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "TM",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "TM",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "TM",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "TM",
+      "teacherInitials": "PK",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec A",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec A",
+      "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec A",
+      "teacherInitials": "SAG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec A",
+      "teacherInitials": "PC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec A",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec B",
+      "teacherInitials": "PK",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec B",
+      "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec B",
+      "teacherInitials": "RB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec B",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec B",
+      "teacherInitials": "SD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-sports",
+      "sectionName": "Sec B",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec C",
+      "teacherInitials": "SAG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec C",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec C",
+      "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec C",
+      "teacherInitials": "PC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec C",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA174",
+      "sectionName": "Sec C",
+      "teacherInitials": "UDC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec D",
+      "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec D",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec D",
+      "teacherInitials": "SD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec D",
+      "teacherInitials": "RB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "UDC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "HR402",
+      "sectionName": "HR",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "SC402",
+      "sectionName": "SC",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MM402",
+      "sectionName": "MM",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "TM402",
+      "sectionName": "TM",
+      "teacherInitials": "WM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Finance 1",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "Finance 2",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "Finance 2",
+      "teacherInitials": "AB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "HR",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-hr-analytics-hands-on",
+      "sectionName": "HR",
+      "teacherInitials": "GUEST",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "SC",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "SC",
+      "teacherInitials": "RB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "SC",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "SC",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "MM",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "MM",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "TM",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "TM",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec A",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Sec A",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec A",
+      "teacherInitials": "RB",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-mentoring",
+      "sectionName": "Sec A",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec B",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec B",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec C",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec D",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA174",
+      "sectionName": "Sec D",
+      "teacherInitials": "DS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec D",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "Finance 1",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "Finance 1",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "Finance 2",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "HR",
+      "teacherInitials": "RB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "HR",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "SC",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "MM",
+      "teacherInitials": "WM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "MM",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA491",
+      "sectionName": "TM",
+      "teacherInitials": "DD",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA174",
+      "sectionName": "Sec A",
+      "teacherInitials": "UDC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-sports",
+      "sectionName": "Sec A",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Sec B",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA195",
+      "sectionName": "Sec C",
+      "teacherInitials": "DD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec C",
+      "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-sports",
+      "sectionName": "Sec C",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA195",
+      "sectionName": "Sec D",
+      "teacherInitials": "DD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "Sec D",
+      "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "Finance 1",
+      "teacherInitials": "WM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-mentoring",
+      "sectionName": "Finance 1",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "Finance 2",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "HR",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "SC",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-supply-chain-analytics-hands-on",
+      "sectionName": "SC",
+      "teacherInitials": "GUEST",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA493",
+      "sectionName": "MM",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA492",
+      "sectionName": "TM",
+      "teacherInitials": "AB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA174",
+      "sectionName": "Sec B",
+      "teacherInitials": "DS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-financial-market-hands-on",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SAG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-financial-market-hands-on",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SAG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "SC",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "MM",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-crm-with-agentic-ai-hands-on",
+      "sectionName": "MM",
+      "teacherInitials": "GUEST",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-esp-sdp",
+      "sectionName": "TM",
+      "teacherInitials": "NA",
+      "term": "2026-T4"
+    }
+  ],
+  "schedule": [
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Micro Economics ( NM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Communication(SNG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA191",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "Excel Lab (PK)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA101",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Mathematics (NM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA195",
+      "teacherInitials": "DD",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Masterclass (DD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA105",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(KKG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA173",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "CAB(AB)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA195",
+      "teacherInitials": "DD",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Masterclass (DD)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA103",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(SNG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA173",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "CAB(AB)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "B1",
+      "rawLabel": "Tally Lab (B1 - AKH, B2 - SAG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "B2",
+      "rawLabel": "Tally Lab (B1 - AKH, B2 - SAG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Communication(SNG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA173",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "CAB(AB)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA191",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(PK)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA192",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(RB)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA105",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(KKG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "FRSA(AKH)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA173",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "CAB(AB)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA191",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(DBS)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Case Study (SRN)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-sports",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Sports"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F1 + MM + TM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (AKH)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "FM401",
+      "teacherInitials": "SD",
+      "subgroup": "F1",
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "FM401",
+      "teacherInitials": "NM",
+      "subgroup": "F2",
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "HR401",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MM401",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "SC401",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "MON",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "TM401",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "FM401(F1 - SD, F2 - NM) / HR 401(CM) / MM401(SM) / SC 401(PK)/ TM 401(UDC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for Placement (DBS)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (AKH)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F2 + HR + SCM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "HR",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(SBC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "MON",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(SBC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F1 + MM + TM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (SM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "MON",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for Placement (CM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "MON",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "MON",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "MON",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (PK)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "FRSA(AKH)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "A1",
+      "rawLabel": "Tally Lab (A1 - SAG, A2 - AKH)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "A2",
+      "rawLabel": "Tally Lab (A1 - SAG, A2 - AKH)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA171",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "OB(PC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Case Study (SRN)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA191",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(PK)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA101",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Mathematics (NM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA192",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(RB)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA171",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "OB(SRN)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-sports",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Sports"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "C1",
+      "rawLabel": "Tally Lab (C1 - SAG, C2 - AKH)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "C2",
+      "rawLabel": "Tally Lab (C1 - SAG, C2 - AKH)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA101",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Mathematics(NM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA171",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "OB(PC)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Communication(SNG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA174",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Research Methodology (UDC)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA191",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(PK)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA171",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "OB(SRN)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA192",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(RB)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA103",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Micro Economics (NM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Communication(SNG)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (SRN)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA493",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (SBC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "FM402",
+      "teacherInitials": "AKH",
+      "subgroup": "F1",
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "FM402",
+      "teacherInitials": "UDC",
+      "subgroup": "F2",
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "HR402",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "SC402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MM402",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "TM402",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - AKH, F2 - UDC) / HR 402(DBS) / SC 402(DS)/ MM 402 (BM) / TM 402(WM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP/SDP"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA492",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (AB)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (DBS)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA493",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (CM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-hr-analytics-hands-on",
+      "teacherInitials": "GUEST",
+      "subgroup": null,
+      "rawLabel": "HR Analytics Hands on (GUEST)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (CM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (RB)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (DS)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (DM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (CM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (AB)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA493",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (DS)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "TUE",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA104",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "LBECE(SC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SNG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA192",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(RB)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "WED",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-mentoring",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Mentoring"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA192",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(WM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Case Study (SRN)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "B1",
+      "rawLabel": "Tally Lab (B1 - AKH, B2 - SAG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "B2",
+      "rawLabel": "Tally Lab (B1 - AKH, B2 - SAG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SHD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA191",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(DBS)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA104",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "LBECE(SC)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SHD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA103",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(NM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "C1",
+      "rawLabel": "Tally Lab(C1 - AKH, C2 - SAG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "C2",
+      "rawLabel": "Tally Lab(C1 - AKH, C2 - SAG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "PB",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(PB)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "D1",
+      "rawLabel": "Tally Lab( D1 - AKH, D2 - SAG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "D2",
+      "rawLabel": "Tally Lab( D1 - AKH, D2 - SAG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA105",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt. (KKG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA174",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Research Methodology (DS)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA101",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Mathematics(NM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SNG)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "FM401",
+      "teacherInitials": "NM",
+      "subgroup": "F1",
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "FM401",
+      "teacherInitials": "SD",
+      "subgroup": "F2",
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "HR401",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "SC401",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MM401",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "WED",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "TM401",
+      "teacherInitials": "PK",
+      "subgroup": null,
+      "rawLabel": "FM 401(F1 - NM, F2 - SD) / HR 401(SRN) / SC 401 (UDC)/ MM 401(DS) / TM 401 (PK)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (DM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (CM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (CM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (RB)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "SC",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA492",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (DBS)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (SRN)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (SC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA492",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (WM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(SBC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (BM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "WED",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA491",
+      "teacherInitials": "DD",
+      "subgroup": null,
+      "rawLabel": "Tech enablers for Digital Business (DD)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "WED",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "WED",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "WED",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA171",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "OB(CM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA174",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Research Methodology (UDC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "THU",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-sports",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Sports"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA171",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "OB(DBS)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics (UDC)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA102",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "FRSA(AKH)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA105",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(KKG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics (UDC)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA195",
+      "teacherInitials": "DD",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Masterclass (DD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA171",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "OB(CM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Case Study (SRN)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication (SHD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "THU",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-sports",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Sports"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA195",
+      "teacherInitials": "DD",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Masterclass (DD)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA171",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "OB(DBS)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA104",
+      "teacherInitials": "AG",
+      "subgroup": null,
+      "rawLabel": "LBECE (AG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication (SHD)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "AKH",
+      "subgroup": null,
+      "rawLabel": "FRSA(AKH)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F1 + MM + TM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA492",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (WM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "THU",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-mentoring",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "Mentoring"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F2 + HR + SCM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA493",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (DS)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(SBC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA492",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (DBS)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (PC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "THU",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "DM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA493",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (CM)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-supply-chain-analytics-hands-on",
+      "teacherInitials": "GUEST",
+      "subgroup": null,
+      "rawLabel": "Supply Chain Analytics Hands on (GUEST)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "THU",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "ACT-apti",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "APTI (F1 + MM + TM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(DS)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA493",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Boardroom Simulation (SBC)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "THU",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "THU",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(SBC)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "THU",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA492",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "Advanced Excel (AB)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "THU",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA103",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(SNG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA191",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(DBS)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA101",
+      "teacherInitials": "UDC",
+      "subgroup": null,
+      "rawLabel": "Mathematics(UDC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA171",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "OB(PC)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "A1",
+      "rawLabel": "Tally Lab(A1- AKH, A2 - SAG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "A2",
+      "rawLabel": "Tally Lab(A1- AKH, A2 - SAG)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SHD)"
+    },
+    {
+      "sectionName": "Sec A",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA192",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(WM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA104",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "LBECE(SC)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA171",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "OB(SRN)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SNG)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(NM)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA191",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Excel Lab(DBS)"
+    },
+    {
+      "sectionName": "Sec B",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA174",
+      "teacherInitials": "DS",
+      "subgroup": null,
+      "rawLabel": "Research Methodology(DS)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Micro Economics (SNG)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA172",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Communication(SHD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA173",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "CAB(WM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA171",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "OB(PC)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA192",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab(WM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt. (SM)"
+    },
+    {
+      "sectionName": "Sec C",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SNG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MBA105",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Marketing Mgmt.(SM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 2,
+      "startTime": "10:20",
+      "endTime": "11:10",
+      "subjectCode": "MBA102",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "FRSA(SD)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "MBA104",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "LBECE(SC)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA194",
+      "teacherInitials": "AKH",
+      "subgroup": "D1",
+      "rawLabel": "Tally Lab(D1 - AKH, D2 - SAG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
+      "subgroup": "D2",
+      "rawLabel": "Tally Lab(D1 - AKH, D2 - SAG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA192",
+      "teacherInitials": "WM",
+      "subgroup": null,
+      "rawLabel": "Entrepreneurship Lab (WM)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "MBA103",
+      "teacherInitials": "SNG",
+      "subgroup": null,
+      "rawLabel": "Micro Economics(SNG)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA171",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "OB(SRN)"
+    },
+    {
+      "sectionName": "Sec D",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SHD",
+      "subgroup": null,
+      "rawLabel": "Language Lab(SHD)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "FM402",
+      "teacherInitials": "UDC",
+      "subgroup": "F1",
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "FM402",
+      "teacherInitials": "AKH",
+      "subgroup": "F2",
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "HR402",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "SC402",
+      "teacherInitials": "RB",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "MM402",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 1,
+      "startTime": "09:30",
+      "endTime": "10:20",
+      "subjectCode": "TM402",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "FM 402(F1 - UDC, F2 - AKH) / HR 402(PC) / SC 402(RB)/ MM 402 (BM) / TM 402(AB)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (NM)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (SD)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-financial-market-hands-on",
+      "teacherInitials": "SAG",
+      "subgroup": null,
+      "rawLabel": "Financial Market Hands on(SAG)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "Finance 1",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA471",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy (SBC)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-financial-market-hands-on",
+      "teacherInitials": "SAG",
+      "subgroup": null,
+      "rawLabel": "Financial Market Hands on(SAG)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (DBS)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SM)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SD",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (SD)"
+    },
+    {
+      "sectionName": "Finance 2",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "NM",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (NM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (CM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "DBS",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (DBS)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "PC",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (PC)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    },
+    {
+      "sectionName": "HR",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (SRN)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "CM402",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Retail Strategy(SBC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 4,
+      "startTime": "12:00",
+      "endTime": "12:50",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (SRN)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SBC",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (SBC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
+      "subgroup": null,
+      "rawLabel": "B2B(SC)"
+    },
+    {
+      "sectionName": "SC",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP / SDP"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "ACT-crm-with-agentic-ai-hands-on",
+      "teacherInitials": "GUEST",
+      "subgroup": null,
+      "rawLabel": "CRM with agentic AI Hands on (GUEST)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (CM)"
+    },
+    {
+      "sectionName": "MM",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (KKG)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 3,
+      "startTime": "11:10",
+      "endTime": "12:00",
+      "subjectCode": "ACT-esp-sdp",
+      "teacherInitials": "NA",
+      "subgroup": null,
+      "rawLabel": "ESP/SDP"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 5,
+      "startTime": "01:40",
+      "endTime": "02:30",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "SRN",
+      "subgroup": null,
+      "rawLabel": "Soft skill and grooming for placement (SRN)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 6,
+      "startTime": "02:30",
+      "endTime": "03:20",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "AB",
+      "subgroup": null,
+      "rawLabel": "Domain Expertise for placement (AB)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 7,
+      "startTime": "03:20",
+      "endTime": "04:10",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
+      "subgroup": null,
+      "rawLabel": "B2B(KKG)"
+    },
+    {
+      "sectionName": "TM",
+      "day": "FRI",
+      "slotIndex": 8,
+      "startTime": "04:10",
+      "endTime": "05:00",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
+      "subgroup": null,
+      "rawLabel": "Corporate Strategy(BM)"
+    }
+  ]
+}

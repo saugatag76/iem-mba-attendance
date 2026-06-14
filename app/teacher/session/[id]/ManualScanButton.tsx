@@ -2,6 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
+import { ScanLine } from "lucide-react";
 
 export function ManualScanButton({ sessionId }: { sessionId: string }) {
   const [open, setOpen] = useState(false);
@@ -69,16 +70,17 @@ export function ManualScanButton({ sessionId }: { sessionId: string }) {
   }, [open, stop, submit]);
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-      <div className="flex items-center justify-between">
+    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-sm font-semibold text-gray-800">Manual fallback</p>
-          <p className="text-xs text-gray-500">Scan a student&apos;s personal QR if their camera fails.</p>
+          <p className="text-sm font-semibold text-slate-800">Manual fallback</p>
+          <p className="text-xs text-slate-500">Scan a student&apos;s personal QR if their camera fails.</p>
         </div>
         <button
           onClick={toggle}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium active:scale-[0.98]"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.98]"
         >
+          <ScanLine className="h-4 w-4" />
           {open ? "Stop" : "Scan student QR"}
         </button>
       </div>

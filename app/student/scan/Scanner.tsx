@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
+import { QrCode, CheckCircle2, XCircle, Loader2 } from "lucide-react";
 import { getDeviceId } from "@/lib/device";
 
 type Phase = "idle" | "scanning" | "submitting" | "done" | "error";
@@ -111,31 +112,36 @@ export function Scanner({ initialToken }: { initialToken?: string }) {
     <div className="flex flex-col items-center gap-4">
       <div
         id="reader"
-        className={`w-full max-w-xs overflow-hidden rounded-xl ${phase === "scanning" ? "" : "hidden"}`}
+        className={`w-full max-w-xs overflow-hidden rounded-2xl border-2 border-brand-200 shadow-sm ${
+          phase === "scanning" ? "" : "hidden"
+        }`}
       />
 
       {phase === "idle" && (
         <button
           onClick={startCamera}
-          className="w-full max-w-xs rounded-lg bg-gray-900 px-4 py-3 font-medium text-white active:scale-[0.99]"
+          className="inline-flex w-full max-w-xs items-center justify-center gap-2 rounded-xl bg-gradient-to-br from-brand-600 to-brand-800 px-4 py-3.5 font-semibold text-white shadow-md shadow-brand-900/20 transition active:scale-[0.99]"
         >
-          Scan attendance QR
+          <QrCode className="h-5 w-5" /> Scan attendance QR
         </button>
       )}
 
       {(phase === "submitting" || phase === "scanning") && (
-        <p className="text-sm text-gray-500">{message || "Point at the QR on screen…"}</p>
+        <p className="flex items-center gap-2 text-sm text-slate-500">
+          {phase === "submitting" && <Loader2 className="h-4 w-4 animate-spin" />}
+          {message || "Point at the QR on the teacher's screen…"}
+        </p>
       )}
 
       {(phase === "done" || phase === "error") && (
         <div className="w-full max-w-xs text-center">
           <div
-            className={`rounded-xl px-4 py-6 text-lg font-semibold ${
-              ok ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
+            className={`flex flex-col items-center gap-2 rounded-2xl px-4 py-8 ${
+              ok ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"
             }`}
           >
-            {ok ? "✓ " : "✕ "}
-            {message}
+            {ok ? <CheckCircle2 className="h-12 w-12" /> : <XCircle className="h-12 w-12" />}
+            <span className="text-lg font-semibold">{message}</span>
           </div>
           {!ok && (
             <button
@@ -143,7 +149,7 @@ export function Scanner({ initialToken }: { initialToken?: string }) {
                 setPhase("idle");
                 setMessage("");
               }}
-              className="mt-3 rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium"
+              className="mt-3 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
             >
               Try again
             </button>

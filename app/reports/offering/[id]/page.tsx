@@ -1,7 +1,8 @@
 import { notFound } from "next/navigation";
+import { Download, CalendarClock, Users, AlertTriangle } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { offeringReport } from "@/lib/attendance";
-import { Badge } from "@/app/_components/ui";
+import { Badge, Avatar, StatCard } from "@/app/_components/ui";
 
 const THRESHOLD = 75;
 
@@ -21,44 +22,56 @@ export default async function OfferingReport({
 
   return (
     <div>
-      <div className="mb-4 flex items-start justify-between">
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold">
-            {offering.subject.code} · {offering.subject.name}
-          </h1>
-          <p className="text-sm text-gray-500">
-            {offering.classSection.name} · {total} sessions · {rows.length} students ·{" "}
-            <span className="text-red-600">{defaulters} below {THRESHOLD}%</span>
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">{offering.subject.name}</h1>
+          <p className="mt-0.5 text-sm text-slate-500">
+            {offering.subject.code} · {offering.classSection.name}
           </p>
         </div>
         <a
           href={`/api/reports/offering/${id}/csv`}
-          className="rounded-lg border border-gray-300 px-3 py-2 text-sm font-medium"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
         >
-          Export CSV
+          <Download className="h-4 w-4" /> Export CSV
         </a>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+      <div className="mb-5 grid grid-cols-3 gap-3">
+        <StatCard icon={<CalendarClock className="h-4 w-4" />} label="Sessions" value={total} />
+        <StatCard icon={<Users className="h-4 w-4" />} label="Students" value={rows.length} />
+        <StatCard
+          icon={<AlertTriangle className="h-4 w-4" />}
+          label={`Below ${THRESHOLD}%`}
+          value={defaulters}
+        />
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left text-xs uppercase text-gray-500">
+          <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
             <tr>
-              <th className="px-3 py-2">Student</th>
-              <th className="px-3 py-2 text-center">Attended</th>
-              <th className="px-3 py-2 text-right">%</th>
+              <th className="px-4 py-2.5 font-medium">Student</th>
+              <th className="px-4 py-2.5 text-center font-medium">Attended</th>
+              <th className="px-4 py-2.5 text-right font-medium">Attendance</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {rows.map((r) => (
-              <tr key={r.studentId} className="border-t border-gray-100">
-                <td className="px-3 py-2">
-                  <div>{r.name}</div>
-                  <div className="text-xs text-gray-400">{r.email}</div>
+              <tr key={r.studentId} className={r.percent < THRESHOLD ? "bg-red-50/40" : undefined}>
+                <td className="px-4 py-2.5">
+                  <div className="flex items-center gap-2.5">
+                    <Avatar name={r.name} />
+                    <div>
+                      <div className="font-medium text-slate-800">{r.name}</div>
+                      <div className="text-xs text-slate-400">{r.email}</div>
+                    </div>
+                  </div>
                 </td>
-                <td className="px-3 py-2 text-center tabular-nums">
+                <td className="px-4 py-2.5 text-center tabular-nums text-slate-600">
                   {r.attended}/{r.total}
                 </td>
-                <td className="px-3 py-2 text-right">
+                <td className="px-4 py-2.5 text-right">
                   <Badge tone={r.percent >= THRESHOLD ? "green" : r.percent >= 60 ? "amber" : "red"}>
                     {r.percent}%
                   </Badge>

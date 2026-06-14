@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { QrCode, Loader2 } from "lucide-react";
 import { openSession } from "../actions";
 
 export function OpenSessionButton({ offeringId }: { offeringId: string }) {
@@ -34,8 +35,9 @@ export function OpenSessionButton({ offeringId }: { offeringId: string }) {
         type="button"
         onClick={start}
         disabled={busy}
-        className="rounded-lg bg-gray-900 px-3 py-2 text-sm font-medium text-white active:scale-[0.98] disabled:opacity-50"
+        className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-brand-700 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.98] disabled:opacity-50"
       >
+        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
         {busy ? "Opening…" : "Open session"}
       </button>
     </form>

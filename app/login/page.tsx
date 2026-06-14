@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { AuthError } from "next-auth";
+import { GraduationCap, Mail, Lock, AlertCircle } from "lucide-react";
 import { auth, signIn } from "@/auth";
 import { homeForRole } from "@/lib/session";
 
@@ -20,49 +21,92 @@ export default async function LoginPage({
       await signIn("credentials", { email, password, redirectTo: "/" });
     } catch (e) {
       if (e instanceof AuthError) redirect("/login?error=1");
-      throw e; // re-throw redirect control-flow errors
+      throw e; // re-throw redirect control-flow
     }
   }
 
   return (
-    <main className="mx-auto flex min-h-screen max-w-sm flex-col justify-center px-5">
-      <h1 className="mb-1 text-2xl font-bold">QR Attendance</h1>
-      <p className="mb-6 text-sm text-gray-500">Sign in to continue</p>
+    <div className="flex min-h-screen w-full items-center justify-center p-4">
+      <div className="w-full max-w-md">
+        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5">
+          {/* Brand */}
+          <div className="mb-6 flex justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-600 to-brand-800 shadow-md shadow-brand-900/20">
+              <GraduationCap className="h-8 w-8 text-white" strokeWidth={2} />
+            </div>
+          </div>
 
-      {error && (
-        <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
-          Invalid email or password.
+          <div className="mb-8 text-center">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900">MBA Attendance</h1>
+            <p className="mt-1 text-sm text-slate-500">Sign in to continue</p>
+          </div>
+
+          {error && (
+            <div className="mb-6 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3">
+              <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600" />
+              <p className="text-sm text-red-800">Invalid email or password. Please try again.</p>
+            </div>
+          )}
+
+          <form action={login} className="space-y-4">
+            <div>
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
+                Email
+              </label>
+              <div className="relative">
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  autoComplete="username"
+                  placeholder="you@iem.edu"
+                  className="block w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3 text-slate-900 placeholder-slate-400 transition focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">
+                Password
+              </label>
+              <div className="relative">
+                <Lock className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                  className="block w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3 text-slate-900 placeholder-slate-400 transition focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                />
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-brand-700 px-4 py-2.5 font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.99]"
+            >
+              Sign in
+            </button>
+          </form>
+
+          <div className="mt-6 border-t border-slate-200 pt-5">
+            <p className="mb-2 text-xs font-medium text-slate-500">Demo logins (password in parens)</p>
+            <ul className="space-y-1 text-xs text-slate-500">
+              <li><span className="font-medium text-slate-600">Admin</span> · admin@iem.edu (admin123)</li>
+              <li><span className="font-medium text-slate-600">Teacher</span> · teacher1@iem.edu (teach123)</li>
+              <li><span className="font-medium text-slate-600">Student</span> · fina1@iem.edu (stud123)</li>
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-4 text-center text-xs text-slate-400">
+          IEM · MBA Department · QR Attendance
         </p>
-      )}
-
-      <form action={login} className="flex flex-col gap-3">
-        <input
-          name="email"
-          type="email"
-          required
-          placeholder="Email"
-          autoComplete="username"
-          className="rounded-lg border border-gray-300 px-3 py-2.5 text-base outline-none focus:border-gray-900"
-        />
-        <input
-          name="password"
-          type="password"
-          required
-          placeholder="Password"
-          autoComplete="current-password"
-          className="rounded-lg border border-gray-300 px-3 py-2.5 text-base outline-none focus:border-gray-900"
-        />
-        <button
-          type="submit"
-          className="mt-1 rounded-lg bg-gray-900 px-4 py-2.5 font-medium text-white active:scale-[0.99]"
-        >
-          Sign in
-        </button>
-      </form>
-
-      <p className="mt-6 text-xs text-gray-400">
-        Seeded logins: admin@iem.edu / teacher1@iem.edu / student1@iem.edu
-      </p>
-    </main>
+      </div>
+    </div>
   );
 }

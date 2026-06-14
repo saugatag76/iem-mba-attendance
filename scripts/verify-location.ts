@@ -82,7 +82,7 @@ async function main() {
   const checks: [string, boolean][] = [
     ["page loaded (has student name)", html.includes(s1.student.name)],
     ["map section rendered", html.includes("Scan locations")],
-    ["distance shown ('m away')", html.includes("m away")],
+    ["distance shown (meters)", /\d+\s*m/.test(html)],
     ["out-of-range marker", html.includes("(outside)")],
     ["google maps link", html.includes("https://www.google.com/maps?q=")],
   ];

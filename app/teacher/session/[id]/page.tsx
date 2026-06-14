@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { MapPin, FileBarChart, Square } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { Badge } from "@/app/_components/ui";
@@ -26,33 +27,37 @@ export default async function SessionPage({
 
   return (
     <div>
-      <div className="mb-4 flex items-start justify-between gap-3">
+      <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-lg font-semibold">
-            {s.offering.subject.code} · {s.offering.subject.name}
-          </h1>
-          <p className="text-sm text-gray-500">
-            {s.offering.classSection.name} · {new Date(s.date).toLocaleString()}
+          <h1 className="text-xl font-bold tracking-tight text-slate-900">{s.offering.subject.name}</h1>
+          <p className="mt-0.5 text-sm text-slate-500">
+            {s.offering.subject.code} · {s.offering.classSection.name} · {new Date(s.date).toLocaleString()}
           </p>
-          <div className="mt-1 flex gap-2">
-            <Badge tone={s.status === "OPEN" ? "green" : "gray"}>{s.status}</Badge>
-            <Badge tone={hasGeofence ? "green" : "amber"}>
-              {hasGeofence ? `geofence ${s.geoRadiusM}m` : "no geofence"}
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Badge tone={s.status === "OPEN" ? "green" : "gray"}>
+              {s.status === "OPEN" ? "● Live" : "Closed"}
+            </Badge>
+            <Badge tone={hasGeofence ? "brand" : "amber"}>
+              <MapPin className="h-3 w-3" />
+              {hasGeofence ? `Geofence ${s.geoRadiusM}m` : "No geofence"}
             </Badge>
           </div>
         </div>
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex items-center gap-2">
+          <Link
+            href={`/reports/session/${s.id}`}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+          >
+            <FileBarChart className="h-4 w-4" /> Report
+          </Link>
           {s.status === "OPEN" && (
             <form action={closeSession}>
               <input type="hidden" name="sessionId" value={s.id} />
-              <button className="rounded-lg border border-red-300 px-3 py-2 text-sm font-medium text-red-700 active:scale-[0.98]">
-                Close session
+              <button className="inline-flex items-center gap-1.5 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50">
+                <Square className="h-4 w-4" /> Close
               </button>
             </form>
           )}
-          <Link href={`/reports/session/${s.id}`} className="text-xs text-gray-500 underline">
-            View report
-          </Link>
         </div>
       </div>
 
