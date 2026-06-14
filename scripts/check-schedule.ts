@@ -1,4 +1,5 @@
 // Verifies the timetable seed surfaces in the UI: teacher home + student weekly timetable.
+export {};
 const BASE = "http://localhost:3000";
 
 function jar() {

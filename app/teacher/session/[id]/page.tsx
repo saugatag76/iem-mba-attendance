@@ -4,6 +4,7 @@ import { MapPin, FileBarChart, Square } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { Badge } from "@/app/_components/ui";
+import { autoCloseExpired } from "@/lib/sessions";
 import { closeSession } from "../../actions";
 import { LiveSession } from "./LiveSession";
 import { ManualScanButton } from "./ManualScanButton";
@@ -23,6 +24,7 @@ export default async function SessionPage({
   if (!s) notFound();
   if (s.teacherId !== user.id && user.role !== "ADMIN") notFound();
 
+  const status = await autoCloseExpired(s);
   const hasGeofence = s.geoLat != null && s.geoLng != null;
 
   return (
@@ -34,8 +36,8 @@ export default async function SessionPage({
             {s.offering.subject.code} · {s.offering.classSection.name} · {new Date(s.date).toLocaleString()}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">
-            <Badge tone={s.status === "OPEN" ? "green" : "gray"}>
-              {s.status === "OPEN" ? "● Live" : "Closed"}
+            <Badge tone={status === "OPEN" ? "green" : "gray"}>
+              {status === "OPEN" ? "● Live" : "Closed"}
             </Badge>
             <Badge tone={hasGeofence ? "brand" : "amber"}>
               <MapPin className="h-3 w-3" />
@@ -50,7 +52,7 @@ export default async function SessionPage({
           >
             <FileBarChart className="h-4 w-4" /> Report
           </Link>
-          {s.status === "OPEN" && (
+          {status === "OPEN" && (
             <form action={closeSession}>
               <input type="hidden" name="sessionId" value={s.id} />
               <button className="inline-flex items-center gap-1.5 rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium text-red-700 transition hover:bg-red-50">
@@ -63,7 +65,7 @@ export default async function SessionPage({
 
       <LiveSession sessionId={s.id} />
 
-      {s.status === "OPEN" && (
+      {status === "OPEN" && (
         <div className="mt-4">
           <ManualScanButton sessionId={s.id} />
         </div>

@@ -1,12 +1,11 @@
 import { requireRole } from "@/lib/session";
-import { TopBar } from "@/app/_components/TopBar";
+import { AppShell } from "@/app/_components/AppShell";
 
 export default async function ReportsLayout({ children }: { children: React.ReactNode }) {
   const user = await requireRole("TEACHER", "ADMIN");
   return (
-    <div>
-      <TopBar role={user.role} name={user.name ?? user.email ?? "User"} />
-      <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
-    </div>
+    <AppShell role={user.role} name={user.name ?? user.email ?? "User"}>
+      {children}
+    </AppShell>
   );
 }

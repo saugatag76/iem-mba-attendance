@@ -1,14 +1,24 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { QrCode, Loader2 } from "lucide-react";
+import { QrCode, Loader2, X } from "lucide-react";
 import { openSession } from "../actions";
 
-export function OpenSessionButton({ offeringId }: { offeringId: string }) {
+export function OpenSessionButton({
+  offeringId,
+  variant = "primary",
+  label = "Open session",
+}: {
+  offeringId: string;
+  variant?: "primary" | "secondary";
+  label?: string;
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const latRef = useRef<HTMLInputElement>(null);
   const lngRef = useRef<HTMLInputElement>(null);
+  const customRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
+  const [customMode, setCustomMode] = useState(false);
 
   function start() {
     setBusy(true);
@@ -26,19 +36,67 @@ export function OpenSessionButton({ offeringId }: { offeringId: string }) {
   }
 
   return (
-    <form ref={formRef} action={openSession}>
+    <form ref={formRef} action={openSession} className="flex flex-shrink-0 items-center gap-1.5">
       <input type="hidden" name="offeringId" value={offeringId} />
-      <input type="hidden" name="radius" value={75} />
+      <input type="hidden" name="radius" value={40} />
       <input ref={latRef} type="hidden" name="lat" />
       <input ref={lngRef} type="hidden" name="lng" />
+
+      {customMode ? (
+        <div className="flex items-center gap-1">
+          <input
+            ref={customRef}
+            type="number"
+            name="customMin"
+            min={1}
+            autoFocus
+            placeholder="mins"
+            aria-label="Auto-close after (minutes)"
+            className="w-16 rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 placeholder:text-slate-400"
+          />
+          <button
+            type="button"
+            onClick={() => setCustomMode(false)}
+            aria-label="Use a preset duration instead"
+            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-500 transition hover:bg-slate-50"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
+        </div>
+      ) : (
+        <select
+          name="presetMin"
+          defaultValue="0"
+          aria-label="Auto-close session after"
+          onChange={(e) => {
+            if (e.target.value === "custom") setCustomMode(true);
+          }}
+          className="rounded-lg border border-slate-300 bg-white px-1.5 py-1.5 text-xs font-medium text-slate-700"
+        >
+          <option value="0">No limit</option>
+          <option value="1">1 min</option>
+          <option value="5">5 min</option>
+          <option value="10">10 min</option>
+          <option value="15">15 min</option>
+          <option value="20">20 min</option>
+          <option value="30">30 min</option>
+          <option value="60">60 min</option>
+          <option value="custom">Custom…</option>
+        </select>
+      )}
+
       <button
         type="button"
         onClick={start}
         disabled={busy}
-        className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-brand-700 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.98] disabled:opacity-50"
+        className={
+          variant === "secondary"
+            ? "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.98] disabled:opacity-50"
+            : "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-brand-700 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.98] disabled:opacity-50"
+        }
       >
-        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <QrCode className="h-4 w-4" />}
-        {busy ? "Opening…" : "Open session"}
+        {busy ? <Loader2 className={variant === "secondary" ? "h-3.5 w-3.5 animate-spin" : "h-4 w-4 animate-spin"} /> : <QrCode className={variant === "secondary" ? "h-3.5 w-3.5" : "h-4 w-4"} />}
+        {busy ? "Opening…" : label}
       </button>
     </form>
   );

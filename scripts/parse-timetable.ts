@@ -8,40 +8,10 @@
 import * as XLSX from "xlsx";
 import fs from "node:fs";
 import path from "node:path";
+import { FACULTY } from "../lib/facultyInitials";
 
 const XLSX_PATH = path.join("data", "Timetable_term1_term4_june,2026_v7.xlsx");
 const OUT = path.join("prisma", "timetable-data.json");
-
-// ---- Faculty initials → full name (derived from Subject Allocation + Class Load) ----
-const FACULTY: Record<string, string> = {
-  NM: "Dr. Nivedita Mandal",
-  UDC: "Dr. Udit Chawla",
-  SD: "Dr. Sujit Dutta",
-  AKH: "Dr. Anik Kumar Hazra",
-  SNG: "Prof. Sanhita Ghosh",
-  PB: "Prof. Prarthana Banerjee",
-  SC: "Prof. Shouvik Chattopadhyay",
-  SM: "Dr. Swati Mukherjee",
-  KKG: "Prof. Kaushik Kumar Ganguly",
-  PC: "Dr. Pritha Chanda",
-  DBS: "Prof. Debasree Saha",
-  SRN: "Dr. Srividya Nadindla",
-  CM: "Prof. Chirabrata Majumdar",
-  SHD: "Prof. Sohini Dutta",
-  WM: "Prof. Writaparna Mukherjee",
-  AB: "Prof. Anupam Bhattacharya",
-  DS: "Dr. Dipak Saha",
-  PK: "Prof. Prasenjit Kundu",
-  RB: "Dr. Rana Basu",
-  SAG: "Prof. Saugata Ghosh",
-  SBC: "Dr. Subrata Chattopadhyay",
-  BM: "Dr. Bikash Chandra Mandal",
-  DM: "Prof. Debjit Mukherjee",
-  DD: "Prof. Diptiman Dasgupta",
-  AG: "Prof. Abhijit Ganguly",
-  GUEST: "Guest Faculty",
-  NA: "Staff / NA",
-};
 
 // ---- Subject display name (as written in the timetable) → code ----
 const ALIAS: Record<string, string> = {

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { peekUserId, verifyPersonalToken } from "@/lib/qrToken";
+import { autoCloseExpired } from "@/lib/sessions";
 
 /**
  * Manual fallback: a teacher scans a student's permanent personal QR to mark them present
@@ -26,7 +27,7 @@ export async function POST(req: Request) {
   if (!cls) return NextResponse.json({ error: "Session not found." }, { status: 404 });
   if (cls.teacherId !== session.user.id && session.user.role !== "ADMIN")
     return NextResponse.json({ error: "Not your session." }, { status: 403 });
-  if (cls.status !== "OPEN")
+  if ((await autoCloseExpired(cls)) !== "OPEN")
     return NextResponse.json({ error: "Session is closed." }, { status: 409 });
 
   // Resolve + verify the student's personal token.

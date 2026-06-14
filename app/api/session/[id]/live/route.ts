@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { ROTATION_TTL_SECONDS, signSessionToken } from "@/lib/qrToken";
+import { autoCloseExpired } from "@/lib/sessions";
 
 /**
  * Teacher-only polling endpoint for the live QR screen.
@@ -29,18 +30,21 @@ export async function GET(
   if (!isOwner && !isAdmin)
     return NextResponse.json({ error: "forbidden" }, { status: 403 });
 
+  const status = await autoCloseExpired(s);
+
   // Total enrolled in this class (denominator for the live counter).
   const total = await prisma.enrollment.count({
     where: { classSectionId: s.offering.classSectionId },
   });
 
   const token =
-    s.status === "OPEN" ? await signSessionToken(s.id, s.qrSecret) : null;
+    status === "OPEN" ? await signSessionToken(s.id, s.qrSecret) : null;
 
   return NextResponse.json({
-    status: s.status,
+    status,
     ttl: ROTATION_TTL_SECONDS,
     token,
+    expiresAt: s.expiresAt,
     total,
     present: s.records.map((r) => ({
       name: r.student.name,

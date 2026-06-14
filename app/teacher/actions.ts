@@ -12,6 +12,9 @@ export async function openSession(formData: FormData) {
   const lat = formData.get("lat") ? Number(formData.get("lat")) : null;
   const lng = formData.get("lng") ? Number(formData.get("lng")) : null;
   const radius = Number(formData.get("radius") ?? 75) || 75;
+  const customMin = Number(formData.get("customMin") ?? 0) || 0;
+  const presetMin = Number(formData.get("presetMin") ?? 0) || 0;
+  const durationMin = customMin > 0 ? customMin : presetMin;
   if (!offeringId) return;
 
   const offering = await prisma.offering.findUnique({ where: { id: offeringId } });
@@ -24,6 +27,7 @@ export async function openSession(formData: FormData) {
       geoLat: lat,
       geoLng: lng,
       geoRadiusM: radius,
+      expiresAt: durationMin > 0 ? new Date(Date.now() + durationMin * 60_000) : null,
     },
   });
   redirect(`/teacher/session/${session.id}`);
@@ -38,4 +42,5 @@ export async function closeSession(formData: FormData) {
     data: { status: "CLOSED", endTime: new Date() },
   });
   revalidatePath(`/teacher/session/${sessionId}`);
+  redirect(`/reports/session/${sessionId}`);
 }

@@ -1,4 +1,5 @@
 // Quick HTTP login test against the running dev server.
+export {};
 const BASE = "http://localhost:3000";
 
 function jar() {

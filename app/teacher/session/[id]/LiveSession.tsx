@@ -1,9 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
-import { Maximize2, X, Flag, ScanLine, Users } from "lucide-react";
-import { Avatar } from "@/app/_components/ui";
+import { Maximize2, X, Flag, ScanLine, Users, Clock } from "lucide-react";
+import { Avatar, cn } from "@/app/_components/ui";
 
 interface PresentRow {
   name: string;
@@ -16,15 +17,48 @@ interface LiveData {
   status: "OPEN" | "CLOSED";
   ttl: number;
   token: string | null;
+  expiresAt: string | null;
   total: number;
   present: PresentRow[];
 }
 
+function Countdown({ expiresAt, dark = false }: { expiresAt: string; dark?: boolean }) {
+  const [remaining, setRemaining] = useState(() => Math.max(0, Date.parse(expiresAt) - Date.now()));
+  useEffect(() => {
+    const interval = setInterval(() => setRemaining(Math.max(0, Date.parse(expiresAt) - Date.now())), 1000);
+    return () => clearInterval(interval);
+  }, [expiresAt]);
+  const totalSec = Math.floor(remaining / 1000);
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  const critical = totalSec <= 10;
+  const urgent = totalSec <= 30;
+
+  const toneClasses = critical
+    ? "bg-red-600 text-white animate-pulse"
+    : urgent
+      ? "bg-amber-100 text-amber-700"
+      : dark
+        ? "bg-white/10 text-white"
+        : "bg-slate-100 text-slate-700";
+
+  return (
+    <div className={cn("inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-semibold", toneClasses)}>
+      <Clock className="h-4 w-4" />
+      <span className="text-base tabular-nums">
+        Auto-closes in {m}:{s.toString().padStart(2, "0")}
+      </span>
+    </div>
+  );
+}
+
 export function LiveSession({ sessionId }: { sessionId: string }) {
+  const router = useRouter();
   const [data, setData] = useState<LiveData | null>(null);
   const [qr, setQr] = useState<string>("");
   const [presenting, setPresenting] = useState(false);
   const lastToken = useRef<string>("");
+  const wasOpen = useRef(false);
 
   const poll = useCallback(async () => {
     try {
@@ -38,10 +72,15 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
         setQr(await QRCode.toDataURL(url, { width: 420, margin: 1 }));
       }
       if (!d.token) setQr("");
+      if (d.status === "OPEN") wasOpen.current = true;
+      else if (wasOpen.current) {
+        // Auto-closed (duration expired) — jump to the report so the teacher sees the result.
+        router.push(`/reports/session/${sessionId}`);
+      }
     } catch {
       /* transient — keep last frame */
     }
-  }, [sessionId]);
+  }, [sessionId, router]);
 
   useEffect(() => {
     poll();
@@ -65,7 +104,12 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={qr} alt="Attendance QR" className="h-60 w-60 sm:h-72 sm:w-72" />
                 </div>
-                <p className="mt-4 flex items-center gap-1.5 text-sm text-slate-500">
+                {data?.expiresAt && (
+                  <div className="mt-4">
+                    <Countdown expiresAt={data.expiresAt} />
+                  </div>
+                )}
+                <p className="mt-3 flex items-center gap-1.5 text-sm text-slate-500">
                   <ScanLine className="h-4 w-4 text-brand-600" />
                   Rotates every {data?.ttl}s · students scan to check in
                 </p>
@@ -136,7 +180,14 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
             <X className="h-5 w-5" />
           </button>
           <h2 className="mb-1 text-2xl font-bold tracking-tight">Scan to mark attendance</h2>
-          <p className="mb-6 text-sm text-white/50">Open the app on your phone and scan · rotates every {data?.ttl}s</p>
+          <p className="mb-3 text-sm text-white/50">
+            Open the app on your phone and scan · rotates every {data?.ttl}s
+          </p>
+          {data?.expiresAt && (
+            <div className="mb-6 scale-125">
+              <Countdown expiresAt={data.expiresAt} dark />
+            </div>
+          )}
           {qr && (
             <div className="rounded-3xl bg-white p-5 shadow-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}

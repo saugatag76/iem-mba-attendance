@@ -1,238 +1,107 @@
+import Link from "next/link";
 import {
   Building2,
   Layers,
   BookOpen,
-  UserPlus,
-  Link2,
-  Upload,
   Users,
   GraduationCap,
   UserCog,
+  Link2,
+  Upload,
+  AlertTriangle,
 } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-import {
-  Card,
-  Field,
-  inputClass,
-  selectClass,
-  textareaClass,
-  Submit,
-  StatCard,
-  PageHeader,
-} from "@/app/_components/ui";
-import {
-  createDepartment,
-  createClass,
-  createSubject,
-  createOffering,
-  createUser,
-  importStudents,
-} from "./actions";
+import { Card, StatCard, PageHeader, Badge } from "@/app/_components/ui";
+import { SectionHeader } from "@/app/_components/layout-ui";
+import { QuickActions } from "@/app/_components/QuickActions";
+import { DonutChart, Legend, SimpleBar, CHART_COLORS } from "@/app/_components/charts";
+import { STREAM_LABEL } from "@/lib/streams";
 
 export const dynamic = "force-dynamic";
 
-const STREAMS = [
-  { value: "COMMON", label: "Common" },
-  { value: "FINANCE", label: "Finance" },
-  { value: "HR", label: "HR" },
-  { value: "TECH_MANAGEMENT", label: "Tech Mgmt" },
-];
-
-export default async function AdminPage() {
-  const [departments, classes, subjects, teachers, offerings, counts] = await Promise.all([
-    prisma.department.findMany({ orderBy: { name: "asc" } }),
-    prisma.classSection.findMany({ include: { department: true }, orderBy: { name: "asc" } }),
-    prisma.subject.findMany({ include: { department: true }, orderBy: { code: "asc" } }),
-    prisma.user.findMany({ where: { role: "TEACHER" }, orderBy: { name: "asc" } }),
-    prisma.offering.findMany({
-      include: { subject: true, classSection: true, teacher: true },
-      orderBy: { createdAt: "desc" },
-    }),
+export default async function AdminOverview() {
+  const [counts, byDay, byStream, sections, deptCount] = await Promise.all([
     prisma.user.groupBy({ by: ["role"], _count: true }),
+    prisma.scheduledClass.groupBy({ by: ["day"], _count: true }),
+    prisma.subject.groupBy({ by: ["stream"], _count: true }),
+    prisma.classSection.findMany({
+      include: { _count: { select: { offerings: true, enrollments: true } } },
+      orderBy: { name: "asc" },
+    }),
+    prisma.department.count(),
   ]);
 
   const countOf = (r: string) => counts.find((c) => c.role === r)?._count ?? 0;
+  const subjectCount = byStream.reduce((a, s) => a + s._count, 0);
+
+  const dayOrder = ["MON", "TUE", "WED", "THU", "FRI"];
+  const dayLabels: Record<string, string> = { MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri" };
+  const classesPerDay = dayOrder.map((d) => ({
+    label: dayLabels[d],
+    value: byDay.find((x) => x.day === d)?._count ?? 0,
+  }));
+  const subjectsByStream = byStream
+    .map((s, i) => ({
+      name: STREAM_LABEL[s.stream] ?? s.stream,
+      value: s._count,
+      color: CHART_COLORS[i % CHART_COLORS.length],
+    }))
+    .filter((s) => s.value > 0);
+
+  const noOffering = sections.filter((s) => s._count.offerings === 0);
 
   return (
     <div>
-      <PageHeader title="Administration" subtitle="Set up departments, classes, subjects, offerings and people." />
+      <PageHeader title="Overview" subtitle="Department at a glance." />
 
       <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-        <StatCard icon={<Building2 className="h-4 w-4" />} label="Departments" value={departments.length} />
-        <StatCard icon={<Layers className="h-4 w-4" />} label="Classes" value={classes.length} />
-        <StatCard icon={<BookOpen className="h-4 w-4" />} label="Subjects" value={subjects.length} />
+        <StatCard icon={<Building2 className="h-4 w-4" />} label="Departments" value={deptCount} />
+        <StatCard icon={<Layers className="h-4 w-4" />} label="Classes" value={sections.length} />
+        <StatCard icon={<BookOpen className="h-4 w-4" />} label="Subjects" value={subjectCount} />
         <StatCard icon={<UserCog className="h-4 w-4" />} label="Teachers" value={countOf("TEACHER")} />
         <StatCard icon={<GraduationCap className="h-4 w-4" />} label="Students" value={countOf("STUDENT")} />
       </div>
 
-      <Card title="Add department" icon={<Building2 className="h-4 w-4" />}>
-        <form action={createDepartment} className="flex gap-2">
-          <input name="name" placeholder="Department name" className={inputClass} required />
-          <Submit>Add</Submit>
-        </form>
-      </Card>
+      <SectionHeader title="Quick actions" />
+      <QuickActions
+        actions={[
+          { href: "/admin/offerings", label: "Create offering", icon: <Link2 className="h-5 w-5" />, desc: "Subject → class → teacher" },
+          { href: "/admin/import", label: "Import students", icon: <Upload className="h-5 w-5" />, desc: "Bulk CSV + enroll" },
+          { href: "/admin/academics?tab=subjects", label: "Add subject", icon: <BookOpen className="h-5 w-5" />, desc: "New course" },
+          { href: "/admin/people", label: "Add user", icon: <Users className="h-5 w-5" />, desc: "Teacher / admin" },
+        ]}
+      />
 
-      <Card title="Add class section" icon={<Layers className="h-4 w-4" />}>
-        <form action={createClass} className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-          <Field label="Name" className="col-span-2 sm:col-span-1">
-            <input name="name" placeholder="Year 2 Finance — Sec A" className={inputClass} required />
-          </Field>
-          <Field label="Year">
-            <select name="year" className={selectClass} defaultValue={1}>
-              <option value={1}>Year 1</option>
-              <option value={2}>Year 2</option>
-            </select>
-          </Field>
-          <Field label="Stream">
-            <select name="stream" className={selectClass} defaultValue="COMMON">
-              {STREAMS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Department">
-            <select name="departmentId" className={selectClass} required>
-              {departments.map((d) => (
-                <option key={d.id} value={d.id}>{d.name}</option>
-              ))}
-            </select>
-          </Field>
-          <div className="flex items-end">
-            <Submit>Add</Submit>
-          </div>
-        </form>
-        <p className="mt-2 text-xs text-slate-400">
-          Year 1 → stream &quot;Common&quot;. Year 2 → Finance/HR/Tech-Mgmt, or &quot;Common&quot; for the shared Marketing group.
-        </p>
-      </Card>
+      <SectionHeader title="Activity" />
+      <div className="grid gap-4 lg:grid-cols-3">
+        <Card title="Classes per day" className="mb-0 lg:col-span-2">
+          <SimpleBar data={classesPerDay} />
+        </Card>
+        <Card title="Subjects by stream" className="mb-0">
+          <DonutChart data={subjectsByStream} centerValue={String(subjectCount)} centerLabel="subjects" />
+          <Legend data={subjectsByStream} />
+        </Card>
+      </div>
 
-      <Card title="Add subject" icon={<BookOpen className="h-4 w-4" />}>
-        <form action={createSubject} className="grid grid-cols-2 gap-3 sm:grid-cols-6">
-          <Field label="Name" className="col-span-2 sm:col-span-2">
-            <input name="name" placeholder="Subject name" className={inputClass} required />
-          </Field>
-          <Field label="Code">
-            <input name="code" placeholder="FN201" className={inputClass} required />
-          </Field>
-          <Field label="Semester">
-            <select name="semester" className={selectClass} defaultValue={1}>
-              {[1, 2, 3, 4, 5, 6].map((n) => (
-                <option key={n} value={n}>Sem {n}</option>
+      <SectionHeader title="Needs attention" />
+      <Card className="mb-0">
+        {noOffering.length === 0 ? (
+          <p className="py-2 text-sm text-slate-500">All sections have at least one offering. 🎉</p>
+        ) : (
+          <>
+            <p className="mb-2 flex items-center gap-1.5 text-sm text-slate-600">
+              <AlertTriangle className="h-4 w-4 text-amber-500" />
+              {noOffering.length} section{noOffering.length > 1 ? "s" : ""} with no offerings yet
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {noOffering.map((s) => (
+                <Link key={s.id} href="/admin/offerings">
+                  <Badge tone="amber">{s.name}</Badge>
+                </Link>
               ))}
-            </select>
-          </Field>
-          <Field label="Stream">
-            <select name="stream" className={selectClass} defaultValue="COMMON">
-              {STREAMS.map((s) => (
-                <option key={s.value} value={s.value}>{s.label}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Department">
-            <select name="departmentId" className={selectClass} required>
-              {departments.map((d) => (
-                <option key={d.id} value={d.id}>{d.name}</option>
-              ))}
-            </select>
-          </Field>
-          <div className="col-span-2 flex items-end sm:col-span-6">
-            <Submit>Add subject</Submit>
-          </div>
-        </form>
-      </Card>
-
-      <Card title="Add user (teacher / admin / student)" icon={<UserPlus className="h-4 w-4" />}>
-        <form action={createUser} className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-          <Field label="Email">
-            <input name="email" type="email" placeholder="Email" className={inputClass} required />
-          </Field>
-          <Field label="Full name">
-            <input name="name" placeholder="Full name" className={inputClass} required />
-          </Field>
-          <Field label="Role">
-            <select name="role" className={selectClass} defaultValue="TEACHER">
-              <option value="ADMIN">Admin</option>
-              <option value="TEACHER">Teacher</option>
-              <option value="STUDENT">Student</option>
-            </select>
-          </Field>
-          <Field label="Password">
-            <input name="password" placeholder="Password" className={inputClass} defaultValue="changeme" />
-          </Field>
-          <div className="flex items-end">
-            <Submit>Save</Submit>
-          </div>
-        </form>
-      </Card>
-
-      <Card title="Create offering (subject → class → teacher)" icon={<Link2 className="h-4 w-4" />}>
-        <form action={createOffering} className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-          <Field label="Subject" className="col-span-2 sm:col-span-1">
-            <select name="subjectId" className={selectClass} required>
-              <option value="">Subject…</option>
-              {subjects.map((s) => (
-                <option key={s.id} value={s.id}>{s.code} · Sem {s.semester} · {s.name}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Class">
-            <select name="classSectionId" className={selectClass} required>
-              <option value="">Class…</option>
-              {classes.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Teacher">
-            <select name="teacherId" className={selectClass} required>
-              <option value="">Teacher…</option>
-              {teachers.map((t) => (
-                <option key={t.id} value={t.id}>{t.name}</option>
-              ))}
-            </select>
-          </Field>
-          <Field label="Term">
-            <input name="term" placeholder="Term" className={inputClass} defaultValue="2026-ODD" />
-          </Field>
-          <div className="flex items-end">
-            <Submit>Create</Submit>
-          </div>
-        </form>
-        {offerings.length > 0 && (
-          <ul className="mt-3 divide-y divide-slate-100 text-xs text-slate-600">
-            {offerings.map((o) => (
-              <li key={o.id} className="py-1.5">
-                <span className="font-medium text-slate-800">{o.subject.code}</span> {o.subject.name}
-                <span className="text-slate-400"> → </span>
-                {o.classSection.name} · {o.teacher.name} <span className="text-slate-400">({o.term})</span>
-              </li>
-            ))}
-          </ul>
+            </div>
+          </>
         )}
-      </Card>
-
-      <Card title="Bulk import students (CSV: email,name per line)" icon={<Upload className="h-4 w-4" />}>
-        <form action={importStudents} className="flex flex-col gap-3">
-          <Field label="Enroll into class">
-            <select name="classSectionId" className={selectClass} required>
-              <option value="">Choose class…</option>
-              {classes.map((c) => (
-                <option key={c.id} value={c.id}>{c.name}</option>
-              ))}
-            </select>
-          </Field>
-          <textarea
-            name="csv"
-            rows={5}
-            placeholder={"fina6@iem.edu,Neha Gupta\nfina7@iem.edu,Sam Lee"}
-            className={textareaClass}
-            required
-          />
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
-            <input name="defaultPassword" placeholder="Default password" className={inputClass} defaultValue="stud123" />
-            <Submit>Import &amp; enroll</Submit>
-          </div>
-        </form>
       </Card>
     </div>
   );

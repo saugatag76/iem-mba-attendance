@@ -14,7 +14,7 @@ export async function createDepartment(formData: FormData) {
   await adminOnly();
   const name = String(formData.get("name") ?? "").trim();
   if (name) await prisma.department.create({ data: { name } });
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }
 
 export async function createClass(formData: FormData) {
@@ -25,7 +25,7 @@ export async function createClass(formData: FormData) {
   const stream = (String(formData.get("stream") ?? "COMMON") as Stream) || Stream.COMMON;
   if (name && departmentId)
     await prisma.classSection.create({ data: { name, departmentId, year, stream } });
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }
 
 export async function createSubject(formData: FormData) {
@@ -37,7 +37,7 @@ export async function createSubject(formData: FormData) {
   const stream = (String(formData.get("stream") ?? "COMMON") as Stream) || Stream.COMMON;
   if (name && code && departmentId)
     await prisma.subject.create({ data: { name, code, departmentId, semester, stream } });
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }
 
 export async function createOffering(formData: FormData) {
@@ -48,7 +48,7 @@ export async function createOffering(formData: FormData) {
   const term = String(formData.get("term") ?? "2026-ODD").trim() || "2026-ODD";
   if (subjectId && classSectionId && teacherId)
     await prisma.offering.create({ data: { subjectId, classSectionId, teacherId, term } });
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }
 
 export async function createUser(formData: FormData) {
@@ -65,7 +65,7 @@ export async function createUser(formData: FormData) {
       create: { email, name, role, passwordHash },
     });
   }
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }
 
 /**
@@ -102,5 +102,5 @@ export async function importStudents(formData: FormData) {
       create: { studentId: student.id, classSectionId },
     });
   }
-  revalidatePath("/admin");
+  revalidatePath("/admin", "layout");
 }

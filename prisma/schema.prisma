@@ -169,6 +169,8 @@ model Session {
   date        DateTime      @default(now())
   startTime   DateTime      @default(now())
   endTime     DateTime?
+  // Optional auto-close deadline, set when the teacher picks a duration on open.
+  expiresAt   DateTime?
   status      SessionStatus @default(OPEN)
   // Class anchor for the geofence (captured from teacher's device when opening).
   geoLat      Float?

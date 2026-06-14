@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
+import { FACULTY_INITIALS_BY_NAME } from "@/lib/facultyInitials";
 
 export function cn(...parts: Array<string | false | null | undefined>) {
   return parts.filter(Boolean).join(" ");
@@ -144,22 +146,41 @@ export function StatCard({
   label,
   value,
   hint,
+  href,
 }: {
   icon?: ReactNode;
   label: string;
   value: ReactNode;
   hint?: string;
+  /** Makes the card a link, e.g. to a drill-down report. */
+  href?: string;
 }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03]">
+  const body = (
+    <>
       <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
         {icon && <span className="text-brand-700">{icon}</span>}
         {label}
       </div>
       <div className="mt-1 text-2xl font-bold tabular-nums text-slate-900">{value}</div>
       {hint && <div className="mt-0.5 text-xs text-slate-400">{hint}</div>}
-    </div>
+    </>
   );
+
+  if (href) {
+    return (
+      <Link
+        href={href}
+        className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition hover:border-brand-300 hover:shadow-md"
+      >
+        {body}
+        <div className="mt-1.5 flex items-center gap-1 text-xs font-medium text-brand-700 opacity-0 transition group-hover:opacity-100">
+          View details <ChevronRight className="h-3.5 w-3.5" />
+        </div>
+      </Link>
+    );
+  }
+
+  return <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03]">{body}</div>;
 }
 
 /* ----------------------------- PageHeader ----------------------------- */
@@ -194,12 +215,21 @@ const AVATAR_TONES = [
   "bg-sky-100 text-sky-700",
 ];
 
+// Academic titles aren't part of someone's initials — drop them so e.g.
+// "Dr. Anik Kumar Hazra" and "Prof. Anupam Bhattacharya" don't all collapse to "D"/"P".
+const NAME_TITLES = new Set(["dr", "dr.", "prof", "prof.", "mr", "mr.", "mrs", "mrs.", "ms", "ms.", "miss"]);
+
 export function Avatar({ name, className }: { name: string; className?: string }) {
-  const initials = name
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
+  // Faculty use the timetable's official initials (e.g. "SAG"/"SNG" for the
+  // two Ghoshs) so look-alike names stay distinguishable.
+  const faculty = FACULTY_INITIALS_BY_NAME[name];
+  const words = name.split(/\s+/).filter((w) => !NAME_TITLES.has(w.toLowerCase()));
+  const initials = (
+    faculty ??
+    (words.length >= 2
+      ? (words[0][0] ?? "") + (words[words.length - 1][0] ?? "")
+      : words.map((w) => w[0] ?? "").join(""))
+  ).toUpperCase();
   const tone =
     AVATAR_TONES[
       [...name].reduce((a, c) => a + c.charCodeAt(0), 0) % AVATAR_TONES.length
@@ -207,7 +237,8 @@ export function Avatar({ name, className }: { name: string; className?: string }
   return (
     <span
       className={cn(
-        "inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-semibold",
+        "inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full font-semibold",
+        initials.length > 2 ? "text-[10px]" : "text-xs",
         tone,
         className,
       )}

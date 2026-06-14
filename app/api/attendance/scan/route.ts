@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { peekSessionId, verifySessionToken } from "@/lib/qrToken";
 import { withinGeofence } from "@/lib/geo";
+import { autoCloseExpired } from "@/lib/sessions";
 
 /**
  * Student scan endpoint — the anti-proxy gate. Validates, in order:
@@ -48,8 +49,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // 3. Session must be open.
-  if (cls.status !== "OPEN")
+  // 3. Session must be open (and not past its auto-close deadline).
+  const status = await autoCloseExpired(cls);
+  if (status !== "OPEN")
     return NextResponse.json({ error: "This session is closed." }, { status: 409 });
 
   // 4. Enrollment check.

@@ -7,18 +7,19 @@
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
 
-  --color-brand-50: #f0fdfa;
-  --color-brand-100: #ccfbf1;
-  --color-brand-200: #99f6e4;
-  --color-brand-500: #14b8a6;
-  --color-brand-600: #0d9488;
-  --color-brand-700: #0f766e;
-  --color-brand-800: #115e59;
-  --color-brand-900: #134e4a;
+  /* Warm orange/amber brand (Panze-style) */
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-200: #fed7aa;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #ea580c;
+  --color-brand-800: #c2410c;
+  --color-brand-900: #9a3412;
 }
 
 :root {
-  --background: #f1f5f9; /* slate-100 */
+  --background: #eef1f5; /* cool light dashboard canvas */
   --foreground: #0f172a; /* slate-900 */
 }
 
@@ -35,12 +36,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* App canvas: subtle teal-tinted wash so plain pages don't feel flat */
-body {
-  background-image:
-    radial-gradient(60rem 40rem at 110% -10%, rgba(13, 148, 136, 0.06), transparent 60%),
-    radial-gradient(50rem 40rem at -10% 0%, rgba(15, 118, 110, 0.05), transparent 55%);
-  background-attachment: fixed;
+/* Clean flat dashboard canvas (matches the reference) */
+
+/* Respect reduced-motion preference (a11y) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Quieter, on-brand scrollbar */
