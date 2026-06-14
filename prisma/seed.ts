@@ -145,7 +145,7 @@ async function main() {
   }
   // Year 2 Finance Sec A students — enrolled in their stream AND the common Marketing group.
   for (let i = 1; i <= 5; i++) {
-    const s = await user(`finA${i}@iem.edu`, `Finance-A Student ${i}`, Role.STUDENT, "stud123");
+    const s = await user(`fina${i}@iem.edu`, `Finance-A Student ${i}`, Role.STUDENT, "stud123");
     await enroll(s.id, finA.id);
     await enroll(s.id, y2common.id);
   }
@@ -154,7 +154,7 @@ async function main() {
   console.log("  admin@iem.edu (admin123)");
   console.log("  teacher1..5@iem.edu (teach123)");
   console.log("  Year 1 Sec A students: y1a1..6@iem.edu (stud123)");
-  console.log("  Year 2 Finance A students: finA1..5@iem.edu (stud123)");
+  console.log("  Year 2 Finance A students: fina1..5@iem.edu (stud123)");
   void [finB, hrA, tmA]; // sections created for structure; no offerings seeded yet
 }
 
