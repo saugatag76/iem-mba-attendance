@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
@@ -10,11 +11,22 @@ async function adminOnly() {
   await requireRole("ADMIN");
 }
 
+/** Revalidate, then redirect back with a flash toast. `redirectTo` (a hidden form
+ *  field) preserves the originating tab/filters; otherwise falls back to `fallback`. */
+function flash(formData: FormData, fallback: string, message: string, type?: "error") {
+  revalidatePath("/admin", "layout");
+  const base = String(formData.get("redirectTo") || fallback);
+  const sep = base.includes("?") ? "&" : "?";
+  const extra = type ? `&toastType=${type}` : "";
+  redirect(`${base}${sep}toast=${encodeURIComponent(message)}${extra}`);
+}
+
 export async function createDepartment(formData: FormData) {
   await adminOnly();
   const name = String(formData.get("name") ?? "").trim();
-  if (name) await prisma.department.create({ data: { name } });
-  revalidatePath("/admin", "layout");
+  if (!name) flash(formData, "/admin/academics", "Department name is required", "error");
+  await prisma.department.create({ data: { name } });
+  flash(formData, "/admin/academics", `Department “${name}” created`);
 }
 
 export async function createClass(formData: FormData) {
@@ -23,9 +35,9 @@ export async function createClass(formData: FormData) {
   const departmentId = String(formData.get("departmentId") ?? "");
   const year = Number(formData.get("year") ?? 1) || 1;
   const stream = (String(formData.get("stream") ?? "COMMON") as Stream) || Stream.COMMON;
-  if (name && departmentId)
-    await prisma.classSection.create({ data: { name, departmentId, year, stream } });
-  revalidatePath("/admin", "layout");
+  if (!name || !departmentId) flash(formData, "/admin/academics", "Class name and department are required", "error");
+  await prisma.classSection.create({ data: { name, departmentId, year, stream } });
+  flash(formData, "/admin/academics", `Class “${name}” created`);
 }
 
 export async function createSubject(formData: FormData) {
@@ -35,9 +47,9 @@ export async function createSubject(formData: FormData) {
   const departmentId = String(formData.get("departmentId") ?? "");
   const semester = Number(formData.get("semester") ?? 1) || 1;
   const stream = (String(formData.get("stream") ?? "COMMON") as Stream) || Stream.COMMON;
-  if (name && code && departmentId)
-    await prisma.subject.create({ data: { name, code, departmentId, semester, stream } });
-  revalidatePath("/admin", "layout");
+  if (!name || !code || !departmentId) flash(formData, "/admin/academics", "Subject name, code and department are required", "error");
+  await prisma.subject.create({ data: { name, code, departmentId, semester, stream } });
+  flash(formData, "/admin/academics", `Subject “${code} ${name}” created`);
 }
 
 export async function createOffering(formData: FormData) {
@@ -46,9 +58,10 @@ export async function createOffering(formData: FormData) {
   const classSectionId = String(formData.get("classSectionId") ?? "");
   const teacherId = String(formData.get("teacherId") ?? "");
   const term = String(formData.get("term") ?? "2026-ODD").trim() || "2026-ODD";
-  if (subjectId && classSectionId && teacherId)
-    await prisma.offering.create({ data: { subjectId, classSectionId, teacherId, term } });
-  revalidatePath("/admin", "layout");
+  if (!subjectId || !classSectionId || !teacherId)
+    flash(formData, "/admin/offerings", "Subject, class and teacher are required", "error");
+  await prisma.offering.create({ data: { subjectId, classSectionId, teacherId, term } });
+  flash(formData, "/admin/offerings", "Offering created");
 }
 
 export async function createUser(formData: FormData) {
@@ -57,15 +70,14 @@ export async function createUser(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   const role = String(formData.get("role") ?? "STUDENT") as Role;
   const password = String(formData.get("password") ?? "changeme");
-  if (email && name) {
-    const passwordHash = await bcrypt.hash(password, 10);
-    await prisma.user.upsert({
-      where: { email },
-      update: { name, role },
-      create: { email, name, role, passwordHash },
-    });
-  }
-  revalidatePath("/admin", "layout");
+  if (!email || !name) flash(formData, "/admin/people", "Email and name are required", "error");
+  const passwordHash = await bcrypt.hash(password, 10);
+  await prisma.user.upsert({
+    where: { email },
+    update: { name, role },
+    create: { email, name, role, passwordHash },
+  });
+  flash(formData, "/admin/people", `${name} saved`);
 }
 
 /**
@@ -77,7 +89,7 @@ export async function importStudents(formData: FormData) {
   const classSectionId = String(formData.get("classSectionId") ?? "");
   const csv = String(formData.get("csv") ?? "");
   const defaultPassword = String(formData.get("defaultPassword") ?? "stud123") || "stud123";
-  if (!classSectionId || !csv.trim()) return;
+  if (!classSectionId || !csv.trim()) flash(formData, "/admin/import", "Pick a class and paste at least one row", "error");
 
   const passwordHash = await bcrypt.hash(defaultPassword, 10);
   const rows = csv
@@ -85,6 +97,7 @@ export async function importStudents(formData: FormData) {
     .map((l) => l.trim())
     .filter(Boolean);
 
+  let count = 0;
   for (const row of rows) {
     const [emailRaw, ...rest] = row.split(",");
     const email = (emailRaw ?? "").toLowerCase().trim();
@@ -101,6 +114,7 @@ export async function importStudents(formData: FormData) {
       update: {},
       create: { studentId: student.id, classSectionId },
     });
+    count++;
   }
-  revalidatePath("/admin", "layout");
+  flash(formData, "/admin/import", `Imported ${count} student${count === 1 ? "" : "s"}`);
 }

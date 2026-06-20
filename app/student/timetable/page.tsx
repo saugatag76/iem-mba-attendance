@@ -29,7 +29,7 @@ export default async function StudentTimetable() {
           const byDay = await sectionWeekly(e.classSectionId);
           return (
             <section key={e.id} className="mb-6">
-              <h2 className="mb-3 text-sm font-semibold text-slate-700">{e.classSection.name}</h2>
+              <h2 className="mb-3 text-sm font-semibold text-foreground">{e.classSection.name}</h2>
               <WeeklyView byDay={byDay} />
             </section>
           );

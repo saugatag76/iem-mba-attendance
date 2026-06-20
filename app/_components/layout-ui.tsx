@@ -12,7 +12,7 @@ export function SectionHeader({
 }) {
   return (
     <div className="mb-3 mt-6 flex items-center justify-between gap-3">
-      <h2 className="text-sm font-semibold text-slate-700">{title}</h2>
+      <h2 className="text-sm font-semibold text-foreground">{title}</h2>
       {action}
     </div>
   );
@@ -31,15 +31,15 @@ export function CollapsibleGroup({
   children: ReactNode;
 }) {
   return (
-    <details open={defaultOpen} className="group mb-3 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50">
+    <details open={defaultOpen} className="group mb-3 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-accent/50">
         <span className="flex items-center gap-2">
           {title}
           {count != null && <Badge tone="gray">{count}</Badge>}
         </span>
-        <ChevronDown className="h-4 w-4 text-slate-400 transition group-open:rotate-180" />
+        <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open:rotate-180" />
       </summary>
-      <div className="border-t border-slate-100">{children}</div>
+      <div className="border-t border-border">{children}</div>
     </details>
   );
 }
@@ -53,7 +53,7 @@ export function RouteTabs({
   tabs: { label: string; href: string }[];
 }) {
   return (
-    <div className="mb-5 inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+    <div className="mb-5 inline-flex rounded-xl border border-border bg-card p-1 shadow-sm">
       {tabs.map((t) => {
         const isActive = t.href === active;
         return (
@@ -63,7 +63,7 @@ export function RouteTabs({
             aria-current={isActive ? "page" : undefined}
             className={cn(
               "rounded-lg px-3.5 py-1.5 text-sm font-medium transition",
-              isActive ? "bg-brand-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100",
+              isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
             )}
           >
             {t.label}
@@ -87,7 +87,7 @@ export function TabNav({
   tabs: { label: string; value: string }[];
 }) {
   return (
-    <div className="mb-5 inline-flex rounded-xl border border-slate-200 bg-white p-1 shadow-sm">
+    <div className="mb-5 inline-flex rounded-xl border border-border bg-card p-1 shadow-sm">
       {tabs.map((t) => {
         const isActive = t.value === active;
         return (
@@ -97,7 +97,7 @@ export function TabNav({
             aria-current={isActive ? "page" : undefined}
             className={cn(
               "rounded-lg px-3.5 py-1.5 text-sm font-medium transition",
-              isActive ? "bg-brand-600 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100",
+              isActive ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
             )}
           >
             {t.label}

@@ -223,13 +223,23 @@ export async function sessionRegister(sessionId: string) {
 
   const anchorLat = session.geoLat;
   const anchorLng = session.geoLng;
-  const present = new Map(session.records.map((r) => [r.studentId, r]));
+  // Separate PRESENT/LATE records from non-compliant ABSENT records
+  const presentMap = new Map(
+    session.records
+      .filter((r) => r.status === "PRESENT" || r.status === "LATE")
+      .map((r) => [r.studentId, r]),
+  );
+  const nonCompliantMap = new Map(
+    session.records
+      .filter((r) => r.status === "ABSENT" && r.flagged)
+      .map((r) => [r.studentId, r]),
+  );
+
   const rows = session.offering.classSection.enrollments
     .map((e) => {
-      const rec = present.get(e.studentId);
+      const rec = presentMap.get(e.studentId);
       const lat = rec?.geoLat ?? null;
       const lng = rec?.geoLng ?? null;
-      // Distance from the classroom anchor, if we have both points.
       const distanceM =
         lat != null && lng != null && anchorLat != null && anchorLng != null
           ? Math.round(haversineMeters(anchorLat, anchorLng, lat, lng))
@@ -240,6 +250,7 @@ export async function sessionRegister(sessionId: string) {
         present: !!rec,
         method: rec?.method ?? null,
         flagged: rec?.flagged ?? false,
+        flagReason: rec?.flagReason ?? null,
         scannedAt: rec?.scannedAt ?? null,
         lat,
         lng,
@@ -249,7 +260,21 @@ export async function sessionRegister(sessionId: string) {
     })
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  return { session, rows };
+  const nonCompliant = session.offering.classSection.enrollments
+    .filter((e) => nonCompliantMap.has(e.studentId))
+    .map((e) => {
+      const rec = nonCompliantMap.get(e.studentId)!;
+      return {
+        studentId: e.studentId,
+        name: e.student.name,
+        email: e.student.email,
+        flagReason: rec.flagReason,
+        scannedAt: rec.scannedAt,
+      };
+    })
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  return { session, rows, nonCompliant };
 }
 
 export interface OfferingSummary {

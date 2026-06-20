@@ -89,17 +89,31 @@ export async function POST(req: Request) {
     }
   }
 
-  // 7. Geofence — only enforced when the session has an anchor and the student shared GPS.
+  // 7. Geofence — only enforced when the session has an anchor.
   if (cls.geoLat != null && cls.geoLng != null) {
     if (lat == null || lng == null) {
-      return NextResponse.json(
-        { error: "Location required — enable location and try again." },
-        { status: 403 },
-      );
+      // No GPS — create an ABSENT record so the teacher can see the non-compliance
+      // in the live roster and session report, and manually override if warranted.
+      await prisma.attendanceRecord.create({
+        data: {
+          sessionId,
+          studentId,
+          status: "ABSENT",
+          method: "QR",
+          flagged: true,
+          flagReason: "Location not provided — student scanned without location access",
+        },
+      });
+      return NextResponse.json({
+        ok: false,
+        absent: true,
+        reason: "location_noncompliance",
+        message: "Marked absent: your location was not available. Speak to your teacher if this is a device issue.",
+      });
     }
     if (!withinGeofence(cls.geoLat, cls.geoLng, lat, lng, cls.geoRadiusM)) {
       return NextResponse.json(
-        { error: "You appear to be outside the classroom." },
+        { error: "You appear to be outside the classroom. Move closer and try again." },
         { status: 403 },
       );
     }

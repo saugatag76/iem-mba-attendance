@@ -17,6 +17,7 @@ export async function POST(req: Request) {
   const body = await req.json().catch(() => ({}));
   const sessionId = String(body.sessionId ?? "");
   const token = String(body.token ?? "");
+  const note = body.note ? String(body.note).slice(0, 500) : null;
   if (!sessionId || !token)
     return NextResponse.json({ error: "Missing data." }, { status: 400 });
 
@@ -56,10 +57,12 @@ export async function POST(req: Request) {
       { status: 403 },
     );
 
+  const flagReason = note ? `Manual override — teacher note: ${note}` : "Manual override by teacher";
   const record = await prisma.attendanceRecord.upsert({
     where: { sessionId_studentId: { sessionId, studentId: student.id } },
-    update: {}, // already present → no-op
-    create: { sessionId, studentId: student.id, status: "PRESENT", method: "MANUAL" },
+    // If there was a prior ABSENT (location non-compliance), upgrade to PRESENT with consent log.
+    update: { status: "PRESENT", method: "MANUAL", flagged: true, flagReason },
+    create: { sessionId, studentId: student.id, status: "PRESENT", method: "MANUAL", flagged: true, flagReason },
   });
 
   return NextResponse.json({

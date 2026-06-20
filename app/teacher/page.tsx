@@ -36,11 +36,11 @@ export default async function TeacherHome({
 
   const DAY_SHORT: Record<string, string> = { MON: "Mon", TUE: "Tue", WED: "Wed", THU: "Thu", FRI: "Fri" };
   const DAY_COLOR: Record<string, string> = {
-    MON: "bg-blue-50 text-blue-700 ring-blue-200",
-    TUE: "bg-violet-50 text-violet-700 ring-violet-200",
-    WED: "bg-amber-50 text-amber-700 ring-amber-200",
-    THU: "bg-teal-50 text-teal-700 ring-teal-200",
-    FRI: "bg-rose-50 text-rose-700 ring-rose-200",
+    MON: "bg-blue-500/10 text-blue-700 ring-blue-500/20 dark:text-blue-400 dark:ring-blue-500/25",
+    TUE: "bg-violet-500/10 text-violet-700 ring-violet-500/20 dark:text-violet-400 dark:ring-violet-500/25",
+    WED: "bg-amber-500/10 text-amber-700 ring-amber-500/20 dark:text-amber-400 dark:ring-amber-500/25",
+    THU: "bg-teal-500/10 text-teal-700 ring-teal-500/20 dark:text-teal-400 dark:ring-teal-500/25",
+    FRI: "bg-rose-500/10 text-rose-700 ring-rose-500/20 dark:text-rose-400 dark:ring-rose-500/25",
   };
   // Lab subjects can list multiple subgroups (e.g. A1/A2) at the same day/time,
   // each pointing at this offering — collapse those into a single slot chip.
@@ -56,7 +56,17 @@ export default async function TeacherHome({
   }
 
   const sessionsHeld = offerings.reduce((a, o) => a + o._count.sessions, 0);
-  const upNext = today.find((t) => t.offering) ?? null;
+
+  // Current time in IST (timetable times are local India time; server runs UTC).
+  function toMins(hhmm: string): number {
+    const [h, m] = hhmm.split(":").map(Number);
+    return (h ?? 0) * 60 + (m ?? 0);
+  }
+  const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const nowMins = nowIST.getHours() * 60 + nowIST.getMinutes();
+  // Find the first class that is currently running or still upcoming (not fully past).
+  const upNext = today.find((t) => t.offering && toMins(t.endTime) > nowMins) ?? null;
+  const upNextIsNow = upNext != null && toMins(upNext.startTime) <= nowMins;
 
   // group offerings by subject
   const filteredOfferings = needle
@@ -87,17 +97,17 @@ export default async function TeacherHome({
 
       {/* Up next — primary action */}
       {upNext?.offering && (
-        <div className="mb-6 flex flex-col gap-3 rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 p-5 text-white shadow-lg shadow-orange-500/25 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 flex flex-col gap-3 rounded-2xl bg-primary p-5 text-white shadow-lg shadow-primary/25 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-white/80">
-              <Clock className="h-3.5 w-3.5" /> Up next today
+              <Clock className="h-3.5 w-3.5" /> {upNextIsNow ? "Now in session" : "Up next today"}
             </p>
             <p className="mt-1 text-lg font-semibold">{upNext.offering.subject.name}</p>
             <p className="text-sm text-white/85">
               {upNext.startTime}–{upNext.endTime} · {upNext.offering.classSection.name}
             </p>
           </div>
-          <div className="[&_button]:!bg-white [&_button]:!text-orange-700 [&_button:hover]:!bg-white/90">
+          <div className="[&_button]:!bg-white/15 [&_button]:!text-white [&_button:hover]:!bg-white/25">
             <OpenSessionButton offeringId={upNext.offering.id} />
           </div>
         </div>
@@ -110,23 +120,37 @@ export default async function TeacherHome({
             title={day ? "Nothing scheduled today" : "No classes on weekends"}
           />
         ) : (
-          <ul className="divide-y divide-slate-100">
-            {today.map((r) => (
-              <ClassRow key={r.id} row={r} showSection>
-                {r.offering &&
-                  (r.id === upNext?.id ? (
-                    <span className="text-xs text-slate-400">↑ Open from "Up next" above</span>
-                  ) : (
-                    <OpenSessionButton offeringId={r.offering.id} />
-                  ))}
-              </ClassRow>
-            ))}
+          <ul className="divide-y divide-border">
+            {today.map((r) => {
+              const todayISO = new Date().toISOString().slice(0, 10);
+              return (
+                <ClassRow key={r.id} row={r} showSection>
+                  <div className="flex flex-shrink-0 items-center gap-2">
+                    {r.offering &&
+                      (r.id === upNext?.id ? (
+                        <span className="text-xs text-muted-foreground">↑ Up next</span>
+                      ) : (
+                        <OpenSessionButton offeringId={r.offering.id} />
+                      ))}
+                    {r.offering && (
+                      <a
+                        href={`/teacher/substitutions/new?slotId=${r.id}&date=${todayISO}`}
+                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+                        title="Request a substitute for this class"
+                      >
+                        Sub
+                      </a>
+                    )}
+                  </div>
+                </ClassRow>
+              );
+            })}
           </ul>
         )}
       </Card>
 
       <SectionHeader title="My courses" />
-      <p className="-mt-3 mb-3 text-xs text-slate-400">
+      <p className="-mt-3 mb-3 text-xs text-muted-foreground">
         Every subject/section you teach this trimester, with its weekly schedule. To take attendance, open a
         session from "Today's classes" above on the day it meets.
       </p>
@@ -136,19 +160,19 @@ export default async function TeacherHome({
         <>
           <FilterBar placeholder="Search subject or section…" />
           {subjectGroups.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">No classes match.</p>
+            <p className="py-6 text-center text-sm text-muted-foreground">No classes match.</p>
           ) : (
             subjectGroups.map(([name, items]) => (
               <CollapsibleGroup key={name} title={name} count={items.length} defaultOpen={subjectGroups.length <= 4}>
-                <ul className="divide-y divide-slate-100">
+                <ul className="divide-y divide-border">
                   {items.map((o) => {
                     const slots = scheduleByOffering.get(o.id) ?? [];
                     return (
                       <li key={o.id} className="flex items-center justify-between gap-3 px-4 py-3">
                         <div className="min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-medium text-slate-800">{o.classSection.name}</p>
-                            <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500">
+                            <p className="text-sm font-medium text-foreground">{o.classSection.name}</p>
+                            <span className="rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
                               {o.subject.code}
                             </span>
                           </div>
@@ -157,25 +181,25 @@ export default async function TeacherHome({
                               slots.map((s, i) => (
                                 <span
                                   key={i}
-                                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium tabular-nums ring-1 ring-inset ${DAY_COLOR[s.day] ?? "bg-slate-50 text-slate-600 ring-slate-200"}`}
+                                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium tabular-nums ring-1 ring-inset ${DAY_COLOR[s.day] ?? "bg-muted text-muted-foreground ring-slate-200"}`}
                                 >
                                   {DAY_SHORT[s.day]} {s.time}
                                 </span>
                               ))
                             ) : (
-                              <span className="text-xs text-slate-400">No weekly slot scheduled</span>
+                              <span className="text-xs text-muted-foreground">No weekly slot scheduled</span>
                             )}
                           </div>
                         </div>
                         <div className="flex flex-shrink-0 items-center gap-3">
                           <div className="hidden text-right sm:block">
-                            <p className="text-sm font-semibold tabular-nums text-slate-700">{o._count.sessions}</p>
-                            <p className="text-[10px] uppercase tracking-wide text-slate-400">sessions</p>
+                            <p className="text-sm font-semibold tabular-nums text-foreground">{o._count.sessions}</p>
+                            <p className="text-[10px] uppercase tracking-wide text-muted-foreground">sessions</p>
                           </div>
-                          <div className="hidden h-8 w-px bg-slate-100 sm:block" />
+                          <div className="hidden h-8 w-px bg-muted sm:block" />
                           <Link
                             href={`/reports/offering/${o.id}`}
-                            className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50"
+                            className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-input bg-card px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-accent"
                           >
                             <FileBarChart className="h-3.5 w-3.5" /> Report
                           </Link>

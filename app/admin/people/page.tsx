@@ -64,27 +64,27 @@ export default async function PeoplePage({
       />
 
       {rows.length === 0 ? (
-        <p className="py-6 text-center text-sm text-slate-400">No people match.</p>
+        <p className="py-6 text-center text-sm text-muted-foreground">No people match.</p>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
           <table className="w-full text-sm">
-            <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+            <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
               <tr>
                 <th className="px-4 py-2.5 font-medium">Name</th>
                 <th className="px-4 py-2.5 font-medium">Email</th>
                 <th className="px-4 py-2.5 text-right font-medium">Role</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody className="divide-y divide-border">
               {rows.slice(0, 200).map((u) => (
                 <tr key={u.id}>
                   <td className="px-4 py-2.5">
                     <div className="flex items-center gap-2.5">
                       <Avatar name={u.name} />
-                      <span className="font-medium text-slate-800">{u.name}</span>
+                      <span className="font-medium text-foreground">{u.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2.5 text-slate-500">{u.email}</td>
+                  <td className="px-4 py-2.5 text-muted-foreground">{u.email}</td>
                   <td className="px-4 py-2.5 text-right">
                     <Badge tone={ROLE_TONE[u.role]}>{u.role}</Badge>
                   </td>
@@ -93,7 +93,7 @@ export default async function PeoplePage({
             </tbody>
           </table>
           {rows.length > 200 && (
-            <p className="border-t border-slate-100 px-4 py-2 text-xs text-slate-400">
+            <p className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
               Showing first 200 of {rows.length}. Refine your search to narrow down.
             </p>
           )}

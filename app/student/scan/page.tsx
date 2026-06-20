@@ -11,8 +11,8 @@ export default async function ScanPage({
 
   return (
     <div className="flex flex-col items-center pt-2">
-      <h1 className="mb-1 text-xl font-bold tracking-tight text-slate-900">Mark attendance</h1>
-      <p className="mb-6 text-center text-sm text-slate-500">
+      <h1 className="mb-1 text-xl font-bold tracking-tight text-foreground">Mark attendance</h1>
+      <p className="mb-6 text-center text-sm text-muted-foreground">
         Point your camera at the rotating QR on the teacher&apos;s screen.
       </p>
       <Scanner initialToken={t} />

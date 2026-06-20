@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import QRCode from "qrcode";
-import { Maximize2, X, Flag, ScanLine, Users, Clock } from "lucide-react";
+import { Maximize2, X, Flag, ScanLine, Users, Clock, MapPinOff, AlertTriangle } from "lucide-react";
 import { Avatar, cn } from "@/app/_components/ui";
 
 interface PresentRow {
@@ -13,13 +13,24 @@ interface PresentRow {
   flagReason?: string | null;
   scannedAt: string;
 }
+interface NonCompliantRow {
+  studentId: string;
+  name: string;
+  email: string;
+  flagReason: string | null;
+  scannedAt: string;
+}
 interface LiveData {
   status: "OPEN" | "CLOSED";
   ttl: number;
   token: string | null;
   expiresAt: string | null;
   total: number;
+  geoLat: number | null;
+  geoLng: number | null;
+  geoRadiusM: number;
   present: PresentRow[];
+  nonCompliant: NonCompliantRow[];
 }
 
 function Countdown({ expiresAt, dark = false }: { expiresAt: string; dark?: boolean }) {
@@ -39,8 +50,8 @@ function Countdown({ expiresAt, dark = false }: { expiresAt: string; dark?: bool
     : urgent
       ? "bg-amber-100 text-amber-700"
       : dark
-        ? "bg-white/10 text-white"
-        : "bg-slate-100 text-slate-700";
+        ? "bg-card/10 text-white"
+        : "bg-muted text-foreground";
 
   return (
     <div className={cn("inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-semibold", toneClasses)}>
@@ -74,7 +85,6 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
       if (!d.token) setQr("");
       if (d.status === "OPEN") wasOpen.current = true;
       else if (wasOpen.current) {
-        // Auto-closed (duration expired) — jump to the report so the teacher sees the result.
         router.push(`/reports/session/${sessionId}`);
       }
     } catch {
@@ -89,18 +99,31 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
   }, [poll]);
 
   const present = data?.present ?? [];
+  const nonCompliant = data?.nonCompliant ?? [];
   const total = data?.total ?? 0;
   const open = data?.status === "OPEN";
+  const geofenceInactive = data != null && data.geoLat == null;
 
   return (
     <>
+      {/* Geofence inactive warning */}
+      {geofenceInactive && (
+        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-amber-500/20 bg-amber-500/8 px-4 py-3 text-sm text-amber-700 dark:border-amber-500/25 dark:bg-amber-500/12 dark:text-amber-400">
+          <AlertTriangle className="h-4 w-4 flex-shrink-0" />
+          <span>
+            <strong>Geofence inactive</strong> — location was not acquired when this session was opened.
+            Students can scan from any location. Re-open the session to enable geofencing.
+          </span>
+        </div>
+      )}
+
       <div className="grid gap-4 lg:grid-cols-5">
         {/* QR */}
         <div className="lg:col-span-3">
-          <div className="flex flex-col items-center rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+          <div className="flex flex-col items-center rounded-xl border border-border bg-card p-6 shadow-sm">
             {open && qr ? (
               <>
-                <div className="rounded-2xl border border-slate-100 bg-white p-3 shadow-inner">
+                <div className="rounded-2xl border border-border bg-card p-3 shadow-inner">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={qr} alt="Attendance QR" className="h-60 w-60 sm:h-72 sm:w-72" />
                 </div>
@@ -109,19 +132,19 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                     <Countdown expiresAt={data.expiresAt} />
                   </div>
                 )}
-                <p className="mt-3 flex items-center gap-1.5 text-sm text-slate-500">
-                  <ScanLine className="h-4 w-4 text-brand-600" />
+                <p className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
+                  <ScanLine className="h-4 w-4 text-primary" />
                   Rotates every {data?.ttl}s · students scan to check in
                 </p>
                 <button
                   onClick={() => setPresenting(true)}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
                 >
                   <Maximize2 className="h-4 w-4" /> Presentation mode
                 </button>
               </>
             ) : (
-              <div className="flex h-72 w-full items-center justify-center rounded-lg bg-slate-50 text-sm text-slate-400">
+              <div className="flex h-72 w-full items-center justify-center rounded-lg bg-muted text-sm text-muted-foreground">
                 {data?.status === "CLOSED" ? "Session closed" : "Loading…"}
               </div>
             )}
@@ -129,44 +152,73 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
         </div>
 
         {/* Roster */}
-        <div className="lg:col-span-2">
-          <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div className="space-y-4 lg:col-span-2">
+          <div className="rounded-xl border border-border bg-card p-5 shadow-sm">
             <div className="mb-4 flex items-center justify-between">
-              <span className="flex items-center gap-1.5 text-sm font-semibold text-slate-700">
-                <Users className="h-4 w-4 text-brand-700" /> Present
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <Users className="h-4 w-4 text-primary" /> Present
               </span>
-              <span className="text-2xl font-bold tabular-nums text-slate-900">
+              <span className="text-2xl font-bold tabular-nums text-foreground">
                 {present.length}
-                <span className="text-base font-normal text-slate-400">/{total}</span>
+                <span className="text-base font-normal text-muted-foreground">/{total}</span>
               </span>
             </div>
-            <div className="mb-3 h-1.5 overflow-hidden rounded-full bg-slate-100">
+            <div className="mb-3 h-1.5 overflow-hidden rounded-full bg-muted">
               <div
-                className="h-full rounded-full bg-brand-600 transition-all"
+                className="h-full rounded-full bg-primary transition-all"
                 style={{ width: total ? `${(present.length / total) * 100}%` : "0%" }}
               />
             </div>
-            <ul className="max-h-80 space-y-1 overflow-auto">
+            <ul className="max-h-72 space-y-1 overflow-auto">
               {present.map((p, i) => (
                 <li key={i} className="flex items-center gap-2 rounded-lg px-1 py-1.5">
                   <Avatar name={p.name} />
-                  <span className="flex-1 truncate text-sm text-slate-700">{p.name}</span>
+                  <span className="flex-1 truncate text-sm text-foreground">{p.name}</span>
                   {p.method === "MANUAL" && (
-                    <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700">
+                    <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
                       manual
                     </span>
                   )}
                   {p.flagged && <Flag className="h-3.5 w-3.5 text-red-500" />}
-                  <span className="text-xs tabular-nums text-slate-400">
+                  <span className="text-xs tabular-nums text-muted-foreground">
                     {new Date(p.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                   </span>
                 </li>
               ))}
               {present.length === 0 && (
-                <li className="py-6 text-center text-sm text-slate-400">No scans yet.</li>
+                <li className="py-6 text-center text-sm text-muted-foreground">No scans yet.</li>
               )}
             </ul>
           </div>
+
+          {/* Location non-compliant */}
+          {nonCompliant.length > 0 && (
+            <div className="rounded-xl border border-red-500/20 bg-card p-5 shadow-sm dark:border-red-500/15">
+              <div className="mb-3 flex items-center gap-1.5">
+                <MapPinOff className="h-4 w-4 text-red-500" />
+                <span className="text-sm font-semibold text-red-600 dark:text-red-400">
+                  Location non-compliant ({nonCompliant.length})
+                </span>
+              </div>
+              <ul className="space-y-1">
+                {nonCompliant.map((r) => (
+                  <li key={r.studentId} className="flex items-center gap-2 rounded-lg px-1 py-1.5">
+                    <Avatar name={r.name} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm text-foreground">{r.name}</p>
+                      <p className="truncate text-xs text-muted-foreground">{r.email}</p>
+                    </div>
+                    <span className="text-xs tabular-nums text-muted-foreground">
+                      {new Date(r.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-3 text-xs text-muted-foreground">
+                These students scanned but had no location. Use manual scan to mark them present if verified in person.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -175,7 +227,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 p-6 text-white">
           <button
             onClick={() => setPresenting(false)}
-            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/70 transition hover:bg-white/10"
+            className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/70 transition hover:bg-card/10"
           >
             <X className="h-5 w-5" />
           </button>
@@ -189,7 +241,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
             </div>
           )}
           {qr && (
-            <div className="rounded-3xl bg-white p-5 shadow-2xl">
+            <div className="rounded-3xl bg-card p-5 shadow-2xl">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={qr} alt="Attendance QR" className="h-[min(70vh,560px)] w-[min(70vh,560px)]" />
             </div>

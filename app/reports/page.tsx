@@ -77,25 +77,25 @@ export default async function ReportsOverview({
 
           <SectionHeader title="Attendance trend" />
           {trendData.length === 0 ? (
-            <p className="rounded-xl border border-slate-200 bg-white py-6 text-center text-sm text-slate-400 shadow-sm">
+            <p className="rounded-xl border border-border bg-card py-6 text-center text-sm text-muted-foreground shadow-sm">
               No sessions held yet — the trend will fill in once attendance is taken.
             </p>
           ) : (
-            <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
               <TrendLineChart data={trendData} />
             </div>
           )}
 
-          <SectionHeader title="Per-subject health" action={<span className="text-xs text-slate-400">Lowest attendance first</span>} />
+          <SectionHeader title="Per-subject health" action={<span className="text-xs text-muted-foreground">Lowest attendance first</span>} />
           <FilterBar placeholder="Search subject, section or teacher…" />
           {active.length === 0 ? (
             <EmptyState icon={<BookOpen className="h-8 w-8" />} title="No sessions held yet" hint="Per-subject health will appear once attendance is taken." />
           ) : ranked.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">No subjects match your search.</p>
+            <p className="py-6 text-center text-sm text-muted-foreground">No subjects match your search.</p>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Subject</th>
                     {isAdmin && <th className="px-4 py-2.5 font-medium">Teacher</th>}
@@ -109,25 +109,25 @@ export default async function ReportsOverview({
                     <th className="px-4 py-2.5" />
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-border">
                   {ranked.map((s) => (
-                    <tr key={s.offeringId} className={s.avgPercent < 75 ? "bg-red-50/40" : undefined}>
+                    <tr key={s.offeringId} className={s.avgPercent < 75 ? "bg-red-500/5 dark:bg-red-500/10" : undefined}>
                       <td className="px-4 py-2.5">
-                        <p className="font-medium text-slate-800">
-                          <span className="font-mono text-xs text-slate-500">{s.subjectCode}</span> {s.subjectName}
+                        <p className="font-medium text-foreground">
+                          <span className="font-mono text-xs text-muted-foreground">{s.subjectCode}</span> {s.subjectName}
                         </p>
-                        <p className="text-xs text-slate-400">{s.className}</p>
+                        <p className="text-xs text-muted-foreground">{s.className}</p>
                       </td>
-                      {isAdmin && <td className="px-4 py-2.5 text-slate-600">{s.teacherName}</td>}
-                      <td className="px-4 py-2.5 text-center tabular-nums text-slate-600">{s.totalSessions}</td>
-                      <td className="px-4 py-2.5 text-center tabular-nums text-slate-600">{s.defaulters}</td>
+                      {isAdmin && <td className="px-4 py-2.5 text-muted-foreground">{s.teacherName}</td>}
+                      <td className="px-4 py-2.5 text-center tabular-nums text-muted-foreground">{s.totalSessions}</td>
+                      <td className="px-4 py-2.5 text-center tabular-nums text-muted-foreground">{s.defaulters}</td>
                       <td className="px-4 py-2.5 text-right">
                         <Badge tone={s.avgPercent >= 75 ? "green" : s.avgPercent >= 60 ? "amber" : "red"}>
                           {s.avgPercent}%
                         </Badge>
                       </td>
                       <td className="px-4 py-2.5 text-right">
-                        <Link href={`/reports/offering/${s.offeringId}${qs}`} className="text-slate-300 hover:text-brand-700">
+                        <Link href={`/reports/offering/${s.offeringId}${qs}`} className="text-muted-foreground/60 hover:text-primary">
                           <ChevronRight className="h-4 w-4" />
                         </Link>
                       </td>
@@ -139,9 +139,9 @@ export default async function ReportsOverview({
           )}
 
           {notStarted.length > 0 && (
-            <p className="mt-3 text-center text-xs text-slate-400">
+            <p className="mt-3 text-center text-xs text-muted-foreground">
               {notStarted.length} more subject{notStarted.length > 1 ? "s" : ""} with no sessions yet —{" "}
-              <Link href={`/reports/offerings${qs}`} className="font-medium text-brand-700 hover:underline">
+              <Link href={`/reports/offerings${qs}`} className="font-medium text-primary hover:underline">
                 view all subjects
               </Link>
             </p>

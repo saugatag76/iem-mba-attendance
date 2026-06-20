@@ -50,8 +50,8 @@ export default async function ImportPage() {
         </Card>
 
         <Card title="How it works" icon={<Info className="h-4 w-4" />} className="mb-0">
-          <ul className="space-y-2 text-sm text-slate-600">
-            <li>• One student per line as <code className="rounded bg-slate-100 px-1 text-xs">email,name</code>.</li>
+          <ul className="space-y-2 text-sm text-muted-foreground">
+            <li>• One student per line as <code className="rounded bg-muted px-1 text-xs">email,name</code>.</li>
             <li>• Existing emails are reused (not duplicated) and just enrolled.</li>
             <li>• New students get the default password — ask them to change it.</li>
             <li>• Emails are case-insensitive at login.</li>

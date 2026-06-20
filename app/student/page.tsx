@@ -54,9 +54,9 @@ export default async function StudentHome() {
       {/* Scan CTA */}
       <Link
         href="/student/scan"
-        className="group mb-4 flex items-center gap-3 rounded-xl bg-gradient-to-br from-orange-500 to-rose-500 px-4 py-3 text-white shadow-sm shadow-orange-500/20 transition active:scale-[0.99]"
+        className="group mb-4 flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-white shadow-sm shadow-primary/20 transition active:scale-[0.99]"
       >
-        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">
+        <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-card/15">
           <QrCode className="h-5 w-5" />
         </span>
         <div className="flex-1">
@@ -86,7 +86,7 @@ export default async function StudentHome() {
         action={
           <Link
             href="/student/timetable"
-            className="flex items-center gap-0.5 text-xs font-medium text-brand-700 hover:text-brand-800"
+            className="flex items-center gap-0.5 text-xs font-medium text-primary hover:text-primary"
           >
             Full timetable <ChevronRight className="h-3.5 w-3.5" />
           </Link>
@@ -98,7 +98,7 @@ export default async function StudentHome() {
             title={day ? "No classes today" : "No classes on weekends"}
           />
         ) : (
-          <ul className="divide-y divide-slate-100">
+          <ul className="divide-y divide-border">
             {today.map((r) => (
               <ClassRow key={r.id} row={r} showTeacher />
             ))}
@@ -120,7 +120,7 @@ export default async function StudentHome() {
         ) : (
           <>
             {below75.length > 0 && (
-              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/8 px-3 py-2 text-sm text-red-600 dark:border-red-500/25 dark:bg-red-500/12 dark:text-red-400">
                 <AlertTriangle className="h-4 w-4 flex-shrink-0" />
                 {below75.length} subject{below75.length > 1 ? "s" : ""} below 75% — shown first.
               </div>
@@ -135,16 +135,16 @@ export default async function StudentHome() {
               />
             )}
             {notStarted.length > 0 && (
-              <details className="group mt-2 border-t border-slate-100 pt-2">
-                <summary className="cursor-pointer list-none text-xs font-medium text-slate-400 hover:text-slate-600">
+              <details className="group mt-2 border-t border-border pt-2">
+                <summary className="cursor-pointer list-none text-xs font-medium text-muted-foreground hover:text-muted-foreground">
                   {notStarted.length} subject{notStarted.length > 1 ? "s" : ""} with no sessions yet
                 </summary>
-                <ul className="mt-1 divide-y divide-slate-100">
+                <ul className="mt-1 divide-y divide-border">
                   {notStarted.map((s) => (
                     <li key={s.offeringId} className="flex items-center justify-between gap-3 py-2">
                       <div>
-                        <p className="text-sm font-medium text-slate-700">{s.subjectName}</p>
-                        <p className="text-xs text-slate-400">{s.subjectCode}</p>
+                        <p className="text-sm font-medium text-foreground">{s.subjectName}</p>
+                        <p className="text-xs text-muted-foreground">{s.subjectCode}</p>
                       </div>
                       <Badge tone="gray">Not started</Badge>
                     </li>
@@ -158,11 +158,11 @@ export default async function StudentHome() {
 
       <Card title="Your personal QR (digital ID)" icon={<IdCard className="h-4 w-4" />}>
         <div className="flex items-center gap-4">
-          <div className="rounded-xl border border-slate-100 bg-white p-2 shadow-inner">
+          <div className="rounded-xl border border-border bg-card p-2 shadow-inner">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={personalQr} alt="Personal QR" className="h-32 w-32" />
           </div>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Show this to your teacher if your camera fails — they can scan it to mark you present.
           </p>
         </div>
@@ -173,9 +173,9 @@ export default async function StudentHome() {
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg bg-slate-50 px-3 py-2.5 text-center sm:text-left">
-      <p className="text-xl font-bold tabular-nums text-slate-900">{value}</p>
-      <p className="text-xs text-slate-400">{label}</p>
+    <div className="rounded-lg bg-muted px-3 py-2.5 text-center sm:text-left">
+      <p className="text-xl font-bold tabular-nums text-foreground">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -185,8 +185,8 @@ function SubjectRow({ s }: { s: SubjectStat }) {
     <li className="flex items-center gap-3 py-2.5">
       <ProgressRing percent={s.percent} size={48} />
       <div className="flex-1">
-        <p className="text-sm font-medium text-slate-800">{s.subjectName}</p>
-        <p className="text-xs text-slate-500 tabular-nums">
+        <p className="text-sm font-medium text-foreground">{s.subjectName}</p>
+        <p className="text-xs text-muted-foreground tabular-nums">
           {s.subjectCode} · {s.attended}/{s.totalSessions} classes attended
         </p>
       </div>

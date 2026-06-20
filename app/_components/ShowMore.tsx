@@ -22,12 +22,12 @@ export function ShowMore({
 
   return (
     <>
-      <ul className="divide-y divide-slate-100">{visible}</ul>
+      <ul className="divide-y divide-border">{visible}</ul>
       {hidden > 0 && (
         <button
           type="button"
           onClick={() => setExpanded((v) => !v)}
-          className="mt-1 flex w-full items-center justify-center gap-1 py-2 text-xs font-medium text-brand-700 hover:text-brand-800"
+          className="mt-1 flex w-full items-center justify-center gap-1 py-2 text-xs font-medium text-primary hover:text-primary/80"
         >
           {expanded ? "Show less" : `Show ${hidden} more ${itemName}${hidden > 1 ? "s" : ""}`}
           <ChevronDown className={cn("h-3.5 w-3.5 transition", expanded && "rotate-180")} />

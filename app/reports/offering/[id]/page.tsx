@@ -42,15 +42,15 @@ export default async function OfferingReport({
     <div>
       <Link
         href={`/reports/offerings${qs}`}
-        className="mb-2 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-700"
+        className="mb-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
       >
         <ArrowLeft className="h-4 w-4" /> Back to subjects
       </Link>
 
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-xl font-bold tracking-tight text-slate-900">{offering.subject.name}</h1>
-          <p className="mt-0.5 text-sm text-slate-500">
+          <h1 className="text-xl font-bold tracking-tight text-foreground">{offering.subject.name}</h1>
+          <p className="mt-0.5 text-sm text-muted-foreground">
             {offering.subject.code} · {offering.classSection.name}
           </p>
         </div>
@@ -58,7 +58,7 @@ export default async function OfferingReport({
           <DateRangePicker />
           <a
             href={`/api/reports/offering/${id}/csv`}
-            className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
           >
             <Download className="h-4 w-4" /> Export CSV
           </a>
@@ -88,26 +88,26 @@ export default async function OfferingReport({
 
       <SectionHeader title="Attendance register" />
       {sessions.length === 0 ? (
-        <p className="rounded-xl border border-slate-200 bg-white py-6 text-center text-sm text-slate-400 shadow-sm">
+        <p className="rounded-xl border border-border bg-card py-6 text-center text-sm text-muted-foreground shadow-sm">
           No sessions held yet — this will fill in once you open attendance sessions for this class.
         </p>
       ) : (
         <>
-          <div className="mb-2 flex items-center gap-4 text-xs text-slate-400">
+          <div className="mb-2 flex items-center gap-4 text-xs text-muted-foreground">
             <span className="flex items-center gap-1">
               <Check className="h-3.5 w-3.5 text-green-600" /> Present
             </span>
             <span className="flex items-center gap-1">
-              <Minus className="h-3.5 w-3.5 text-slate-300" /> Absent
+              <Minus className="h-3.5 w-3.5 text-muted-foreground/60" /> Absent
             </span>
           </div>
-          <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th
-                      className="sticky left-0 z-10 bg-slate-50 px-4 py-2.5 font-medium"
+                      className="sticky left-0 z-10 bg-muted px-4 py-2.5 font-medium"
                       aria-sort={sort === "name" ? "ascending" : "none"}
                     >
                       Student
@@ -122,9 +122,9 @@ export default async function OfferingReport({
                       const d = new Date(s.date);
                       return (
                         <th key={s.id} className="whitespace-nowrap px-2 py-2.5 text-center font-medium">
-                          <Link href={`/reports/session/${s.id}`} className="hover:text-brand-700" title={d.toLocaleString()}>
+                          <Link href={`/reports/session/${s.id}`} className="hover:text-primary" title={d.toLocaleString()}>
                             <div>{d.toLocaleDateString(undefined, { weekday: "short" })}</div>
-                            <div className="tabular-nums text-slate-400">{d.toLocaleDateString(undefined, { day: "2-digit", month: "short" })}</div>
+                            <div className="tabular-nums text-muted-foreground">{d.toLocaleDateString(undefined, { day: "2-digit", month: "short" })}</div>
                             <div className="tabular-nums">{d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</div>
                           </Link>
                         </th>
@@ -132,17 +132,17 @@ export default async function OfferingReport({
                     })}
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-border">
                   {view.map((r) => {
-                    const rowBg = r.percent < THRESHOLD ? "bg-red-50/40" : "bg-white";
+                    const rowBg = r.percent < THRESHOLD ? "bg-red-500/5 dark:bg-red-500/10" : "bg-card";
                     return (
                       <tr key={r.studentId} className={rowBg}>
                         <td className={`sticky left-0 z-10 px-4 py-2 ${rowBg}`}>
                           <div className="flex items-center gap-2.5">
                             <Avatar name={r.name} />
                             <div className="min-w-0">
-                              <div className="truncate font-medium text-slate-800">{r.name}</div>
-                              <div className="truncate text-xs text-slate-400">{r.email}</div>
+                              <div className="truncate font-medium text-foreground">{r.name}</div>
+                              <div className="truncate text-xs text-muted-foreground">{r.email}</div>
                             </div>
                           </div>
                         </td>
@@ -151,7 +151,7 @@ export default async function OfferingReport({
                             <Badge tone={r.percent >= THRESHOLD ? "green" : r.percent >= 60 ? "amber" : "red"}>
                               {r.percent}%
                             </Badge>
-                            <span className="text-xs tabular-nums text-slate-400">
+                            <span className="text-xs tabular-nums text-muted-foreground">
                               {r.attended}/{r.total}
                             </span>
                           </div>
@@ -161,7 +161,7 @@ export default async function OfferingReport({
                             {r.bySession[s.id] ? (
                               <Check className="mx-auto h-4 w-4 text-green-600" aria-label="Present" />
                             ) : (
-                              <Minus className="mx-auto h-4 w-4 text-slate-300" aria-label="Absent" />
+                              <Minus className="mx-auto h-4 w-4 text-muted-foreground/60" aria-label="Absent" />
                             )}
                           </td>
                         ))}
@@ -170,7 +170,7 @@ export default async function OfferingReport({
                   })}
                   {view.length === 0 && (
                     <tr>
-                      <td colSpan={sessions.length + 2} className="px-4 py-6 text-center text-sm text-slate-400">
+                      <td colSpan={sessions.length + 2} className="px-4 py-6 text-center text-sm text-muted-foreground">
                         No students match.
                       </td>
                     </tr>

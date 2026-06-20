@@ -50,23 +50,23 @@ export default async function ReportsStudents({
         <>
           <FilterBar placeholder="Search student or section…" />
           {filtered.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">No students match.</p>
+            <p className="py-6 text-center text-sm text-muted-foreground">No students match.</p>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-              <ul className="divide-y divide-slate-100">
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+              <ul className="divide-y divide-border">
                 {filtered.map((s) => (
                   <li key={s.id}>
                     <Link
                       href={`/reports/student/${s.id}${qs}`}
-                      className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-slate-50"
+                      className="flex items-center gap-3 px-4 py-2.5 transition hover:bg-accent"
                     >
                       <Avatar name={s.name} />
                       <div className="min-w-0 flex-1">
-                        <p className="truncate text-sm font-medium text-slate-800">{s.name}</p>
-                        <p className="truncate text-xs text-slate-400">{s.email}</p>
+                        <p className="truncate text-sm font-medium text-foreground">{s.name}</p>
+                        <p className="truncate text-xs text-muted-foreground">{s.email}</p>
                       </div>
                       <Badge tone="gray">{s.className}</Badge>
-                      <ChevronRight className="h-4 w-4 flex-shrink-0 text-slate-300" />
+                      <ChevronRight className="h-4 w-4 flex-shrink-0 text-muted-foreground/60" />
                     </Link>
                   </li>
                 ))}

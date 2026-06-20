@@ -20,7 +20,10 @@ export async function GET(
     where: { id },
     include: {
       offering: { include: { subject: true, classSection: true } },
-      records: { include: { student: true }, orderBy: { scannedAt: "desc" } },
+      records: {
+        include: { student: true },
+        orderBy: { scannedAt: "desc" },
+      },
     },
   });
   if (!s) return NextResponse.json({ error: "not found" }, { status: 404 });
@@ -40,16 +43,29 @@ export async function GET(
   const token =
     status === "OPEN" ? await signSessionToken(s.id, s.qrSecret) : null;
 
+  const presentRecords = s.records.filter((r) => r.status === "PRESENT" || r.status === "LATE");
+  const nonCompliantRecords = s.records.filter((r) => r.status === "ABSENT" && r.flagged);
+
   return NextResponse.json({
     status,
     ttl: ROTATION_TTL_SECONDS,
     token,
     expiresAt: s.expiresAt,
     total,
-    present: s.records.map((r) => ({
+    geoLat: s.geoLat,
+    geoLng: s.geoLng,
+    geoRadiusM: s.geoRadiusM,
+    present: presentRecords.map((r) => ({
       name: r.student.name,
       method: r.method,
       flagged: r.flagged,
+      flagReason: r.flagReason,
+      scannedAt: r.scannedAt,
+    })),
+    nonCompliant: nonCompliantRecords.map((r) => ({
+      studentId: r.studentId,
+      name: r.student.name,
+      email: r.student.email,
       flagReason: r.flagReason,
       scannedAt: r.scannedAt,
     })),

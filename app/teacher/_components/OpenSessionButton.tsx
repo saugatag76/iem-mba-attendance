@@ -38,7 +38,7 @@ export function OpenSessionButton({
   return (
     <form ref={formRef} action={openSession} className="flex flex-shrink-0 items-center gap-1.5">
       <input type="hidden" name="offeringId" value={offeringId} />
-      <input type="hidden" name="radius" value={40} />
+      <input type="hidden" name="radius" value={75} />
       <input ref={latRef} type="hidden" name="lat" />
       <input ref={lngRef} type="hidden" name="lng" />
 
@@ -52,13 +52,13 @@ export function OpenSessionButton({
             autoFocus
             placeholder="mins"
             aria-label="Auto-close after (minutes)"
-            className="w-16 rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 placeholder:text-slate-400"
+            className="w-16 rounded-lg border border-input bg-card px-2 py-1.5 text-xs font-medium text-foreground placeholder:text-muted-foreground"
           />
           <button
             type="button"
             onClick={() => setCustomMode(false)}
             aria-label="Use a preset duration instead"
-            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-500 transition hover:bg-slate-50"
+            className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-lg border border-input bg-card text-muted-foreground transition hover:bg-accent"
           >
             <X className="h-3.5 w-3.5" />
           </button>
@@ -71,7 +71,7 @@ export function OpenSessionButton({
           onChange={(e) => {
             if (e.target.value === "custom") setCustomMode(true);
           }}
-          className="rounded-lg border border-slate-300 bg-white px-1.5 py-1.5 text-xs font-medium text-slate-700"
+          className="rounded-lg border border-input bg-card px-1.5 py-1.5 text-xs font-medium text-foreground"
         >
           <option value="0">No limit</option>
           <option value="1">1 min</option>
@@ -91,8 +91,8 @@ export function OpenSessionButton({
         disabled={busy}
         className={
           variant === "secondary"
-            ? "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 transition hover:bg-slate-50 active:scale-[0.98] disabled:opacity-50"
-            : "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-brand-700 px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.98] disabled:opacity-50"
+            ? "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-input bg-card px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-accent active:scale-[0.98] disabled:opacity-50"
+            : "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
         }
       >
         {busy ? <Loader2 className={variant === "secondary" ? "h-3.5 w-3.5 animate-spin" : "h-4 w-4 animate-spin"} /> : <QrCode className={variant === "secondary" ? "h-3.5 w-3.5" : "h-4 w-4"} />}

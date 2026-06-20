@@ -3,9 +3,8 @@ import { ChevronRight } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 import { FACULTY_INITIALS_BY_NAME } from "@/lib/facultyInitials";
 
-export function cn(...parts: Array<string | false | null | undefined>) {
-  return parts.filter(Boolean).join(" ");
-}
+import { cn } from "@/lib/utils";
+export { cn };
 
 /* ----------------------------- Button ----------------------------- */
 
@@ -13,10 +12,10 @@ type Variant = "primary" | "secondary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
-  primary: "bg-brand-700 text-white shadow-sm hover:bg-brand-800",
-  secondary: "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50",
-  ghost: "text-slate-600 hover:bg-slate-100",
-  danger: "border border-red-300 bg-white text-red-700 hover:bg-red-50",
+  primary: "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+  secondary: "border border-border bg-card text-foreground hover:bg-accent hover:text-accent-foreground",
+  ghost: "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+  danger: "border border-destructive/30 bg-card text-destructive hover:bg-destructive/10",
 };
 const SIZES: Record<Size, string> = {
   sm: "px-3 py-1.5 text-xs",
@@ -26,7 +25,7 @@ const SIZES: Record<Size, string> = {
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md") {
   return cn(
-    "inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none",
+    "inline-flex items-center justify-center gap-1.5 rounded-md font-medium transition active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/50",
     VARIANTS[variant],
     SIZES[size],
   );
@@ -73,14 +72,14 @@ export function Card({
   return (
     <section
       className={cn(
-        "mb-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03] sm:p-5",
+        "mb-4 rounded-xl border border-border bg-card text-card-foreground p-4 shadow-sm sm:p-5",
         className,
       )}
     >
       {(title || action) && (
         <div className="mb-3 flex items-center justify-between gap-3">
-          <h2 className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-            {icon && <span className="text-brand-700">{icon}</span>}
+          <h2 className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            {icon && <span className="text-primary">{icon}</span>}
             {title}
           </h2>
           {action}
@@ -94,7 +93,7 @@ export function Card({
 /* ----------------------------- Inputs ----------------------------- */
 
 export const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 placeholder-slate-400 transition focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30";
+  "flex w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground transition outline-none focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/30 disabled:cursor-not-allowed disabled:opacity-50";
 export const selectClass = inputClass;
 export const textareaClass = inputClass;
 
@@ -109,7 +108,7 @@ export function Field({
 }) {
   return (
     <label className={cn("block", className)}>
-      <span className="mb-1 block text-xs font-medium text-slate-600">{label}</span>
+      <span className="mb-1 block text-xs font-medium text-muted-foreground">{label}</span>
       {children}
     </label>
   );
@@ -119,11 +118,11 @@ export function Field({
 
 type Tone = "gray" | "green" | "red" | "amber" | "brand";
 const TONES: Record<Tone, string> = {
-  gray: "bg-slate-100 text-slate-700",
-  green: "bg-emerald-100 text-emerald-700",
-  red: "bg-red-100 text-red-700",
-  amber: "bg-amber-100 text-amber-700",
-  brand: "bg-brand-100 text-brand-800",
+  gray: "bg-muted text-muted-foreground",
+  green: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400",
+  red: "bg-red-100 text-red-700 dark:bg-red-500/15 dark:text-red-400",
+  amber: "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400",
+  brand: "bg-brand-100 text-brand-800 dark:bg-blue-500/15 dark:text-blue-300",
 };
 
 export function Badge({ children, tone = "gray" }: { children: ReactNode; tone?: Tone }) {
@@ -157,12 +156,12 @@ export function StatCard({
 }) {
   const body = (
     <>
-      <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
-        {icon && <span className="text-brand-700">{icon}</span>}
+      <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground">
+        {icon && <span className="text-primary">{icon}</span>}
         {label}
       </div>
-      <div className="mt-1 text-2xl font-bold tabular-nums text-slate-900">{value}</div>
-      {hint && <div className="mt-0.5 text-xs text-slate-400">{hint}</div>}
+      <div className="mt-1 text-2xl font-bold tabular-nums text-foreground">{value}</div>
+      {hint && <div className="mt-0.5 text-xs text-muted-foreground">{hint}</div>}
     </>
   );
 
@@ -170,17 +169,17 @@ export function StatCard({
     return (
       <Link
         href={href}
-        className="group rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03] transition hover:border-brand-300 hover:shadow-md"
+        className="group rounded-xl border border-border bg-card p-4 shadow-sm transition hover:border-primary/40 hover:shadow-md"
       >
         {body}
-        <div className="mt-1.5 flex items-center gap-1 text-xs font-medium text-brand-700 opacity-0 transition group-hover:opacity-100">
+        <div className="mt-1.5 flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition group-hover:opacity-100">
           View details <ChevronRight className="h-3.5 w-3.5" />
         </div>
       </Link>
     );
   }
 
-  return <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm shadow-slate-900/[0.03]">{body}</div>;
+  return <div className="rounded-xl border border-border bg-card p-4 shadow-sm">{body}</div>;
 }
 
 /* ----------------------------- PageHeader ----------------------------- */
@@ -197,8 +196,8 @@ export function PageHeader({
   return (
     <div className="mb-5 flex items-start justify-between gap-3">
       <div>
-        <h1 className="text-xl font-bold tracking-tight text-slate-900">{title}</h1>
-        {subtitle && <p className="mt-0.5 text-sm text-slate-500">{subtitle}</p>}
+        <h1 className="text-xl font-bold tracking-tight text-foreground">{title}</h1>
+        {subtitle && <p className="mt-0.5 text-sm text-muted-foreground">{subtitle}</p>}
       </div>
       {action}
     </div>
@@ -208,11 +207,11 @@ export function PageHeader({
 /* ----------------------------- Avatar ----------------------------- */
 
 const AVATAR_TONES = [
-  "bg-brand-100 text-brand-800",
-  "bg-indigo-100 text-indigo-700",
-  "bg-rose-100 text-rose-700",
-  "bg-amber-100 text-amber-700",
-  "bg-sky-100 text-sky-700",
+  "bg-brand-100 text-brand-800 dark:bg-blue-500/15 dark:text-blue-300",
+  "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300",
+  "bg-rose-100 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300",
+  "bg-amber-100 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
+  "bg-sky-100 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300",
 ];
 
 // Academic titles aren't part of someone's initials — drop them so e.g.
@@ -260,10 +259,10 @@ export function EmptyState({
   hint?: string;
 }) {
   return (
-    <div className="flex flex-col items-center rounded-xl border border-dashed border-slate-300 bg-white/50 px-4 py-10 text-center">
-      {icon && <div className="mb-2 text-slate-300">{icon}</div>}
-      <p className="text-sm font-medium text-slate-600">{title}</p>
-      {hint && <p className="mt-1 text-xs text-slate-400">{hint}</p>}
+    <div className="flex flex-col items-center rounded-xl border border-dashed border-border bg-card/50 px-4 py-10 text-center">
+      {icon && <div className="mb-2 text-muted-foreground/50">{icon}</div>}
+      <p className="text-sm font-medium text-foreground/80">{title}</p>
+      {hint && <p className="mt-1 text-xs text-muted-foreground">{hint}</p>}
     </div>
   );
 }
@@ -285,7 +284,7 @@ export function ProgressRing({
   return (
     <div className="relative inline-flex" style={{ width: size, height: size }}>
       <svg width={size} height={size} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#e2e8f0" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="var(--border)" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
@@ -298,7 +297,7 @@ export function ProgressRing({
           strokeDashoffset={offset}
         />
       </svg>
-      <span className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-slate-700">
+      <span className="absolute inset-0 flex items-center justify-center text-xs font-bold tabular-nums text-foreground">
         {percent}%
       </span>
     </div>

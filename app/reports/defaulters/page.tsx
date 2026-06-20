@@ -33,7 +33,7 @@ export default async function DefaultersReport({
 
   return (
     <div>
-      <Link href={`/reports${qs}`} className="mb-2 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-700">
+      <Link href={`/reports${qs}`} className="mb-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
         <ArrowLeft className="h-4 w-4" /> Back to overview
       </Link>
 
@@ -45,7 +45,7 @@ export default async function DefaultersReport({
             <DateRangePicker />
             <a
               href={`/api/reports/defaulters/csv${qs}`}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
             >
               <Download className="h-4 w-4" /> Export CSV
             </a>
@@ -59,11 +59,11 @@ export default async function DefaultersReport({
         <>
           <FilterBar placeholder="Search student, subject or section…" />
           {filtered.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">No rows match.</p>
+            <p className="py-6 text-center text-sm text-muted-foreground">No rows match.</p>
           ) : (
-            <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+            <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+                <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
                   <tr>
                     <th className="px-4 py-2.5 font-medium">Student</th>
                     <th className="px-4 py-2.5 font-medium">Subject</th>
@@ -76,28 +76,28 @@ export default async function DefaultersReport({
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100">
+                <tbody className="divide-y divide-border">
                   {filtered.map((r) => (
-                    <tr key={`${r.offeringId}:${r.studentId}`} className="bg-red-50/30">
+                    <tr key={`${r.offeringId}:${r.studentId}`} className="bg-red-500/5 dark:bg-red-500/10">
                       <td className="px-4 py-2.5">
-                        <Link href={`/reports/student/${r.studentId}${qs}`} className="flex items-center gap-2.5 hover:text-brand-700">
+                        <Link href={`/reports/student/${r.studentId}${qs}`} className="flex items-center gap-2.5 hover:text-primary">
                           <Avatar name={r.studentName} />
                           <div className="min-w-0">
-                            <p className="truncate text-sm font-medium text-slate-800">{r.studentName}</p>
-                            <p className="truncate text-xs text-slate-400">{r.studentEmail}</p>
+                            <p className="truncate text-sm font-medium text-foreground">{r.studentName}</p>
+                            <p className="truncate text-xs text-muted-foreground">{r.studentEmail}</p>
                           </div>
                         </Link>
                       </td>
                       <td className="px-4 py-2.5">
-                        <Link href={`/reports/offering/${r.offeringId}${qs}`} className="hover:text-brand-700">
-                          <p className="font-medium text-slate-800">
-                            <span className="font-mono text-xs text-slate-500">{r.subjectCode}</span> {r.subjectName}
+                        <Link href={`/reports/offering/${r.offeringId}${qs}`} className="hover:text-primary">
+                          <p className="font-medium text-foreground">
+                            <span className="font-mono text-xs text-muted-foreground">{r.subjectCode}</span> {r.subjectName}
                           </p>
-                          <p className="text-xs text-slate-400">{r.className}</p>
+                          <p className="text-xs text-muted-foreground">{r.className}</p>
                         </Link>
                       </td>
-                      {isAdmin && <td className="px-4 py-2.5 text-slate-600">{r.teacherName}</td>}
-                      <td className="px-4 py-2.5 text-center tabular-nums text-slate-600">
+                      {isAdmin && <td className="px-4 py-2.5 text-muted-foreground">{r.teacherName}</td>}
+                      <td className="px-4 py-2.5 text-center tabular-nums text-muted-foreground">
                         {r.attended}/{r.total}
                       </td>
                       <td className="px-4 py-2.5 text-right">

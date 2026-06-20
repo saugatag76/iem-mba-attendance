@@ -95,7 +95,7 @@ export default async function ReportsOfferings({
         <>
           <FilterBar placeholder="Search subject or teacher…" filters={filters} />
           {groupList.length === 0 ? (
-            <p className="py-6 text-center text-sm text-slate-400">No offerings match these filters.</p>
+            <p className="py-6 text-center text-sm text-muted-foreground">No offerings match these filters.</p>
           ) : (
             groupList.map(([name, items]) => {
               const started = items.filter((o) => o._count.sessions > 0);
@@ -103,37 +103,37 @@ export default async function ReportsOfferings({
               return (
                 <CollapsibleGroup key={name} title={name} count={items.length} defaultOpen={fewGroups}>
                   {started.length > 0 ? (
-                    <ul className="divide-y divide-slate-100">
+                    <ul className="divide-y divide-border">
                       {started.map((o) => (
                         <li key={o.id}>
                           <Link
                             href={`/reports/offering/${o.id}${qs}`}
-                            className="flex items-center justify-between gap-3 px-4 py-2.5 transition hover:bg-slate-50"
+                            className="flex items-center justify-between gap-3 px-4 py-2.5 transition hover:bg-accent"
                           >
                             <div className="min-w-0">
                               <p className="mb-1 flex items-center gap-2">
-                                <span className="rounded-md bg-slate-100 px-1.5 py-0.5 font-mono text-[11px] font-medium text-slate-500">
+                                <span className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
                                   {o.subject.code}
                                 </span>
-                                <span className="truncate text-sm font-semibold text-slate-900">{o.subject.name}</span>
+                                <span className="truncate text-sm font-semibold text-foreground">{o.subject.name}</span>
                               </p>
-                              <p className="text-xs text-slate-400">{o.teacher.name}</p>
+                              <p className="text-xs text-muted-foreground">{o.teacher.name}</p>
                             </div>
                             <div className="flex flex-shrink-0 items-center gap-2">
                               <Badge tone={o._count.sessions >= 8 ? "green" : o._count.sessions >= 4 ? "brand" : "amber"}>
                                 {o._count.sessions} session{o._count.sessions > 1 ? "s" : ""}
                               </Badge>
-                              <ChevronRight className="h-4 w-4 text-slate-300" />
+                              <ChevronRight className="h-4 w-4 text-muted-foreground/60" />
                             </div>
                           </Link>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="px-4 py-4 text-center text-xs text-slate-400">No sessions held yet for this section.</p>
+                    <p className="px-4 py-4 text-center text-xs text-muted-foreground">No sessions held yet for this section.</p>
                   )}
                   {notStarted.length > 0 && (
-                    <div className="border-t border-slate-100 bg-slate-50/60 px-4 py-2">
+                    <div className="border-t border-border bg-muted/60 px-4 py-2">
                       <ShowMore
                         cap={3}
                         itemName="subject"
@@ -141,12 +141,12 @@ export default async function ReportsOfferings({
                           <li key={o.id} className="flex items-center justify-between gap-3 py-2.5">
                             <div className="min-w-0">
                               <p className="mb-1 flex items-center gap-2">
-                                <span className="rounded-md bg-slate-200/70 px-1.5 py-0.5 font-mono text-[11px] font-medium text-slate-500">
+                                <span className="rounded-md bg-muted/70 px-1.5 py-0.5 font-mono text-[11px] font-medium text-muted-foreground">
                                   {o.subject.code}
                                 </span>
-                                <span className="truncate text-sm font-medium text-slate-600">{o.subject.name}</span>
+                                <span className="truncate text-sm font-medium text-muted-foreground">{o.subject.name}</span>
                               </p>
-                              <p className="text-xs text-slate-400">{o.teacher.name}</p>
+                              <p className="text-xs text-muted-foreground">{o.teacher.name}</p>
                             </div>
                             <Badge tone="gray">Not started</Badge>
                           </li>

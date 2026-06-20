@@ -44,12 +44,12 @@ export function FilterBar({
     !!params.get(searchKey) || filters.some((f) => params.get(f.name));
 
   const inputClass =
-    "rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-2 focus:ring-brand-500/30";
+    "rounded-lg border border-input bg-card px-3 py-2 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/30";
 
   return (
     <div className="mb-4 flex flex-wrap items-center gap-2">
       <div className="relative min-w-[200px] flex-1">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <input
           type="search"
           aria-label="Search"
@@ -91,7 +91,7 @@ export function FilterBar({
             const qs = next.toString();
             router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
           }}
-          className="inline-flex items-center gap-1 rounded-lg border border-slate-300 px-2.5 py-2 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
+          className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-2 text-xs font-medium text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
         >
           <X className="h-3.5 w-3.5" /> Clear
         </button>

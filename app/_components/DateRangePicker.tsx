@@ -23,7 +23,7 @@ function formatLabel(d: string) {
 }
 
 const inputClass =
-  "w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 text-sm text-slate-900 outline-none transition focus:border-brand-600 focus:ring-2 focus:ring-brand-500/30";
+  "w-full rounded-lg border border-input bg-card px-2.5 py-1.5 text-sm text-foreground outline-none transition focus:border-ring focus:ring-2 focus:ring-ring/30";
 
 /**
  * Date range filter for the Reports section. Writes `from`/`to` (yyyy-mm-dd) to the
@@ -81,22 +81,22 @@ export function DateRangePicker() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="inline-flex items-center gap-2 rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+        className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent hover:text-accent-foreground"
       >
-        <CalendarRange className="h-4 w-4 text-slate-400" />
+        <CalendarRange className="h-4 w-4 text-muted-foreground" />
         {label}
-        <ChevronDown className="h-3.5 w-3.5 text-slate-400" />
+        <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
       </button>
 
       {open && (
-        <div className="absolute right-0 z-30 mt-2 w-72 rounded-xl border border-slate-200 bg-white p-3 shadow-lg shadow-slate-900/10">
-          <div className="mb-3 flex items-center gap-1 border-b border-slate-100 text-sm">
+        <div className="absolute right-0 z-30 mt-2 w-72 rounded-xl border border-border bg-popover p-3 text-popover-foreground shadow-lg">
+          <div className="mb-3 flex items-center gap-1 border-b border-border text-sm">
             <button
               type="button"
               onClick={() => setTab("absolute")}
               className={cn(
                 "border-b-2 px-2 py-1.5 font-medium transition",
-                tab === "absolute" ? "border-brand-600 text-brand-700" : "border-transparent text-slate-500 hover:text-slate-700",
+                tab === "absolute" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               Absolute
@@ -106,7 +106,7 @@ export function DateRangePicker() {
               onClick={() => setTab("relative")}
               className={cn(
                 "border-b-2 px-2 py-1.5 font-medium transition",
-                tab === "relative" ? "border-brand-600 text-brand-700" : "border-transparent text-slate-500 hover:text-slate-700",
+                tab === "relative" ? "border-primary text-primary" : "border-transparent text-muted-foreground hover:text-foreground",
               )}
             >
               Relative
@@ -115,7 +115,7 @@ export function DateRangePicker() {
 
           {tab === "absolute" ? (
             <div className="space-y-2.5">
-              <label className="block text-xs font-medium text-slate-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 From
                 <input
                   type="date"
@@ -125,7 +125,7 @@ export function DateRangePicker() {
                   className={cn(inputClass, "mt-1")}
                 />
               </label>
-              <label className="block text-xs font-medium text-slate-600">
+              <label className="block text-xs font-medium text-muted-foreground">
                 To
                 <input
                   type="date"
@@ -139,7 +139,7 @@ export function DateRangePicker() {
                 <button
                   type="button"
                   onClick={() => apply("", "")}
-                  className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-50"
+                  className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
                 >
                   All time
                 </button>
@@ -147,7 +147,7 @@ export function DateRangePicker() {
                   type="button"
                   onClick={() => apply(draftFrom, draftTo)}
                   disabled={!draftFrom || !draftTo}
-                  className="rounded-lg bg-brand-700 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-brand-800 disabled:opacity-50"
+                  className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground transition hover:bg-primary/90 disabled:opacity-50"
                 >
                   Apply
                 </button>
@@ -160,7 +160,7 @@ export function DateRangePicker() {
                   key={p.label}
                   type="button"
                   onClick={() => applyPreset(p.days)}
-                  className="rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-medium text-slate-600 transition hover:border-brand-300 hover:text-brand-700"
+                  className="rounded-lg border border-border px-2 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
                 >
                   {p.label}
                 </button>
@@ -168,7 +168,7 @@ export function DateRangePicker() {
               <button
                 type="button"
                 onClick={() => apply("", "")}
-                className="col-span-2 rounded-lg border border-slate-200 px-2 py-1.5 text-xs font-medium text-slate-500 transition hover:bg-slate-50"
+                className="col-span-2 rounded-lg border border-border px-2 py-1.5 text-xs font-medium text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
               >
                 All time
               </button>

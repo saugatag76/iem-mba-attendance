@@ -52,6 +52,15 @@ enum AttendanceMethod {
   MANUAL // teacher scanned the student's personal QR (fallback)
 }
 
+enum SubstitutionStatus {
+  PENDING_TEACHER   // waiting for Teacher Y to accept/decline
+  TEACHER_ACCEPTED  // Teacher Y accepted, waiting for Admin approval
+  TEACHER_DECLINED  // Teacher Y declined the request
+  APPROVED          // Admin gave final approval
+  REJECTED          // Admin rejected (even after Teacher Y accepted)
+  CANCELLED         // Teacher X withdrew the request
+}
+
 model Department {
   id        String         @id @default(cuid())
   name      String         @unique
@@ -127,6 +136,8 @@ model ScheduledClass {
   rawLabel       String // original spreadsheet cell text (for traceability / review)
   createdAt      DateTime  @default(now())
 
+  substitutionRequests SubstitutionRequest[]
+
   @@index([classSectionId, day, slotIndex])
   @@index([offeringId])
 }
@@ -147,6 +158,10 @@ model User {
   taughtSessions    Session[]          @relation("TeacherSessions")
   enrollments       Enrollment[]
   attendanceRecords AttendanceRecord[]
+
+  substitutionRequestsCreated  SubstitutionRequest[] @relation("SubsRequested")
+  substitutionRequestsAssigned SubstitutionRequest[] @relation("SubsAssigned")
+  substitutionRequestsApproved SubstitutionRequest[] @relation("SubsApproved")
 }
 
 model Enrollment {
@@ -202,4 +217,36 @@ model AttendanceRecord {
 
   @@unique([sessionId, studentId])
   @@index([studentId])
+}
+
+// A one-time substitution request for a specific weekly slot on a specific date.
+// Flow: Teacher X creates → Teacher Y accepts/declines → Admin approves/rejects.
+model SubstitutionRequest {
+  id                  String             @id @default(cuid())
+
+  scheduledClass      ScheduledClass     @relation(fields: [scheduledClassId], references: [id], onDelete: Cascade)
+  scheduledClassId    String
+
+  date                DateTime           // actual calendar date of the class (midnight UTC)
+
+  requestedBy         User               @relation("SubsRequested",  fields: [requestedById],       references: [id])
+  requestedById       String             // Teacher X (cannot attend)
+
+  substituteTeacher   User               @relation("SubsAssigned",   fields: [substituteTeacherId], references: [id])
+  substituteTeacherId String             // Teacher Y (proposed substitute)
+
+  approvedBy          User?              @relation("SubsApproved",   fields: [approvedById],        references: [id])
+  approvedById        String?            // Admin who took final action
+
+  reason              String             // why Teacher X cannot take the class
+  teacherNote         String?            // Teacher Y's acceptance/decline note
+  adminNote           String?            // Admin's decision note
+
+  status              SubstitutionStatus @default(PENDING_TEACHER)
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
+
+  @@index([requestedById])
+  @@index([substituteTeacherId])
+  @@index([status])
 }

@@ -57,7 +57,7 @@ export default async function StudentReport({
 
   return (
     <div>
-      <Link href={`/reports/students${qs}`} className="mb-2 inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-brand-700">
+      <Link href={`/reports/students${qs}`} className="mb-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
         <ArrowLeft className="h-4 w-4" /> Back to students
       </Link>
       <PageHeader title={student.name} subtitle={student.email} action={<DateRangePicker />} />
@@ -86,12 +86,12 @@ export default async function StudentReport({
             action={<Badge tone={overall >= 75 ? "green" : overall >= 60 ? "amber" : "red"}>{overall}% overall</Badge>}
           >
             {below75.length > 0 && (
-              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+              <div className="mb-3 flex items-center gap-2 rounded-lg border border-red-500/20 bg-red-500/8 px-3 py-2 text-sm text-red-600 dark:border-red-500/25 dark:bg-red-500/12 dark:text-red-400">
                 <AlertTriangle className="h-4 w-4 flex-shrink-0" />
                 {below75.length} subject{below75.length > 1 ? "s" : ""} below 75% — shown first.
               </div>
             )}
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-border">
               {sortedStats.map((s) => (
                 <SubjectRow key={s.offeringId} s={s} />
               ))}
@@ -101,17 +101,17 @@ export default async function StudentReport({
           {dayWise.length > 0 && (
             <>
               <SectionHeader title="Day-by-day" action={
-                <span className="flex items-center gap-3 text-xs text-slate-400">
+                <span className="flex items-center gap-3 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1"><Check className="h-3.5 w-3.5 text-green-600" /> Present</span>
-                  <span className="flex items-center gap-1"><Minus className="h-3.5 w-3.5 text-slate-300" /> Absent</span>
+                  <span className="flex items-center gap-1"><Minus className="h-3.5 w-3.5 text-muted-foreground/60" /> Absent</span>
                 </span>
               } />
               <div className="space-y-3">
                 {dayWise.map((d) => (
-                  <div key={d.offeringId} className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-                    <div className="flex items-center justify-between gap-3 border-b border-slate-100 px-4 py-2.5">
-                      <p className="truncate text-sm font-medium text-slate-800">
-                        <span className="font-mono text-xs text-slate-500">{d.subjectCode}</span> {d.subjectName}
+                  <div key={d.offeringId} className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+                    <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-2.5">
+                      <p className="truncate text-sm font-medium text-foreground">
+                        <span className="font-mono text-xs text-muted-foreground">{d.subjectCode}</span> {d.subjectName}
                       </p>
                       <Badge tone={d.percent >= 75 ? "green" : d.percent >= 60 ? "amber" : "red"}>
                         {d.percent}% · {d.attended}/{d.total}
@@ -126,21 +126,21 @@ export default async function StudentReport({
                             <Link
                               key={s.id}
                               href={`/reports/session/${s.id}`}
-                              className={`flex min-w-[58px] flex-col items-center gap-1 rounded-lg border px-2 py-1.5 text-center transition hover:border-brand-300 ${
-                                present ? "border-green-100 bg-green-50" : "border-slate-100 bg-slate-50"
+                              className={`flex min-w-[58px] flex-col items-center gap-1 rounded-lg border px-2 py-1.5 text-center transition hover:border-primary/40 ${
+                                present ? "border-emerald-500/20 bg-emerald-500/8 dark:border-emerald-500/25 dark:bg-emerald-500/12" : "border-border bg-muted"
                               }`}
                               title={date.toLocaleString()}
                             >
-                              <span className="text-[10px] uppercase text-slate-400">
+                              <span className="text-[10px] uppercase text-muted-foreground">
                                 {date.toLocaleDateString(undefined, { weekday: "short" })}
                               </span>
-                              <span className="text-xs font-medium tabular-nums text-slate-700">
+                              <span className="text-xs font-medium tabular-nums text-foreground">
                                 {date.toLocaleDateString(undefined, { day: "2-digit", month: "short" })}
                               </span>
                               {present ? (
                                 <Check className="h-4 w-4 text-green-600" aria-label="Present" />
                               ) : (
-                                <Minus className="h-4 w-4 text-slate-300" aria-label="Absent" />
+                                <Minus className="h-4 w-4 text-muted-foreground/60" aria-label="Absent" />
                               )}
                             </Link>
                           );
@@ -160,9 +160,9 @@ export default async function StudentReport({
 
 function Stat({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg bg-slate-50 px-3 py-2.5 text-center sm:text-left">
-      <p className="text-xl font-bold tabular-nums text-slate-900">{value}</p>
-      <p className="text-xs text-slate-400">{label}</p>
+    <div className="rounded-lg bg-muted px-3 py-2.5 text-center sm:text-left">
+      <p className="text-xl font-bold tabular-nums text-foreground">{value}</p>
+      <p className="text-xs text-muted-foreground">{label}</p>
     </div>
   );
 }
@@ -172,8 +172,8 @@ function SubjectRow({ s }: { s: SubjectStat }) {
     <li className="flex items-center gap-3 py-2.5">
       <ProgressRing percent={s.percent} size={48} />
       <div className="flex-1">
-        <p className="text-sm font-medium text-slate-800">{s.subjectName}</p>
-        <p className="text-xs text-slate-500 tabular-nums">
+        <p className="text-sm font-medium text-foreground">{s.subjectName}</p>
+        <p className="text-xs text-muted-foreground tabular-nums">
           {s.subjectCode} · {s.attended}/{s.totalSessions} classes attended
         </p>
       </div>

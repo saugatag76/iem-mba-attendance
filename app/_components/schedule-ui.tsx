@@ -22,17 +22,17 @@ export function ClassRow({
   return (
     <li className="flex items-center gap-3 py-2.5">
       <div className="w-14 flex-shrink-0 text-center">
-        <div className="text-xs font-semibold tabular-nums text-slate-700">{row.startTime}</div>
-        <div className="text-[10px] tabular-nums text-slate-400">{row.endTime}</div>
+        <div className="text-xs font-semibold tabular-nums text-foreground">{row.startTime}</div>
+        <div className="text-[10px] tabular-nums text-muted-foreground">{row.endTime}</div>
       </div>
-      <div className="h-9 w-px flex-shrink-0 bg-slate-200" />
+      <div className="h-9 w-px flex-shrink-0 bg-border" />
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="truncate text-sm font-medium text-slate-800">{title}</span>
-          {subject && <span className="text-xs text-slate-400">{subject.code}</span>}
+          <span className="truncate text-sm font-medium text-foreground">{title}</span>
+          {subject && <span className="text-xs text-muted-foreground">{subject.code}</span>}
           {row.subgroup && <Badge tone="gray">{row.subgroup}</Badge>}
         </div>
-        <div className="mt-0.5 flex items-center gap-2 text-xs text-slate-500">
+        <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
           {showSection && row.offering && <span>{row.offering.classSection.name}</span>}
           {showTeacher && row.offering && (
             <span className="flex items-center gap-1">
@@ -56,11 +56,11 @@ export function WeeklyView({ byDay }: { byDay: Record<Weekday, ScheduleRow[]> })
     <div className="space-y-4">
       {WEEKDAYS.map((d) =>
         byDay[d].length === 0 ? null : (
-          <div key={d} className="rounded-xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-100 px-4 py-2 text-sm font-semibold text-slate-800">
+          <div key={d} className="rounded-xl border border-border bg-card shadow-sm">
+            <div className="border-b border-border px-4 py-2 text-sm font-semibold text-foreground">
               {WEEKDAY_LABEL[d]}
             </div>
-            <ul className="divide-y divide-slate-100 px-4">
+            <ul className="divide-y divide-border px-4">
               {byDay[d].map((r) => (
                 <ClassRow key={r.id} row={r} showTeacher />
               ))}

@@ -39,9 +39,9 @@ export default async function AcademicsPage({
               <Submit>Add</Submit>
             </form>
           </Card>
-          <ul className="overflow-hidden rounded-xl border border-slate-200 bg-white text-sm shadow-sm">
+          <ul className="overflow-hidden rounded-xl border border-border bg-card text-sm shadow-sm">
             {departments.map((d) => (
-              <li key={d.id} className="border-b border-slate-100 px-4 py-2.5 text-slate-700 last:border-0">
+              <li key={d.id} className="border-b border-border px-4 py-2.5 text-foreground last:border-0">
                 {d.name}
               </li>
             ))}
@@ -126,11 +126,11 @@ async function ClassList({ needle }: { needle: string }) {
     orderBy: [{ year: "asc" }, { name: "asc" }],
   });
   const rows = needle ? classes.filter((c) => c.name.toLowerCase().includes(needle)) : classes;
-  if (rows.length === 0) return <p className="py-4 text-center text-sm text-slate-400">No classes match.</p>;
+  if (rows.length === 0) return <p className="py-4 text-center text-sm text-muted-foreground">No classes match.</p>;
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
           <tr>
             <th className="px-4 py-2.5 font-medium">Section</th>
             <th className="px-4 py-2.5 font-medium">Year</th>
@@ -139,14 +139,14 @@ async function ClassList({ needle }: { needle: string }) {
             <th className="px-4 py-2.5 text-right font-medium">Students</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-border">
           {rows.map((c) => (
             <tr key={c.id}>
-              <td className="px-4 py-2.5 font-medium text-slate-800">{c.name}</td>
-              <td className="px-4 py-2.5 text-slate-600">Year {c.year}</td>
+              <td className="px-4 py-2.5 font-medium text-foreground">{c.name}</td>
+              <td className="px-4 py-2.5 text-muted-foreground">Year {c.year}</td>
               <td className="px-4 py-2.5"><Badge tone="gray">{STREAM_LABEL[c.stream] ?? c.stream}</Badge></td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-slate-600">{c._count.offerings}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-slate-600">{c._count.enrollments}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.offerings}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.enrollments}</td>
             </tr>
           ))}
         </tbody>
@@ -160,11 +160,11 @@ async function SubjectList({ needle }: { needle: string }) {
   const rows = needle
     ? subjects.filter((s) => s.name.toLowerCase().includes(needle) || s.code.toLowerCase().includes(needle))
     : subjects;
-  if (rows.length === 0) return <p className="py-4 text-center text-sm text-slate-400">No subjects match.</p>;
+  if (rows.length === 0) return <p className="py-4 text-center text-sm text-muted-foreground">No subjects match.</p>;
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <table className="w-full text-sm">
-        <thead className="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+        <thead className="bg-muted text-left text-xs uppercase tracking-wide text-muted-foreground">
           <tr>
             <th className="px-4 py-2.5 font-medium">Code</th>
             <th className="px-4 py-2.5 font-medium">Subject</th>
@@ -172,12 +172,12 @@ async function SubjectList({ needle }: { needle: string }) {
             <th className="px-4 py-2.5 font-medium">Stream</th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-slate-100">
+        <tbody className="divide-y divide-border">
           {rows.map((s) => (
             <tr key={s.id}>
-              <td className="px-4 py-2.5 font-mono text-xs font-medium text-slate-800">{s.code}</td>
-              <td className="px-4 py-2.5 text-slate-700">{s.name}</td>
-              <td className="px-4 py-2.5 tabular-nums text-slate-600">{s.semester}</td>
+              <td className="px-4 py-2.5 font-mono text-xs font-medium text-foreground">{s.code}</td>
+              <td className="px-4 py-2.5 text-foreground">{s.name}</td>
+              <td className="px-4 py-2.5 tabular-nums text-muted-foreground">{s.semester}</td>
               <td className="px-4 py-2.5"><Badge tone="gray">{STREAM_LABEL[s.stream] ?? s.stream}</Badge></td>
             </tr>
           ))}

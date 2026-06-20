@@ -29,33 +29,33 @@ export default async function LoginPage({
   return (
     <div className="flex min-h-screen w-full items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl shadow-slate-900/5">
+        <div className="rounded-2xl border border-border bg-card p-8 shadow-xl shadow-slate-900/5">
           {/* Brand */}
           <div className="mb-6 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-rose-500 shadow-lg shadow-orange-500/30">
+            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/30">
               <GraduationCap className="h-8 w-8 text-white" strokeWidth={2} />
             </div>
           </div>
 
           <div className="mb-8 text-center">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900">MBA Attendance</h1>
-            <p className="mt-1 text-sm text-slate-500">Sign in to continue</p>
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">MBA Attendance</h1>
+            <p className="mt-1 text-sm text-muted-foreground">Sign in to continue</p>
           </div>
 
           {error && (
-            <div className="mb-6 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3">
+            <div className="mb-6 flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/8 p-3 dark:border-red-500/25 dark:bg-red-500/12">
               <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600" />
-              <p className="text-sm text-red-800">Invalid email or password. Please try again.</p>
+              <p className="text-sm text-red-600 dark:text-red-400">Invalid email or password. Please try again.</p>
             </div>
           )}
 
           <form action={login} className="space-y-4">
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-foreground">
                 Email
               </label>
               <div className="relative">
-                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
                 <input
                   id="email"
                   name="email"
@@ -63,13 +63,13 @@ export default async function LoginPage({
                   required
                   autoComplete="username"
                   placeholder="you@iem.edu"
-                  className="block w-full rounded-lg border border-slate-300 py-2.5 pl-10 pr-3 text-slate-900 placeholder-slate-400 transition focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-500/30"
+                  className="block w-full rounded-lg border border-input py-2.5 pl-10 pr-3 text-foreground placeholder:text-muted-foreground transition focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-foreground">
                 Password
               </label>
               <PasswordField />
@@ -77,14 +77,14 @@ export default async function LoginPage({
 
             <button
               type="submit"
-              className="w-full rounded-lg bg-brand-700 px-4 py-2.5 font-medium text-white shadow-sm transition hover:bg-brand-800 active:scale-[0.99]"
+              className="w-full rounded-lg bg-primary px-4 py-2.5 font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-[0.99]"
             >
               Sign in
             </button>
           </form>
         </div>
 
-        <p className="mt-4 text-center text-xs text-slate-400">
+        <p className="mt-4 text-center text-xs text-muted-foreground">
           IEM · MBA Department · QR Attendance
         </p>
       </div>

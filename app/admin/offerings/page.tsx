@@ -89,19 +89,19 @@ export default async function OfferingsPage({
       />
 
       {groupList.length === 0 ? (
-        <p className="py-6 text-center text-sm text-slate-400">No offerings match these filters.</p>
+        <p className="py-6 text-center text-sm text-muted-foreground">No offerings match these filters.</p>
       ) : (
         groupList.map(([name, items]) => (
           <CollapsibleGroup key={name} title={name} count={items.length} defaultOpen={fewGroups}>
-            <ul className="divide-y divide-slate-100">
+            <ul className="divide-y divide-border">
               {items.map((o) => (
                 <li key={o.id} className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm">
                   <div className="min-w-0">
-                    <span className="font-mono text-xs font-medium text-slate-800">{o.subject.code}</span>{" "}
-                    <span className="text-slate-700">{o.subject.name}</span>
-                    <span className="ml-1 text-xs text-slate-400">· {o.term}</span>
+                    <span className="font-mono text-xs font-medium text-foreground">{o.subject.code}</span>{" "}
+                    <span className="text-foreground">{o.subject.name}</span>
+                    <span className="ml-1 text-xs text-muted-foreground">· {o.term}</span>
                   </div>
-                  <span className="flex flex-shrink-0 items-center gap-1.5 text-xs text-slate-500">
+                  <span className="flex flex-shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
                     <Avatar name={o.teacher.name} className="h-5 w-5 text-[9px]" />
                     {o.teacher.name}
                   </span>
