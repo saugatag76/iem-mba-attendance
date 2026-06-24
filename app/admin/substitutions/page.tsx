@@ -1,7 +1,8 @@
-import { CheckCircle2, XCircle } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowLeftRight, Clock, TrendingUp, Download } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { PageHeader, Avatar, Badge } from "@/app/_components/ui";
+import { PageHeader, Avatar, Badge, StatCard } from "@/app/_components/ui";
+import { SectionHeader } from "@/app/_components/layout-ui";
 import { approveSubstitution, rejectSubstitution } from "./actions";
 import type { SubstitutionStatus } from "@prisma/client";
 
@@ -35,32 +36,124 @@ export default async function AdminSubstitutionsPage({
       ? ["APPROVED", "REJECTED", "CANCELLED", "TEACHER_DECLINED"]
       : ["TEACHER_ACCEPTED"];
 
-  const requests = await prisma.substitutionRequest.findMany({
-    where: { status: { in: statusFilter } },
-    include: {
-      scheduledClass: { include: { offering: { include: { subject: true, classSection: true } } } },
-      requestedBy: true,
-      substituteTeacher: true,
-      approvedBy: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const [requests, stats, topRequesters, topSubstitutes] = await Promise.all([
+    prisma.substitutionRequest.findMany({
+      where: { status: { in: statusFilter } },
+      include: {
+        scheduledClass: { include: { offering: { include: { subject: true, classSection: true } } } },
+        requestedBy: true,
+        substituteTeacher: true,
+        approvedBy: true,
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    // Counts per status
+    prisma.substitutionRequest.groupBy({
+      by: ["status"],
+      _count: true,
+    }),
+    // Top 3 teachers who requested substitutions most
+    prisma.substitutionRequest.groupBy({
+      by: ["requestedById"],
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 3,
+    }),
+    // Top 3 teachers who substituted most
+    prisma.substitutionRequest.groupBy({
+      by: ["substituteTeacherId"],
+      where: { status: "APPROVED" },
+      _count: { id: true },
+      orderBy: { _count: { id: "desc" } },
+      take: 3,
+    }),
+  ]);
 
-  const pendingCount = await prisma.substitutionRequest.count({ where: { status: "TEACHER_ACCEPTED" } });
+  // Resolve top teacher names
+  const topRequesterIds = topRequesters.map((r) => r.requestedById);
+  const topSubstituteIds = topSubstitutes.map((r) => r.substituteTeacherId);
+  const allTopIds = [...new Set([...topRequesterIds, ...topSubstituteIds])];
+  const topTeachers = allTopIds.length
+    ? await prisma.user.findMany({ where: { id: { in: allTopIds } }, select: { id: true, name: true } })
+    : [];
+  const nameOf = (id: string) => topTeachers.find((t) => t.id === id)?.name ?? id;
+
+  const countOf = (s: SubstitutionStatus) => stats.find((x) => x.status === s)?._count ?? 0;
+  const pendingCount = countOf("TEACHER_ACCEPTED");
+  const approvedCount = countOf("APPROVED");
+  const totalCount = stats.reduce((a, s) => a + s._count, 0);
 
   return (
     <div>
       <PageHeader
         title="Substitution requests"
-        subtitle={`${pendingCount} request${pendingCount === 1 ? "" : "s"} awaiting your approval`}
+        subtitle="Track, approve and audit all teacher substitution requests"
+        action={
+          <a
+            href={`/api/admin/substitutions/csv?filter=${filter}`}
+            className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+          >
+            <Download className="h-4 w-4" /> Export CSV
+          </a>
+        }
       />
 
+      {/* Stats */}
+      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <StatCard icon={<ArrowLeftRight className="h-4 w-4" />} label="Total requests" value={totalCount} />
+        <StatCard icon={<Clock className="h-4 w-4" />} label="Awaiting approval" value={pendingCount}
+          href={pendingCount > 0 ? "/admin/substitutions?filter=pending" : undefined} />
+        <StatCard icon={<CheckCircle2 className="h-4 w-4" />} label="Approved" value={approvedCount} />
+        <StatCard icon={<TrendingUp className="h-4 w-4" />} label="Declined / Rejected"
+          value={countOf("TEACHER_DECLINED") + countOf("REJECTED")} />
+      </div>
+
+      {/* Top teachers */}
+      {(topRequesters.length > 0 || topSubstitutes.length > 0) && (
+        <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          {topRequesters.length > 0 && (
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Most requests sent</p>
+              <ul className="space-y-2">
+                {topRequesters.map((r) => (
+                  <li key={r.requestedById} className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Avatar name={nameOf(r.requestedById)} />
+                      <span className="text-sm font-medium text-foreground">{nameOf(r.requestedById)}</span>
+                    </div>
+                    <Badge tone="amber">{r._count.id} request{r._count.id > 1 ? "s" : ""}</Badge>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {topSubstitutes.length > 0 && (
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Most classes covered</p>
+              <ul className="space-y-2">
+                {topSubstitutes.map((r) => (
+                  <li key={r.substituteTeacherId} className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <Avatar name={nameOf(r.substituteTeacherId)} />
+                      <span className="text-sm font-medium text-foreground">{nameOf(r.substituteTeacherId)}</span>
+                    </div>
+                    <Badge tone="green">{r._count.id} class{r._count.id > 1 ? "es" : ""}</Badge>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      <SectionHeader title="Requests" />
+
       {/* Filter tabs */}
-      <div className="mb-6 inline-flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1 shadow-sm">
+      <div className="mb-5 inline-flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1 shadow-sm">
         {[
-          { key: "pending", label: `Needs approval (${pendingCount})` },
+          { key: "pending", label: `Needs approval${pendingCount > 0 ? ` (${pendingCount})` : ""}` },
           { key: "history", label: "History" },
-          { key: "all", label: "All" },
+          { key: "all",     label: "All" },
         ].map((t) => (
           <a
             key={t.key}
@@ -88,9 +181,11 @@ export default async function AdminSubstitutionsPage({
             return (
               <div
                 key={req.id}
-                className={`rounded-xl border bg-card p-5 shadow-sm ${needsAction ? "border-primary/40 ring-1 ring-primary/20" : "border-border"}`}
+                className={`rounded-xl border bg-card p-5 shadow-sm ${
+                  needsAction ? "border-primary/40 ring-1 ring-primary/20" : "border-border"
+                }`}
               >
-                {/* Header row */}
+                {/* Header */}
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
                     <p className="text-base font-semibold text-foreground">
@@ -111,7 +206,6 @@ export default async function AdminSubstitutionsPage({
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Requesting teacher</p>
                       <p className="text-sm font-medium text-foreground">{req.requestedBy.name}</p>
-                      <p className="text-xs text-muted-foreground">{req.requestedBy.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2.5 rounded-lg border border-border bg-muted/30 px-3 py-2">
@@ -119,13 +213,12 @@ export default async function AdminSubstitutionsPage({
                     <div>
                       <p className="text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">Proposed substitute</p>
                       <p className="text-sm font-medium text-foreground">{req.substituteTeacher.name}</p>
-                      <p className="text-xs text-muted-foreground">{req.substituteTeacher.email}</p>
                     </div>
                   </div>
                 </div>
 
-                {/* Notes */}
-                <div className="mt-3 space-y-1 text-sm">
+                {/* Timeline / notes */}
+                <div className="mt-3 space-y-1 border-t border-border pt-3 text-sm">
                   <p><span className="text-muted-foreground">Reason:</span> {req.reason}</p>
                   {req.teacherNote && (
                     <p><span className="text-muted-foreground">Substitute&apos;s note:</span> {req.teacherNote}</p>
@@ -133,29 +226,22 @@ export default async function AdminSubstitutionsPage({
                   {req.adminNote && (
                     <p><span className="text-muted-foreground">Admin note:</span> {req.adminNote}</p>
                   )}
-                  {req.approvedBy && (
-                    <p className="text-xs text-muted-foreground">
-                      Decided by {req.approvedBy.name} · {req.updatedAt.toLocaleDateString()}
-                    </p>
-                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Requested {formatDate(req.createdAt)}
+                    {req.approvedBy && ` · Decided by ${req.approvedBy.name} on ${formatDate(req.updatedAt)}`}
+                  </p>
                 </div>
 
-                {/* Approve / Reject */}
+                {/* Approve / Reject actions */}
                 {needsAction && (
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                     <form action={approveSubstitution}>
                       <input type="hidden" name="id" value={req.id} />
                       <div className="flex flex-col gap-2">
-                        <textarea
-                          name="adminNote"
-                          rows={2}
-                          placeholder="Optional approval note…"
-                          className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-                        />
-                        <button
-                          type="submit"
-                          className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
-                        >
+                        <textarea name="adminNote" rows={2} placeholder="Optional approval note…"
+                          className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30" />
+                        <button type="submit"
+                          className="flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90">
                           <CheckCircle2 className="h-4 w-4" /> Approve substitution
                         </button>
                       </div>
@@ -163,16 +249,10 @@ export default async function AdminSubstitutionsPage({
                     <form action={rejectSubstitution}>
                       <input type="hidden" name="id" value={req.id} />
                       <div className="flex flex-col gap-2">
-                        <textarea
-                          name="adminNote"
-                          rows={2}
-                          placeholder="Optional rejection reason…"
-                          className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-                        />
-                        <button
-                          type="submit"
-                          className="flex items-center justify-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400"
-                        >
+                        <textarea name="adminNote" rows={2} placeholder="Optional rejection reason…"
+                          className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30" />
+                        <button type="submit"
+                          className="flex items-center justify-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-2 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400">
                           <XCircle className="h-4 w-4" /> Reject
                         </button>
                       </div>

@@ -52,7 +52,18 @@ export default async function TeacherSubstitutionsPage({
 
   return (
     <div>
-      <PageHeader title="Substitutions" subtitle="Track your substitution requests sent and received" />
+      <PageHeader
+        title="Substitutions"
+        subtitle="Track your substitution requests sent and received"
+        action={
+          <a
+            href="/teacher/substitutions/new"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+          >
+            + New request
+          </a>
+        }
+      />
 
       {/* Tabs */}
       <div className="mb-6 inline-flex rounded-xl border border-border bg-card p-1 shadow-sm">
@@ -160,14 +171,14 @@ export default async function TeacherSubstitutionsPage({
                   </div>
 
                   {isPending && (
-                    <form action={respondToSubstitutionRequest} className="mt-4 space-y-3">
-                      <input type="hidden" name="id" value={req.id} />
+                    <div className="mt-4 space-y-3">
                       <div>
                         <label htmlFor={`note-${req.id}`} className="mb-1 block text-xs font-medium text-muted-foreground">
                           Optional note (visible to admin and requester)
                         </label>
                         <textarea
                           id={`note-${req.id}`}
+                          form={`accept-${req.id}`}
                           name="teacherNote"
                           rows={2}
                           placeholder="Add a note if needed…"
@@ -175,24 +186,30 @@ export default async function TeacherSubstitutionsPage({
                         />
                       </div>
                       <div className="flex gap-2">
-                        <button
-                          type="submit"
-                          name="action"
-                          value="accept"
-                          className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary/90"
-                        >
-                          <CheckCircle2 className="h-4 w-4" /> Accept
-                        </button>
-                        <button
-                          type="submit"
-                          name="action"
-                          value="decline"
-                          className="flex items-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400"
-                        >
-                          <XCircle className="h-4 w-4" /> Decline
-                        </button>
+                        {/* Accept — dedicated form with hidden response=accept */}
+                        <form id={`accept-${req.id}`} action={respondToSubstitutionRequest}>
+                          <input type="hidden" name="id" value={req.id} />
+                          <input type="hidden" name="response" value="accept" />
+                          <button
+                            type="submit"
+                            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary/90"
+                          >
+                            <CheckCircle2 className="h-4 w-4" /> Accept
+                          </button>
+                        </form>
+                        {/* Decline — separate form with hidden response=decline */}
+                        <form action={respondToSubstitutionRequest}>
+                          <input type="hidden" name="id" value={req.id} />
+                          <input type="hidden" name="response" value="decline" />
+                          <button
+                            type="submit"
+                            className="flex items-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400"
+                          >
+                            <XCircle className="h-4 w-4" /> Decline
+                          </button>
+                        </form>
                       </div>
-                    </form>
+                    </div>
                   )}
                 </div>
               );

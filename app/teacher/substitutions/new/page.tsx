@@ -1,13 +1,26 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, AlertTriangle, Clock } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
-import { PageHeader, Avatar, Badge } from "@/app/_components/ui";
+import { PageHeader } from "@/app/_components/ui";
 import { createSubstitutionRequest } from "../actions";
+import { TeacherPicker, type TeacherOption } from "./TeacherPicker";
 import type { Weekday } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
+
+function nextOccurrence(weekday: Weekday): string {
+  const dayMap: Record<Weekday, number> = { MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5 };
+  const target = dayMap[weekday];
+  const today = new Date();
+  const todayDay = today.getDay() === 0 ? 7 : today.getDay();
+  let diff = target - todayDay;
+  if (diff <= 0) diff += 7;
+  const d = new Date(today);
+  d.setDate(today.getDate() + diff);
+  return d.toISOString().slice(0, 10);
+}
 
 export default async function NewSubstitutionPage({
   searchParams,
@@ -17,81 +30,139 @@ export default async function NewSubstitutionPage({
   const teacher = await requireRole("TEACHER", "ADMIN");
   const { slotId, date: dateParam } = await searchParams;
 
-  if (!slotId) redirect("/teacher");
+  // Pre-filled slot (from "sub?" links)
+  const slot = slotId
+    ? await prisma.scheduledClass.findUnique({
+        where: { id: slotId },
+        include: { offering: { include: { subject: true, classSection: true } } },
+      })
+    : null;
 
-  const slot = await prisma.scheduledClass.findUnique({
-    where: { id: slotId },
-    include: { offering: { include: { subject: true, classSection: true } } },
-  });
-  if (!slot || slot.offering?.teacherId !== teacher.id) notFound();
+  if (slotId && (!slot || slot.offering?.teacherId !== teacher.id)) notFound();
 
-  // Default date to the next occurrence of slot.day from today
-  function nextOccurrence(weekday: Weekday): string {
-    const dayMap: Record<Weekday, number> = { MON: 1, TUE: 2, WED: 3, THU: 4, FRI: 5 };
-    const target = dayMap[weekday];
-    const today = new Date();
-    const todayDay = today.getDay() === 0 ? 7 : today.getDay();
-    let diff = target - todayDay;
-    if (diff <= 0) diff += 7;
-    const d = new Date(today);
-    d.setDate(today.getDate() + diff);
-    return d.toISOString().slice(0, 10);
-  }
-  const defaultDate = dateParam ?? nextOccurrence(slot.day);
+  const defaultDate = slot
+    ? (dateParam ?? nextOccurrence(slot.day))
+    : (dateParam ?? new Date(Date.now() + 86400000).toISOString().slice(0, 10));
 
-  // All other teachers with conflict check for this slot's day + time
-  const teachers = await prisma.user.findMany({
+  // All ScheduledClasses for this teacher (class picker when no slot pre-selected)
+  const mySlots = slot
+    ? []
+    : await prisma.scheduledClass.findMany({
+        where: { offering: { teacherId: teacher.id } },
+        include: { offering: { include: { subject: true, classSection: true } } },
+        orderBy: [{ day: "asc" }, { slotIndex: "asc" }],
+      });
+
+  // All other teachers + conflict check (only meaningful when slot is known)
+  const allTeachers = await prisma.user.findMany({
     where: { role: "TEACHER", id: { not: teacher.id } },
-    include: {
-      taughtOfferings: {
-        include: {
-          schedule: {
-            where: {
-              day: slot.day,
-              startTime: { lte: slot.endTime },
-              endTime: { gte: slot.startTime },
+    include: slot
+      ? {
+          taughtOfferings: {
+            include: {
+              schedule: {
+                where: {
+                  day: slot.day,
+                  startTime: { lte: slot.endTime },
+                  endTime: { gte: slot.startTime },
+                },
+              },
             },
           },
-        },
-      },
-    },
+        }
+      : { taughtOfferings: false },
     orderBy: { name: "asc" },
   });
 
+  const teacherOptions: TeacherOption[] = allTeachers.map((t) => ({
+    id: t.id,
+    name: t.name,
+    email: t.email,
+    hasConflict:
+      Array.isArray(t.taughtOfferings) &&
+      t.taughtOfferings.some(
+        (o) => "schedule" in o && Array.isArray(o.schedule) && o.schedule.length > 0,
+      ),
+  }));
+
   return (
     <div>
-      <Link href="/teacher" className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="h-4 w-4" /> Back to My Day
+      <Link
+        href="/teacher/substitutions"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back to substitutions
       </Link>
 
-      <PageHeader title="Request a substitute" subtitle="Send a cover request to a colleague for admin approval" />
+      <PageHeader
+        title="Request a substitute"
+        subtitle="Send a cover request to a colleague for admin approval"
+      />
 
-      {/* Class info card */}
-      <div className="mb-6 rounded-xl border border-border bg-card p-4 shadow-sm">
-        <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Class to be covered</p>
-        <p className="text-base font-semibold text-foreground">{slot.offering?.subject.name}</p>
-        <p className="text-sm text-muted-foreground">
-          {slot.offering?.classSection.name} · {slot.day} {slot.startTime}–{slot.endTime}
-        </p>
-      </div>
-
+      {/* Everything inside one form */}
       <form action={createSubstitutionRequest} className="space-y-6">
-        <input type="hidden" name="scheduledClassId" value={slotId} />
 
-        {/* Date picker */}
+        {/* Class selection */}
+        {slot ? (
+          <>
+            <input type="hidden" name="scheduledClassId" value={slotId} />
+            <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+              <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                Class to be covered
+              </p>
+              <p className="text-base font-semibold text-foreground">
+                {slot.offering?.subject.name}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                {slot.offering?.classSection.name} · {slot.day} {slot.startTime}–{slot.endTime}
+              </p>
+            </div>
+          </>
+        ) : (
+          <div>
+            <label
+              htmlFor="scheduledClassId"
+              className="mb-1.5 block text-sm font-medium text-foreground"
+            >
+              Which class needs covering? <span className="text-destructive">*</span>
+            </label>
+            <select
+              id="scheduledClassId"
+              name="scheduledClassId"
+              required
+              className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+            >
+              <option value="">Select a class…</option>
+              {mySlots.map((sc) => (
+                <option key={sc.id} value={sc.id}>
+                  {sc.offering?.subject.name} — {sc.offering?.classSection.name} · {sc.day}{" "}
+                  {sc.startTime}–{sc.endTime}
+                </option>
+              ))}
+            </select>
+            <p className="mt-1 text-xs text-muted-foreground">All your scheduled weekly classes.</p>
+          </div>
+        )}
+
+        {/* Date */}
         <div>
           <label htmlFor="date" className="mb-1.5 block text-sm font-medium text-foreground">
-            Date of class to substitute
+            Date of class to substitute <span className="text-destructive">*</span>
           </label>
           <input
             id="date"
             name="date"
             type="date"
             defaultValue={defaultDate}
+            min={new Date().toISOString().slice(0, 10)}
             required
             className="w-full max-w-xs rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
           />
-          <p className="mt-1 text-xs text-muted-foreground">Select the specific date you need covered.</p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            {slot
+              ? `Defaults to the next ${slot.day} — change if you need a different date.`
+              : "Pick the specific date you need covered."}
+          </p>
         </div>
 
         {/* Reason */}
@@ -110,64 +181,35 @@ export default async function NewSubstitutionPage({
           />
         </div>
 
-        {/* Teacher Y picker */}
+        {/* Teacher picker (client component for search) */}
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground">
+          <p className="mb-1.5 text-sm font-medium text-foreground">
             Select a substitute teacher <span className="text-destructive">*</span>
           </p>
-          <p className="mb-3 text-xs text-muted-foreground">
-            Teachers with a scheduling conflict on <strong>{slot.day} {slot.startTime}–{slot.endTime}</strong> are flagged below — they can still accept, but be aware of the overlap.
-          </p>
-          <div className="space-y-2">
-            {teachers.map((t) => {
-              const hasConflict = t.taughtOfferings.some((o) => o.schedule.length > 0);
-              return (
-                <label
-                  key={t.id}
-                  className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-card px-4 py-3 transition hover:border-primary/40 hover:bg-accent has-[:checked]:border-primary has-[:checked]:bg-primary/8"
-                >
-                  <input
-                    type="radio"
-                    name="substituteTeacherId"
-                    value={t.id}
-                    required
-                    className="accent-primary"
-                  />
-                  <Avatar name={t.name} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.email}</p>
-                  </div>
-                  {hasConflict && (
-                    <span className="flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-                      <AlertTriangle className="h-3 w-3" />
-                      Has a class at this time
-                    </span>
-                  )}
-                  {!hasConflict && (
-                    <span className="flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400">
-                      <Clock className="h-3 w-3" /> Free
-                    </span>
-                  )}
-                </label>
-              );
-            })}
-            {teachers.length === 0 && (
-              <p className="rounded-xl border border-dashed border-border py-6 text-center text-sm text-muted-foreground">
-                No other teachers found.
-              </p>
-            )}
-          </div>
+          {slot && (
+            <p className="mb-3 text-xs text-muted-foreground">
+              Teachers with a conflict on{" "}
+              <strong>
+                {slot.day} {slot.startTime}–{slot.endTime}
+              </strong>{" "}
+              are flagged — they can still accept if available.
+            </p>
+          )}
+          <TeacherPicker teachers={teacherOptions} showConflict={!!slot} />
         </div>
 
-        <div className="flex items-center gap-3 pt-2">
+        {/* Submit */}
+        <div className="flex items-center gap-3 border-t border-border pt-4">
           <button
             type="submit"
             className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90"
           >
             Send request
           </button>
-          <Link href="/teacher" className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-accent">
+          <Link
+            href="/teacher/substitutions"
+            className="rounded-lg border border-border px-4 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-accent"
+          >
             Cancel
           </Link>
         </div>

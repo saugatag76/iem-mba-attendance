@@ -21,7 +21,14 @@ export default async function TeacherHome({
   const { q = "" } = await searchParams;
   const needle = q.trim().toLowerCase();
 
-  const [today, offerings, scheduled] = await Promise.all([
+  // "Today" in IST — convert to UTC bounds for the DB query.
+  const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const midnightIST = new Date(nowIST);
+  midnightIST.setHours(0, 0, 0, 0);
+  const startUTC = new Date(midnightIST.getTime() - (5 * 60 + 30) * 60 * 1000);
+  const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
+
+  const [today, offerings, scheduled, substitutingToday, substitutedToday] = await Promise.all([
     teacherClassesForDay(teacher.id, day),
     prisma.offering.findMany({
       where: { teacherId: teacher.id },
@@ -31,6 +38,21 @@ export default async function TeacherHome({
     prisma.scheduledClass.findMany({
       where: { offering: { teacherId: teacher.id } },
       orderBy: [{ day: "asc" }, { slotIndex: "asc" }],
+    }),
+    // Approved substitutions where this teacher IS the substitute (covering someone else).
+    prisma.substitutionRequest.findMany({
+      where: { substituteTeacherId: teacher.id, status: "APPROVED", date: { gte: startUTC, lt: endUTC } },
+      include: {
+        scheduledClass: {
+          include: { offering: { include: { subject: true, classSection: true, teacher: true } } },
+        },
+        requestedBy: true,
+      },
+    }),
+    // Approved substitutions where this teacher IS the requester (someone else is covering their class).
+    prisma.substitutionRequest.findMany({
+      where: { requestedById: teacher.id, status: "APPROVED", date: { gte: startUTC, lt: endUTC } },
+      include: { scheduledClass: true, substituteTeacher: true },
     }),
   ]);
 
@@ -44,7 +66,8 @@ export default async function TeacherHome({
   };
   // Lab subjects can list multiple subgroups (e.g. A1/A2) at the same day/time,
   // each pointing at this offering — collapse those into a single slot chip.
-  const scheduleByOffering = new Map<string, { day: string; time: string }[]>();
+  // Keep one entry per (offering, day, time) — labs may duplicate with subgroups.
+  const scheduleByOffering = new Map<string, { id: string; day: string; time: string }[]>();
   const seenSlots = new Set<string>();
   for (const sc of scheduled) {
     if (!sc.offeringId) continue;
@@ -52,20 +75,33 @@ export default async function TeacherHome({
     if (seenSlots.has(key)) continue;
     seenSlots.add(key);
     if (!scheduleByOffering.has(sc.offeringId)) scheduleByOffering.set(sc.offeringId, []);
-    scheduleByOffering.get(sc.offeringId)!.push({ day: sc.day, time: `${sc.startTime}–${sc.endTime}` });
+    scheduleByOffering.get(sc.offeringId)!.push({ id: sc.id, day: sc.day, time: `${sc.startTime}–${sc.endTime}` });
   }
 
   const sessionsHeld = offerings.reduce((a, o) => a + o._count.sessions, 0);
+
+  // Map of scheduledClassId → substitute teacher name (classes Teacher X handed off today).
+  const substitutedSlotIds = new Map<string, string>(
+    substitutedToday.map((s) => [s.scheduledClassId, s.substituteTeacher.name]),
+  );
+
+  // Merge regular classes + approved substitutions into one time-sorted list.
+  type SubInfo = { coveringFor: string } | null;
+  const allToday: { row: (typeof today)[number]; sub: SubInfo }[] = [
+    ...today.map((r) => ({ row: r, sub: null })),
+    ...substitutingToday
+      .filter((s) => s.scheduledClass.offering)
+      .map((s) => ({ row: s.scheduledClass as (typeof today)[number], sub: { coveringFor: s.requestedBy.name } })),
+  ].sort((a, b) => a.row.slotIndex - b.row.slotIndex);
 
   // Current time in IST (timetable times are local India time; server runs UTC).
   function toMins(hhmm: string): number {
     const [h, m] = hhmm.split(":").map(Number);
     return (h ?? 0) * 60 + (m ?? 0);
   }
-  const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
   const nowMins = nowIST.getHours() * 60 + nowIST.getMinutes();
-  // Find the first class that is currently running or still upcoming (not fully past).
-  const upNext = today.find((t) => t.offering && toMins(t.endTime) > nowMins) ?? null;
+  // Find the first class (regular or sub) that is currently running or still upcoming.
+  const upNext = allToday.find(({ row }) => row.offering && toMins(row.endTime) > nowMins)?.row ?? null;
   const upNextIsNow = upNext != null && toMins(upNext.startTime) <= nowMins;
 
   // group offerings by subject
@@ -114,34 +150,60 @@ export default async function TeacherHome({
       )}
 
       <Card title="Today's classes" icon={<CalendarClock className="h-4 w-4" />}>
-        {today.length === 0 ? (
+        {allToday.length === 0 ? (
           <EmptyState
             icon={<CalendarDays className="h-8 w-8" />}
             title={day ? "Nothing scheduled today" : "No classes on weekends"}
           />
         ) : (
           <ul className="divide-y divide-border">
-            {today.map((r) => {
+            {allToday.map(({ row: r, sub }) => {
               const todayISO = new Date().toISOString().slice(0, 10);
+              const isUpNext = r.id === upNext?.id;
+              const coveredByName = !sub ? substitutedSlotIds.get(r.id) : undefined;
+              const isSubstituted = !!coveredByName; // Teacher X handed this class off
+
               return (
-                <ClassRow key={r.id} row={r} showSection>
-                  <div className="flex flex-shrink-0 items-center gap-2">
-                    {r.offering &&
-                      (r.id === upNext?.id ? (
-                        <span className="text-xs text-muted-foreground">↑ Up next</span>
-                      ) : (
-                        <OpenSessionButton offeringId={r.offering.id} />
-                      ))}
-                    {r.offering && (
-                      <a
-                        href={`/teacher/substitutions/new?slotId=${r.id}&date=${todayISO}`}
-                        className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
-                        title="Request a substitute for this class"
-                      >
-                        Sub
-                      </a>
-                    )}
-                  </div>
+                <ClassRow
+                  key={`${r.id}-${sub ? "sub" : "own"}`}
+                  row={r}
+                  showSection
+                  className={
+                    sub ? "bg-primary/5 px-4 dark:bg-primary/8"
+                    : isSubstituted ? "bg-amber-500/8 px-4 dark:bg-amber-500/10"
+                    : "px-4"
+                  }
+                  badge={
+                    sub ? <Badge tone="brand">Substituting</Badge>
+                    : isSubstituted ? <Badge tone="amber">Substituted</Badge>
+                    : undefined
+                  }
+                  subtitle={
+                    sub ? `Covering for ${sub.coveringFor}`
+                    : isSubstituted ? `Covered by ${coveredByName}`
+                    : undefined
+                  }
+                >
+                  {!isSubstituted && (
+                    <div className="flex items-center gap-2">
+                      {r.offering && !sub && (
+                        <a
+                          href={`/teacher/substitutions/new?slotId=${r.id}&date=${todayISO}`}
+                          className="inline-flex items-center gap-1 rounded-lg border border-border px-2.5 py-1.5 text-xs font-medium text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+                          title="Request a substitute for this class"
+                        >
+                          Sub
+                        </a>
+                      )}
+                      {r.offering && (
+                        isUpNext ? (
+                          <span className="text-xs text-muted-foreground">↑ Up next</span>
+                        ) : (
+                          <OpenSessionButton offeringId={r.offering.id} />
+                        )
+                      )}
+                    </div>
+                  )}
                 </ClassRow>
               );
             })}
@@ -176,14 +238,22 @@ export default async function TeacherHome({
                               {o.subject.code}
                             </span>
                           </div>
-                          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+                          <div className="mt-1.5 flex flex-wrap items-center gap-2">
                             {slots.length > 0 ? (
-                              slots.map((s, i) => (
-                                <span
-                                  key={i}
-                                  className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium tabular-nums ring-1 ring-inset ${DAY_COLOR[s.day] ?? "bg-muted text-muted-foreground ring-slate-200"}`}
-                                >
-                                  {DAY_SHORT[s.day]} {s.time}
+                              slots.map((s) => (
+                                <span key={s.id} className="flex items-center gap-1">
+                                  <span
+                                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium tabular-nums ring-1 ring-inset ${DAY_COLOR[s.day] ?? "bg-muted text-muted-foreground ring-slate-200"}`}
+                                  >
+                                    {DAY_SHORT[s.day]} {s.time}
+                                  </span>
+                                  <a
+                                    href={`/teacher/substitutions/new?slotId=${s.id}`}
+                                    className="text-[10px] font-medium text-muted-foreground underline-offset-2 hover:text-primary hover:underline"
+                                    title="Request a substitute for this slot"
+                                  >
+                                    sub?
+                                  </a>
                                 </span>
                               ))
                             ) : (

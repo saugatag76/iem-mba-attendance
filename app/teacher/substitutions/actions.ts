@@ -69,7 +69,7 @@ export async function cancelSubstitutionRequest(formData: FormData) {
 export async function respondToSubstitutionRequest(formData: FormData) {
   const teacher = await requireRole("TEACHER", "ADMIN");
   const id = String(formData.get("id") ?? "");
-  const action = String(formData.get("action") ?? ""); // "accept" | "decline"
+  const action = String(formData.get("response") ?? ""); // "accept" | "decline"
   const teacherNote = String(formData.get("teacherNote") ?? "").trim();
 
   const req = await prisma.substitutionRequest.findUnique({ where: { id } });
