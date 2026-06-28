@@ -13,8 +13,6 @@ next-env.d.ts
 # raw source data dumps (timetables, imports) — kept local, never pushed
 /data/
 
-# internal docs / role guides — kept local, never pushed
-/docs/
 
 # Claude Code skill packages — local tooling, not part of the app
 /skills/
