@@ -2,6 +2,8 @@ import { UserPlus } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { Card, Field, inputClass, selectClass, Submit, PageHeader, Avatar, Badge } from "@/app/_components/ui";
+import { resetStudentDevice } from "@/app/teacher/actions";
+import { SmartphoneNfc } from "lucide-react";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { SectionHeader } from "@/app/_components/layout-ui";
 import { createUser } from "../actions";
@@ -86,7 +88,22 @@ export default async function PeoplePage({
                   </td>
                   <td className="px-4 py-2.5 text-muted-foreground">{u.email}</td>
                   <td className="px-4 py-2.5 text-right">
-                    <Badge tone={ROLE_TONE[u.role]}>{u.role}</Badge>
+                    <div className="flex items-center justify-end gap-2">
+                      <Badge tone={ROLE_TONE[u.role]}>{u.role}</Badge>
+                      {u.role === "STUDENT" && u.deviceId && (
+                        <form action={resetStudentDevice}>
+                          <input type="hidden" name="studentId" value={u.id} />
+                          <input type="hidden" name="redirectTo" value="/admin/people" />
+                          <button
+                            type="submit"
+                            title="Student has a new phone — reset device binding"
+                            className="inline-flex items-center gap-1 rounded-md border border-amber-500/30 px-2 py-1 text-[11px] font-medium text-amber-600 transition hover:bg-amber-500/10 dark:text-amber-400"
+                          >
+                            <SmartphoneNfc className="h-3 w-3" /> Reset device
+                          </button>
+                        </form>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}

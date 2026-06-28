@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { TrendingUp, BookOpen, AlertTriangle, ChevronRight } from "lucide-react";
+import { TrendingUp, BookOpen, AlertTriangle, ChevronRight, CalendarCheck } from "lucide-react";
+import { SessionsChart } from "./SessionsChart";
 import { requireRole } from "@/lib/session";
 import { reportsOverview } from "@/lib/attendance";
 import { parseDateRange, rangeQuery } from "@/lib/dateRange";
@@ -35,6 +36,11 @@ export default async function ReportsOverview({
   }));
 
   const notStarted = summaries.filter((s) => s.totalSessions === 0);
+  const totalSessionsConducted = summaries.reduce((a, s) => a + s.totalSessions, 0);
+  // Teacher view: sort by sessions descending for the "classes conducted" summary
+  const conductedBySubject = [...summaries]
+    .filter((s) => s.totalSessions > 0)
+    .sort((a, b) => b.totalSessions - a.totalSessions);
   let ranked = active.sort((a, b) => a.avgPercent - b.avgPercent);
   if (needle) {
     ranked = ranked.filter((s) =>
@@ -74,6 +80,33 @@ export default async function ReportsOverview({
               href={totalDefaulters > 0 ? `/reports/defaulters${qs}` : undefined}
             />
           </div>
+
+          {/* Teacher-only: classes conducted per subject — horizontal bar chart */}
+          {!isAdmin && conductedBySubject.length > 0 && (
+            <div className="mb-6 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+              <div className="flex items-center justify-between border-b border-border px-4 py-3">
+                <div className="flex items-center gap-2">
+                  <CalendarCheck className="h-4 w-4 text-primary" />
+                  <span className="text-sm font-semibold text-foreground">Classes conducted</span>
+                  <span className="text-xs text-muted-foreground">by subject</span>
+                </div>
+                <span className="tabular-nums text-sm font-bold text-foreground">
+                  {totalSessionsConducted} total
+                </span>
+              </div>
+              <div className="px-2 py-4">
+                <SessionsChart
+                  data={conductedBySubject.map((s) => ({
+                    subject: s.subjectName,
+                    code: s.subjectCode,
+                    sessions: s.totalSessions,
+                    offeringId: s.offeringId,
+                    qs,
+                  }))}
+                />
+              </div>
+            </div>
+          )}
 
           <SectionHeader title="Attendance trend" />
           {trendData.length === 0 ? (

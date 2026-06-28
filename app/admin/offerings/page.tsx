@@ -1,13 +1,24 @@
 import { Link2 } from "lucide-react";
+import { DeleteOfferingButton } from "./DeleteOfferingButton";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
-import { Card, Field, inputClass, selectClass, Submit, PageHeader, Avatar } from "@/app/_components/ui";
+import { Card, Field, selectClass, Submit, PageHeader, Avatar, Badge } from "@/app/_components/ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { SectionHeader, CollapsibleGroup } from "@/app/_components/layout-ui";
 import { STREAMS } from "@/lib/streams";
-import { createOffering } from "../actions";
+import { createOffering, deleteOffering } from "../actions";
 
 export const dynamic = "force-dynamic";
+
+// Trimester system: Terms 1–3 = Year 1, Terms 4–6 = Year 2
+const TERMS = [
+  { value: "2026-T1", label: "Term 1 · 2026 (Year 1)" },
+  { value: "2026-T2", label: "Term 2 · 2026 (Year 1)" },
+  { value: "2026-T3", label: "Term 3 · 2026 (Year 1)" },
+  { value: "2026-T4", label: "Term 4 · 2026 (Year 2)" },
+  { value: "2026-T5", label: "Term 5 · 2026 (Year 2)" },
+  { value: "2026-T6", label: "Term 6 · 2026 (Year 2)" },
+];
 
 export default async function OfferingsPage({
   searchParams,
@@ -23,7 +34,7 @@ export default async function OfferingsPage({
     prisma.classSection.findMany({ orderBy: [{ year: "asc" }, { name: "asc" }] }),
     prisma.user.findMany({ where: { role: "TEACHER" }, orderBy: { name: "asc" } }),
     prisma.offering.findMany({
-      include: { subject: true, classSection: true, teacher: true },
+      include: { subject: true, classSection: true, teacher: true, _count: { select: { sessions: true } } },
       orderBy: { createdAt: "desc" },
     }),
   ]);
@@ -39,7 +50,6 @@ export default async function OfferingsPage({
     return true;
   });
 
-  // group by section
   const groups = new Map<string, typeof filtered>();
   for (const o of filtered) {
     const k = o.classSection.name;
@@ -73,7 +83,11 @@ export default async function OfferingsPage({
               {teachers.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}
             </select>
           </Field>
-          <Field label="Term"><input name="term" placeholder="Term" className={inputClass} defaultValue="2026-T1" /></Field>
+          <Field label="Term">
+            <select name="term" className={selectClass} required defaultValue="2026-T1">
+              {TERMS.map((t) => <option key={t.value} value={t.value}>{t.label}</option>)}
+            </select>
+          </Field>
           <div className="flex items-end"><Submit>Create</Submit></div>
         </form>
       </Card>
@@ -95,16 +109,36 @@ export default async function OfferingsPage({
           <CollapsibleGroup key={name} title={name} count={items.length} defaultOpen={fewGroups}>
             <ul className="divide-y divide-border">
               {items.map((o) => (
-                <li key={o.id} className="flex items-center justify-between gap-3 px-4 py-2.5 text-sm">
-                  <div className="min-w-0">
-                    <span className="font-mono text-xs font-medium text-foreground">{o.subject.code}</span>{" "}
-                    <span className="text-foreground">{o.subject.name}</span>
-                    <span className="ml-1 text-xs text-muted-foreground">· {o.term}</span>
+                <li key={o.id} className="flex items-center justify-between gap-4 px-4 py-3">
+                  {/* Subject info */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="flex-shrink-0 rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] font-medium text-muted-foreground">
+                        {o.subject.code.length > 10 ? o.subject.code.split("-")[0] + "-…" : o.subject.code}
+                      </span>
+                      <span className="truncate text-sm font-semibold text-foreground">{o.subject.name}</span>
+                    </div>
+                    <div className="mt-0.5 flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="rounded-full bg-muted/60 px-2 py-0.5 text-[10px] font-medium">{o.term}</span>
+                      {o._count.sessions > 0 && (
+                        <span>{o._count.sessions} session{o._count.sessions !== 1 ? "s" : ""}</span>
+                      )}
+                    </div>
                   </div>
-                  <span className="flex flex-shrink-0 items-center gap-1.5 text-xs text-muted-foreground">
-                    <Avatar name={o.teacher.name} className="h-5 w-5 text-[9px]" />
-                    {o.teacher.name}
-                  </span>
+                  {/* Teacher + actions */}
+                  <div className="flex flex-shrink-0 items-center gap-3">
+                    <div className="hidden items-center gap-2 sm:flex">
+                      <Avatar name={o.teacher.name} className="h-7 w-7 text-[10px]" />
+                      <div className="leading-tight">
+                        <p className="text-xs font-medium text-foreground">{o.teacher.name}</p>
+                      </div>
+                    </div>
+                    <DeleteOfferingButton
+                      id={o.id}
+                      sessionCount={o._count.sessions}
+                      action={deleteOffering}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

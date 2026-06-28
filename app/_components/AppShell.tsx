@@ -19,6 +19,9 @@ import {
   Radio,
   Search,
   ArrowLeftRight,
+  MapPin,
+  KeyRound,
+  CalendarRange,
 } from "lucide-react";
 import type { Role } from "@prisma/client";
 import { Avatar, cn } from "./ui";
@@ -47,7 +50,9 @@ const NAV: Record<Role, { section: string; items: Item[] }[]> = {
         { href: "/admin/offerings", label: "Offerings", icon: Link2 },
         { href: "/admin/routine", label: "Routine", icon: CalendarDays },
         { href: "/admin/substitutions", label: "Substitutions", icon: ArrowLeftRight },
+        { href: "/events", label: "Events", icon: CalendarRange },
         { href: "/admin/import", label: "Import", icon: Upload },
+        { href: "/admin/location-test", label: "Location test", icon: MapPin },
       ],
     },
   ],
@@ -56,8 +61,10 @@ const NAV: Record<Role, { section: string; items: Item[] }[]> = {
       section: "Dashboards",
       items: [
         { href: "/teacher", label: "My Day", icon: LayoutGrid },
+        { href: "/teacher/timetable", label: "My Timetable", icon: CalendarDays },
         { href: "/reports", label: "Reports", icon: FileBarChart },
         { href: "/teacher/substitutions", label: "Substitutions", icon: ArrowLeftRight },
+        { href: "/events", label: "Events", icon: CalendarRange },
       ],
     },
   ],
@@ -67,6 +74,7 @@ const NAV: Record<Role, { section: string; items: Item[] }[]> = {
       items: [
         { href: "/student", label: "Overview", icon: LayoutGrid },
         { href: "/student/scan", label: "Scan", icon: QrCode },
+        { href: "/student/events", label: "Events", icon: CalendarRange },
         { href: "/student/timetable", label: "Timetable", icon: CalendarDays },
       ],
     },
@@ -109,7 +117,7 @@ export function AppShell({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground/80 transition-transform duration-200 lg:static lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground/80 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -173,6 +181,12 @@ export function AppShell({
               <div className="text-[11px] text-sidebar-foreground/40">{ROLE_LABEL[role]}</div>
             </div>
           </div>
+          <Link
+            href="/settings/change-password"
+            className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+          >
+            <KeyRound className="h-4 w-4" /> Change password
+          </Link>
           <form action={doSignOut}>
             <button className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium text-sidebar-foreground/60 transition hover:bg-sidebar-accent hover:text-sidebar-accent-foreground">
               <LogOut className="h-4 w-4" /> Log out

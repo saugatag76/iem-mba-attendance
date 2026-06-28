@@ -12,7 +12,11 @@ export const WEEKDAY_LABEL: Record<Weekday, string> = {
 
 /** Today's Weekday enum, or null on weekends. */
 export function todayWeekday(): Weekday | null {
-  const d = new Date().getDay(); // 0=Sun … 6=Sat
+  // Must use IST — Vercel runs UTC, which is 5h30m behind IST.
+  // new Date().getDay() in UTC on a Saturday morning in India returns Friday (5),
+  // causing the previous day's classes to show. Force IST for the day calculation.
+  const istNow = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const d = istNow.getDay(); // 0=Sun … 6=Sat in IST
   return d >= 1 && d <= 5 ? WEEKDAYS[d - 1] : null;
 }
 
@@ -49,6 +53,18 @@ export async function studentClassesForDay(studentId: string, day: Weekday | nul
 }
 
 export type ScheduleRow = Awaited<ReturnType<typeof teacherClassesForDay>>[number];
+
+/** Full weekly schedule for one teacher, grouped by weekday. */
+export async function teacherWeekly(teacherId: string) {
+  const rows = await prisma.scheduledClass.findMany({
+    where: { offering: { teacherId } },
+    include: scheduleInclude,
+    orderBy: [{ day: "asc" }, { slotIndex: "asc" }],
+  });
+  const byDay: Record<Weekday, ScheduleRow[]> = { MON: [], TUE: [], WED: [], THU: [], FRI: [] };
+  for (const r of rows) byDay[r.day].push(r);
+  return byDay;
+}
 
 /** Full weekly schedule for one section, grouped by weekday. */
 export async function sectionWeekly(sectionId: string) {

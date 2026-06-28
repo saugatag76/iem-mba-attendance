@@ -23,19 +23,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email", type: "email" },
+        email: { label: "Email or phone number", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const email = String(credentials?.email ?? "").trim();
+        const identifier = String(credentials?.email ?? "").trim();
         const password = String(credentials?.password ?? "");
-        if (!email || !password) return null;
+        if (!identifier || !password) return null;
 
-        // Case-insensitive lookup so e.g. "finA1@iem.edu" matches regardless of how
-        // it was typed or stored.
-        const user = await prisma.user.findFirst({
-          where: { email: { equals: email, mode: "insensitive" } },
-        });
+        // If identifier is all digits (10–12 chars) → phone login (students).
+        // Otherwise → email login (teachers / admins).
+        const isPhone = /^\d{10,12}$/.test(identifier);
+        const user = isPhone
+          ? await prisma.user.findFirst({ where: { phone: identifier } })
+          : await prisma.user.findFirst({
+              where: { email: { equals: identifier, mode: "insensitive" } },
+            });
         if (!user) return null;
 
         const ok = await bcrypt.compare(password, user.passwordHash);

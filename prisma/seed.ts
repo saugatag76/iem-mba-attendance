@@ -78,11 +78,11 @@ async function main() {
     const tid = teacherId.get(o.teacherInitials) ?? teacherId.get("NA");
     if (!sid || !csid || !tid) continue;
     const off = await prisma.offering.upsert({
-      where: { subjectId_classSectionId_term: { subjectId: sid, classSectionId: csid, term: o.term } },
-      update: { teacherId: tid },
+      where: { subjectId_classSectionId_teacherId_term: { subjectId: sid, classSectionId: csid, teacherId: tid, term: o.term } },
+      update: {},
       create: { subjectId: sid, classSectionId: csid, teacherId: tid, term: o.term },
     });
-    offeringId.set(`${o.subjectCode}|${o.sectionName}|${o.term}`, off.id);
+    offeringId.set(`${o.subjectCode}|${o.sectionName}|${o.teacherInitials}|${o.term}`, off.id);
   }
 
   // --- Weekly schedule ---
@@ -92,7 +92,7 @@ async function main() {
     const csid = sectionId.get(e.sectionName);
     if (!csid) continue;
     const term = sectionYear.get(e.sectionName) === 1 ? "2026-T1" : "2026-T4";
-    const offId = offeringId.get(`${e.subjectCode}|${e.sectionName}|${term}`) ?? null;
+    const offId = offeringId.get(`${e.subjectCode}|${e.sectionName}|${e.teacherInitials}|${term}`) ?? null;
     await prisma.scheduledClass.create({
       data: {
         classSectionId: csid,

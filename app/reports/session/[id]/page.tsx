@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { Download, MapPin, MapPinOff } from "lucide-react";
+import { Download, MapPin, SmartphoneNfc } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { sessionRegister } from "@/lib/attendance";
 import { Badge, Avatar } from "@/app/_components/ui";
 import { ScanMapClient } from "./ScanMapClient";
+import { resetStudentDevice } from "@/app/teacher/actions";
 
 export default async function SessionReport({
   params,
@@ -73,7 +74,7 @@ export default async function SessionReport({
       {nonCompliant.length > 0 && (
         <div className="mb-5 overflow-hidden rounded-xl border border-red-500/20 bg-card shadow-sm">
           <div className="flex items-center gap-2 border-b border-border bg-red-500/5 px-4 py-2.5 text-sm font-semibold text-red-600 dark:bg-red-500/10 dark:text-red-400">
-            <MapPinOff className="h-4 w-4" />
+            <MapPin className="h-4 w-4 opacity-40" />
             Location non-compliant ({nonCompliant.length})
             <span className="ml-auto text-xs font-normal text-muted-foreground">
               Scanned QR but no location provided — marked absent
@@ -156,7 +157,23 @@ export default async function SessionReport({
                   )}
                 </td>
                 <td className="px-4 py-2.5 text-right">
-                  <Badge tone={r.present ? "green" : "gray"}>{r.present ? "Present" : "Absent"}</Badge>
+                  <div className="flex items-center justify-end gap-2">
+                    <Badge tone={r.present ? "green" : "gray"}>{r.present ? "Present" : "Absent"}</Badge>
+                    {/* Device reset — shown for flagged records so teacher can unlock new device */}
+                    {r.flagged && r.flagReason?.includes("Device mismatch") && (
+                      <form action={resetStudentDevice}>
+                        <input type="hidden" name="studentId" value={r.studentId} />
+                        <input type="hidden" name="redirectTo" value={`/reports/session/${id}`} />
+                        <button
+                          type="submit"
+                          title="Reset device binding so this student can scan from a new device"
+                          className="inline-flex items-center gap-1 rounded-md border border-amber-500/30 px-2 py-1 text-[11px] font-medium text-amber-600 transition hover:bg-amber-500/10 dark:text-amber-400"
+                        >
+                          <SmartphoneNfc className="h-3 w-3" /> Reset device
+                        </button>
+                      </form>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

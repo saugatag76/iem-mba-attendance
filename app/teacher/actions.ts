@@ -33,6 +33,23 @@ export async function openSession(formData: FormData) {
   redirect(`/teacher/session/${session.id}`);
 }
 
+/**
+ * Reset a student's device binding so their next scan registers the new device.
+ * Only teachers (who teach this student) or admins can call this.
+ */
+export async function resetStudentDevice(formData: FormData) {
+  await requireRole("TEACHER", "ADMIN");
+  const studentId = String(formData.get("studentId") ?? "");
+  if (!studentId) return;
+  await prisma.user.update({
+    where: { id: studentId },
+    data: { deviceId: null },
+  });
+  const redirectTo = String(formData.get("redirectTo") ?? "/teacher");
+  revalidatePath(redirectTo);
+  redirect(`${redirectTo}?toast=${encodeURIComponent("Device binding reset — student can now scan from a new device.")}`);
+}
+
 export async function closeSession(formData: FormData) {
   await requireRole("TEACHER", "ADMIN");
   const sessionId = String(formData.get("sessionId") ?? "");

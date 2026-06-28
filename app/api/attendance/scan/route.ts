@@ -76,16 +76,38 @@ export async function POST(req: Request) {
   if (existing)
     return NextResponse.json({ ok: true, already: true, message: "Already marked present." });
 
-  // 6. Device binding — bind on first scan, flag (do not silently block) on mismatch.
+  // 6. Device binding — cross-ownership check first, then per-account binding.
   let flagged = false;
   let flagReason: string | null = null;
   if (deviceId) {
+    // ANTI-PROXY: check if this device is already bound to a DIFFERENT student.
+    // This blocks "Student A hands their phone to Student B to scan as Student B" —
+    // the phone is bound to A, so when B tries to scan with it, this fires.
+    const deviceOwner = await prisma.user.findFirst({
+      where: { deviceId, id: { not: studentId } },
+      select: { id: true },
+    });
+    if (deviceOwner) {
+      return NextResponse.json(
+        { error: "This device is registered to another student account. Proxy attendance is not allowed." },
+        { status: 403 },
+      );
+    }
+
     const student = await prisma.user.findUnique({ where: { id: studentId } });
     if (student && !student.deviceId) {
+      // First scan — bind this device permanently.
       await prisma.user.update({ where: { id: studentId }, data: { deviceId } });
     } else if (student && student.deviceId !== deviceId) {
-      flagged = true;
-      flagReason = "Device mismatch (account used on a different device).";
+      // Device changed — hard block. Teacher must reset the binding before a new device is accepted.
+      return NextResponse.json(
+        {
+          error:
+            "This account is locked to a different device. " +
+            "If you have a new phone, ask your teacher to reset your device binding.",
+        },
+        { status: 403 },
+      );
     }
   }
 

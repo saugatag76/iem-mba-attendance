@@ -56,12 +56,20 @@ export default async function TeacherSubstitutionsPage({
         title="Substitutions"
         subtitle="Track your substitution requests sent and received"
         action={
-          <a
-            href="/teacher/substitutions/new"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
-          >
-            + New request
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href="/teacher/substitutions/leave"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+            >
+              Plan leave
+            </a>
+            <a
+              href="/teacher/substitutions/new"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+            >
+              + Single class
+            </a>
+          </div>
         }
       />
 

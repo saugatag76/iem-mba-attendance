@@ -104,6 +104,8 @@ export default async function TeacherHome({
   const upNext = allToday.find(({ row }) => row.offering && toMins(row.endTime) > nowMins)?.row ?? null;
   const upNextIsNow = upNext != null && toMins(upNext.startTime) <= nowMins;
 
+  // After all today's classes end (or on weekends), show the next teaching day.
+
   // group offerings by subject
   const filteredOfferings = needle
     ? offerings.filter((o) =>
@@ -150,7 +152,24 @@ export default async function TeacherHome({
       )}
 
       <Card title="Today's classes" icon={<CalendarClock className="h-4 w-4" />}>
-        {allToday.length === 0 ? (
+        {allToday.length === 0 && offerings.length === 0 ? (
+          <EmptyState icon={<CalendarDays className="h-8 w-8" />} title="No classes assigned yet" />
+        ) : allToday.length === 0 && teacher.email === "demo.teacher@iem.edu" ? (
+          /* Demo account only — show all offerings any day so demos work on weekends */
+          <ul className="divide-y divide-border">
+            {offerings.map((o) => (
+              <li key={o.id} className="flex items-center justify-between gap-3 px-4 py-3">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-foreground">{o.subject.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    <span className="font-mono">{o.subject.code}</span> · {o.classSection.name}
+                  </p>
+                </div>
+                <OpenSessionButton offeringId={o.id} />
+              </li>
+            ))}
+          </ul>
+        ) : allToday.length === 0 ? (
           <EmptyState
             icon={<CalendarDays className="h-8 w-8" />}
             title={day ? "Nothing scheduled today" : "No classes on weekends"}
@@ -267,6 +286,7 @@ export default async function TeacherHome({
                             <p className="text-[10px] uppercase tracking-wide text-muted-foreground">sessions</p>
                           </div>
                           <div className="hidden h-8 w-px bg-muted sm:block" />
+                          <OpenSessionButton offeringId={o.id} />
                           <Link
                             href={`/reports/offering/${o.id}`}
                             className="inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-input bg-card px-3 py-1.5 text-xs font-medium text-foreground transition hover:bg-accent"

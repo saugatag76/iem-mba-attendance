@@ -24,14 +24,24 @@ export function OpenSessionButton({
     setBusy(true);
     const submit = () => formRef.current?.requestSubmit();
     if (!navigator.geolocation) return submit(); // no GPS → open without geofence
+
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        if (latRef.current) latRef.current.value = String(pos.coords.latitude);
-        if (lngRef.current) lngRef.current.value = String(pos.coords.longitude);
+        // Only anchor the geofence if the GPS accuracy is better than the
+        // geofence radius itself. On a PC, Wi-Fi positioning often returns
+        // ±100–500 m accuracy — setting an anchor that inaccurate would
+        // cause every student to be rejected even in the right classroom.
+        const GEOFENCE_M = 75;
+        if (pos.coords.accuracy <= GEOFENCE_M * 2) {
+          if (latRef.current) latRef.current.value = String(pos.coords.latitude);
+          if (lngRef.current) lngRef.current.value = String(pos.coords.longitude);
+        }
+        // If accuracy > 150 m, open without anchor (no geofence) so students aren't
+        // blocked by a wildly wrong anchor point from Wi-Fi positioning.
         submit();
       },
-      () => submit(), // denied / failed → open without geofence
-      { enableHighAccuracy: true, timeout: 8000 },
+      () => submit(), // denied / timed out → open without geofence
+      { enableHighAccuracy: true, timeout: 12000 },
     );
   }
 

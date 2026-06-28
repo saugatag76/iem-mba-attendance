@@ -99,3 +99,25 @@ export function peekUserId(token: string): string | null {
 export function peekSessionId(token: string): string | null {
   return peekClaim(token, "sessionId");
 }
+
+// ---- Static event QR (long-lived, one per event) ----
+
+export async function signEventToken(eventId: string, qrSecret: string): Promise<string> {
+  return new SignJWT({ eventId, kind: "event" })
+    .setProtectedHeader({ alg: "HS256" })
+    .setIssuedAt()
+    .setExpirationTime("24h")
+    .sign(enc(qrSecret));
+}
+
+export async function verifyEventToken(token: string, qrSecret: string): Promise<string> {
+  const { payload } = await jwtVerify(token, enc(qrSecret));
+  if (payload.kind !== "event" || typeof payload.eventId !== "string") {
+    throw new Error("Not an event token");
+  }
+  return payload.eventId;
+}
+
+export function peekEventId(token: string): string | null {
+  return peekClaim(token, "eventId");
+}

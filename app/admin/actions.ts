@@ -57,11 +57,20 @@ export async function createOffering(formData: FormData) {
   const subjectId = String(formData.get("subjectId") ?? "");
   const classSectionId = String(formData.get("classSectionId") ?? "");
   const teacherId = String(formData.get("teacherId") ?? "");
-  const term = String(formData.get("term") ?? "2026-ODD").trim() || "2026-ODD";
+  const term = String(formData.get("term") ?? "2026-T1").trim() || "2026-T1";
   if (!subjectId || !classSectionId || !teacherId)
     flash(formData, "/admin/offerings", "Subject, class and teacher are required", "error");
   await prisma.offering.create({ data: { subjectId, classSectionId, teacherId, term } });
   flash(formData, "/admin/offerings", "Offering created");
+}
+
+export async function deleteOffering(formData: FormData) {
+  await adminOnly();
+  const id = String(formData.get("id") ?? "");
+  if (!id) flash(formData, "/admin/offerings", "Offering ID missing", "error");
+  // Sessions cascade via schema; just delete the offering.
+  await prisma.offering.delete({ where: { id } });
+  flash(formData, "/admin/offerings", "Offering removed");
 }
 
 export async function createUser(formData: FormData) {

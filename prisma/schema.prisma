@@ -61,6 +61,62 @@ enum SubstitutionStatus {
   CANCELLED         // Teacher X withdrew the request
 }
 
+enum EventStatus {
+  PENDING_APPROVAL  // teacher-created, waiting for admin
+  APPROVED          // admin approved (or admin created directly)
+  REJECTED          // admin rejected
+  OPEN              // QR is live, students can scan
+  CLOSED            // event ended
+  CANCELLED
+}
+
+model Event {
+  id           String          @id @default(cuid())
+  title        String
+  description  String?
+  venue        String?
+  eventDate    DateTime
+  // Empty targetSections = open to ALL enrolled students
+  targetSections EventTargetSection[]
+  status       EventStatus     @default(PENDING_APPROVAL)
+
+  createdBy    User            @relation("EventCreatedBy",  fields: [createdById],  references: [id])
+  createdById  String
+  approvedBy   User?           @relation("EventApprovedBy", fields: [approvedById], references: [id])
+  approvedById String?
+  adminNote    String?
+
+  qrSecret     String          @default(cuid())
+
+  attendances  EventAttendance[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+// Which class sections are invited to an event.
+// No rows = event is open to all students.
+model EventTargetSection {
+  id             String       @id @default(cuid())
+  event          Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId        String
+  classSection   ClassSection @relation(fields: [classSectionId], references: [id], onDelete: Cascade)
+  classSectionId String
+
+  @@unique([eventId, classSectionId])
+}
+
+model EventAttendance {
+  id        String   @id @default(cuid())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String
+  student   User     @relation("EventAttendances", fields: [studentId], references: [id])
+  studentId String
+  scannedAt DateTime @default(now())
+
+  @@unique([eventId, studentId])
+  @@index([studentId])
+}
+
 model Department {
   id        String         @id @default(cuid())
   name      String         @unique
@@ -84,6 +140,7 @@ model ClassSection {
   offerings    Offering[]
   enrollments  Enrollment[]
   schedule     ScheduledClass[]
+  eventTargets EventTargetSection[]
   createdAt    DateTime     @default(now())
 
   @@unique([departmentId, name])
@@ -117,7 +174,7 @@ model Offering {
   schedule       ScheduledClass[]
   createdAt      DateTime     @default(now())
 
-  @@unique([subjectId, classSectionId, term])
+  @@unique([subjectId, classSectionId, teacherId, term])
 }
 
 // A recurring weekly timetable slot for a section (from the routine spreadsheet).
@@ -145,6 +202,8 @@ model ScheduledClass {
 model User {
   id              String       @id @default(cuid())
   email           String       @unique
+  // Students log in with phone number; teachers/admins use email.
+  phone           String?      @unique
   name            String
   role            Role         @default(STUDENT)
   passwordHash    String
@@ -162,6 +221,10 @@ model User {
   substitutionRequestsCreated  SubstitutionRequest[] @relation("SubsRequested")
   substitutionRequestsAssigned SubstitutionRequest[] @relation("SubsAssigned")
   substitutionRequestsApproved SubstitutionRequest[] @relation("SubsApproved")
+
+  eventsCreated   Event[]          @relation("EventCreatedBy")
+  eventsApproved  Event[]          @relation("EventApprovedBy")
+  eventAttendances EventAttendance[] @relation("EventAttendances")
 }
 
 model Enrollment {

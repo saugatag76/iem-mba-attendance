@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { FACULTY } from "../lib/facultyInitials";
 
-const XLSX_PATH = path.join("data", "Timetable_term1_term4_june,2026_v7.xlsx");
+const XLSX_PATH = path.join("Timetable_term1_term4_june,2026_v8.xlsx");
 const OUT = path.join("prisma", "timetable-data.json");
 
 // ---- Subject display name (as written in the timetable) → code ----
@@ -101,7 +101,9 @@ function addSubject(code: string, name: string, semester: number, stream: string
   if (!subjects.has(code)) subjects.set(code, { code, name, semester, stream });
 }
 function addOffering(subjectCode: string, sectionName: string, teacherInitials: string, term: string) {
-  const key = `${subjectCode}|${sectionName}|${term}`;
+  // Include teacher in key so the same subject taught by different teachers to the same
+  // class gets separate offering records (e.g. OB Sec A: PC on Tue/Fri, CM on Thu).
+  const key = `${subjectCode}|${sectionName}|${teacherInitials}|${term}`;
   if (!offerings.has(key)) offerings.set(key, { subjectCode, sectionName, teacherInitials, term });
 }
 

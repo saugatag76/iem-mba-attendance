@@ -474,6 +474,12 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec A",
+      "teacherInitials": "PB",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA173",
       "sectionName": "Sec A",
       "teacherInitials": "AB",
@@ -504,6 +510,12 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec B",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA173",
       "sectionName": "Sec B",
       "teacherInitials": "AB",
@@ -516,9 +528,15 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec B",
+      "teacherInitials": "SAG",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA172",
       "sectionName": "Sec B",
-      "teacherInitials": "SNG",
+      "teacherInitials": "SHD",
       "term": "2026-T1"
     },
     {
@@ -626,7 +644,7 @@
     {
       "subjectCode": "ACT-domain-expertise-for-placement",
       "sectionName": "Finance 1",
-      "teacherInitials": "AKH",
+      "teacherInitials": "SD",
       "term": "2026-T4"
     },
     {
@@ -686,7 +704,7 @@
     {
       "subjectCode": "ACT-domain-expertise-for-placement",
       "sectionName": "Finance 2",
-      "teacherInitials": "AKH",
+      "teacherInitials": "SD",
       "term": "2026-T4"
     },
     {
@@ -720,6 +738,12 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "HR",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "CM401",
       "sectionName": "SC",
       "teacherInitials": "SC",
@@ -729,6 +753,12 @@
       "subjectCode": "MBA471",
       "sectionName": "SC",
       "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "SC",
+      "teacherInitials": "BM",
       "term": "2026-T4"
     },
     {
@@ -747,6 +777,12 @@
       "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
       "sectionName": "MM",
       "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "MM",
+      "teacherInitials": "SBC",
       "term": "2026-T4"
     },
     {
@@ -798,6 +834,30 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec A",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec A",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec A",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec A",
+      "teacherInitials": "SM",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA171",
       "sectionName": "Sec A",
       "teacherInitials": "PC",
@@ -816,9 +876,21 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec B",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA104",
       "sectionName": "Sec B",
       "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec B",
+      "teacherInitials": "NM",
       "term": "2026-T1"
     },
     {
@@ -846,9 +918,21 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec C",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA194",
       "sectionName": "Sec C",
       "teacherInitials": "SAG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec C",
+      "teacherInitials": "AKH",
       "term": "2026-T1"
     },
     {
@@ -861,6 +945,12 @@
       "subjectCode": "MBA104",
       "sectionName": "Sec C",
       "teacherInitials": "AG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec C",
+      "teacherInitials": "SM",
       "term": "2026-T1"
     },
     {
@@ -888,6 +978,12 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec D",
+      "teacherInitials": "PK",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA171",
       "sectionName": "Sec D",
       "teacherInitials": "SRN",
@@ -904,6 +1000,30 @@
       "sectionName": "Sec D",
       "teacherInitials": "RB",
       "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec D",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec D",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SRN",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "DM",
+      "term": "2026-T4"
     },
     {
       "subjectCode": "MBA493",
@@ -972,9 +1092,27 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "Finance 2",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "ACT-domain-expertise-for-placement",
       "sectionName": "HR",
       "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "HR",
+      "teacherInitials": "SC",
       "term": "2026-T4"
     },
     {
@@ -987,6 +1125,18 @@
       "subjectCode": "ACT-hr-analytics-hands-on",
       "sectionName": "HR",
       "teacherInitials": "GUEST",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "HR",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "SC",
+      "teacherInitials": "KKG",
       "term": "2026-T4"
     },
     {
@@ -1014,6 +1164,12 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "MM",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "CM401",
       "sectionName": "MM",
       "teacherInitials": "KKG",
@@ -1023,6 +1179,30 @@
       "subjectCode": "MBA491",
       "sectionName": "MM",
       "teacherInitials": "DM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "MM",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "TM",
+      "teacherInitials": "AB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "TM",
+      "teacherInitials": "PC",
       "term": "2026-T4"
     },
     {
@@ -1038,9 +1218,21 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec A",
+      "teacherInitials": "SC",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA193",
       "sectionName": "Sec A",
       "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec A",
+      "teacherInitials": "UDC",
       "term": "2026-T1"
     },
     {
@@ -1062,6 +1254,12 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec B",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "ACT-case-study",
       "sectionName": "Sec B",
       "teacherInitials": "SRN",
@@ -1074,9 +1272,33 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec C",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec C",
+      "teacherInitials": "SC",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA193",
       "sectionName": "Sec C",
       "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec C",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec C",
+      "teacherInitials": "UDC",
       "term": "2026-T1"
     },
     {
@@ -1086,9 +1308,33 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA194",
+      "sectionName": "Sec D",
+      "teacherInitials": "SAG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec D",
+      "teacherInitials": "KKG",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA174",
       "sectionName": "Sec D",
       "teacherInitials": "DS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA101",
+      "sectionName": "Sec D",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA173",
+      "sectionName": "Sec D",
+      "teacherInitials": "WM",
       "term": "2026-T1"
     },
     {
@@ -1098,15 +1344,63 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "FM401",
+      "sectionName": "Finance 1",
+      "teacherInitials": "NM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM401",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SD",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "HR401",
+      "sectionName": "HR",
+      "teacherInitials": "SRN",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "SC401",
+      "sectionName": "SC",
+      "teacherInitials": "UDC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MM401",
+      "sectionName": "MM",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "TM401",
+      "sectionName": "TM",
+      "teacherInitials": "PK",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA491",
       "sectionName": "Finance 1",
       "teacherInitials": "DM",
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM401",
+      "sectionName": "Finance 1",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA471",
       "sectionName": "Finance 1",
       "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SM",
       "term": "2026-T4"
     },
     {
@@ -1122,9 +1416,21 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA491",
       "sectionName": "HR",
       "teacherInitials": "RB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "HR",
+      "teacherInitials": "DS",
       "term": "2026-T4"
     },
     {
@@ -1140,6 +1446,24 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "SC",
+      "teacherInitials": "SRN",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "SC",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "SC",
+      "teacherInitials": "SC",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA492",
       "sectionName": "MM",
       "teacherInitials": "WM",
@@ -1152,10 +1476,52 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "MBA471",
+      "sectionName": "MM",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "BM",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA491",
       "sectionName": "TM",
       "teacherInitials": "DD",
       "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "TM",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "TM",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "TM",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec A",
+      "teacherInitials": "CM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec A",
+      "teacherInitials": "SD",
+      "term": "2026-T1"
     },
     {
       "subjectCode": "MBA174",
@@ -1167,6 +1533,30 @@
       "subjectCode": "ACT-sports",
       "sectionName": "Sec A",
       "teacherInitials": "NA",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec B",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec B",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA105",
+      "sectionName": "Sec B",
+      "teacherInitials": "KKG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec B",
+      "teacherInitials": "SNG",
       "term": "2026-T1"
     },
     {
@@ -1182,9 +1572,27 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec C",
+      "teacherInitials": "CM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec C",
+      "teacherInitials": "SD",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "ACT-case-study",
       "sectionName": "Sec C",
       "teacherInitials": "SRN",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA172",
+      "sectionName": "Sec C",
+      "teacherInitials": "SHD",
       "term": "2026-T1"
     },
     {
@@ -1200,10 +1608,28 @@
       "term": "2026-T1"
     },
     {
+      "subjectCode": "MBA171",
+      "sectionName": "Sec D",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA102",
+      "sectionName": "Sec D",
+      "teacherInitials": "AKH",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "ACT-esp-sdp",
       "sectionName": "Sec D",
       "teacherInitials": "NA",
       "term": "2026-T1"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
     },
     {
       "subjectCode": "MBA492",
@@ -1218,9 +1644,27 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA493",
       "sectionName": "Finance 2",
       "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "HR",
+      "teacherInitials": "BM",
       "term": "2026-T4"
     },
     {
@@ -1233,6 +1677,12 @@
       "subjectCode": "MBA492",
       "sectionName": "HR",
       "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "SC",
+      "teacherInitials": "DM",
       "term": "2026-T4"
     },
     {
@@ -1248,8 +1698,20 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "MM",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "MBA493",
       "sectionName": "MM",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "TM",
       "teacherInitials": "SBC",
       "term": "2026-T4"
     },
@@ -1260,10 +1722,148 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "TM",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec A",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec A",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec A",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec A",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec B",
+      "teacherInitials": "SC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec B",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec B",
+      "teacherInitials": "NM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA191",
+      "sectionName": "Sec B",
+      "teacherInitials": "DBS",
+      "term": "2026-T1"
+    },
+    {
       "subjectCode": "MBA174",
       "sectionName": "Sec B",
       "teacherInitials": "DS",
       "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec C",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec C",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec C",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA104",
+      "sectionName": "Sec D",
+      "teacherInitials": "SC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA192",
+      "sectionName": "Sec D",
+      "teacherInitials": "WM",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA103",
+      "sectionName": "Sec D",
+      "teacherInitials": "SNG",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec D",
+      "teacherInitials": "SHD",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "FM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "UDC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "FM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "HR402",
+      "sectionName": "HR",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "SC402",
+      "sectionName": "SC",
+      "teacherInitials": "RB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "TM402",
+      "sectionName": "TM",
+      "teacherInitials": "AB",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "NM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 1",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
     },
     {
       "subjectCode": "ACT-financial-market-hands-on",
@@ -1272,9 +1872,81 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "MBA471",
+      "sectionName": "Finance 1",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "ACT-financial-market-hands-on",
       "sectionName": "Finance 2",
       "teacherInitials": "SAG",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "Finance 2",
+      "teacherInitials": "SM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "AKH",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "Finance 2",
+      "teacherInitials": "NM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "CM",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "DBS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "PC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "HR",
+      "teacherInitials": "SRN",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "SC",
+      "teacherInitials": "SBC",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "SC",
+      "teacherInitials": "SBC",
       "term": "2026-T4"
     },
     {
@@ -1296,9 +1968,21 @@
       "term": "2026-T4"
     },
     {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "KKG",
+      "term": "2026-T4"
+    },
+    {
       "subjectCode": "ACT-esp-sdp",
       "sectionName": "TM",
       "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "sectionName": "TM",
+      "teacherInitials": "SRN",
       "term": "2026-T4"
     }
   ],
@@ -1486,9 +2170,9 @@
       "startTime": "04:10",
       "endTime": "05:00",
       "subjectCode": "MBA172",
-      "teacherInitials": "SNG",
+      "teacherInitials": "SHD",
       "subgroup": null,
-      "rawLabel": "Communication(SNG)"
+      "rawLabel": "Communication(SHD)"
     },
     {
       "sectionName": "Sec C",
@@ -1684,9 +2368,9 @@
       "startTime": "12:00",
       "endTime": "12:50",
       "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "AKH",
+      "teacherInitials": "SD",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (AKH)"
+      "rawLabel": "Domain Expertise for placement (SD)"
     },
     {
       "sectionName": "Finance 1",
@@ -1794,9 +2478,9 @@
       "startTime": "10:20",
       "endTime": "11:10",
       "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "AKH",
+      "teacherInitials": "SD",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (AKH)"
+      "rawLabel": "Domain Expertise for placement (SD)"
     },
     {
       "sectionName": "Finance 2",
@@ -3576,9 +4260,9 @@
       "startTime": "02:30",
       "endTime": "03:20",
       "subjectCode": "MBA172",
-      "teacherInitials": "SHD",
+      "teacherInitials": "SNG",
       "subgroup": null,
-      "rawLabel": "Communication(SHD)"
+      "rawLabel": "Communication(SNG)"
     },
     {
       "sectionName": "Sec B",
@@ -4522,9 +5206,9 @@
       "startTime": "12:00",
       "endTime": "12:50",
       "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "SD",
+      "teacherInitials": "AKH",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (SD)"
+      "rawLabel": "Domain Expertise for placement (AKH)"
     },
     {
       "sectionName": "Finance 1",
@@ -4621,9 +5305,9 @@
       "startTime": "03:20",
       "endTime": "04:10",
       "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "SD",
+      "teacherInitials": "AKH",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (SD)"
+      "rawLabel": "Domain Expertise for placement (AKH)"
     },
     {
       "sectionName": "Finance 2",

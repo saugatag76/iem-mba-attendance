@@ -245,6 +245,7 @@ export async function sessionRegister(sessionId: string) {
           ? Math.round(haversineMeters(anchorLat, anchorLng, lat, lng))
           : null;
       return {
+        studentId: e.studentId,
         name: e.student.name,
         email: e.student.email,
         present: !!rec,

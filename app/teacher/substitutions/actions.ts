@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import type { Weekday } from "@prisma/client";
 
 function flash(redirectTo: string, message: string, type?: "error") {
   const sep = redirectTo.includes("?") ? "&" : "?";
@@ -63,6 +64,73 @@ export async function cancelSubstitutionRequest(formData: FormData) {
   });
   revalidatePath("/teacher/substitutions");
   flash("/teacher/substitutions", "Request cancelled.");
+}
+
+/**
+ * Create multiple substitution requests for a leave period.
+ * FormData fields:
+ *   reason       – shared reason for all requests
+ *   entry_{i}    – JSON string: { scheduledClassId, date, substituteTeacherId }
+ * All non-empty entry_{i} values are processed.
+ */
+export async function createLeaveSubstitutions(formData: FormData) {
+  const teacher = await requireRole("TEACHER", "ADMIN");
+  const reason = String(formData.get("reason") ?? "").trim();
+  if (reason.length < 5) {
+    flash("/teacher/substitutions/leave", "Please provide a reason (min 5 chars).", "error");
+  }
+
+  const entries: { scheduledClassId: string; date: Date; substituteTeacherId: string }[] = [];
+  let i = 0;
+  while (true) {
+    const raw = formData.get(`entry_${i}`);
+    if (raw === null) break;
+    const val = String(raw).trim();
+    if (val) {
+      try {
+        const parsed = JSON.parse(val) as { scheduledClassId: string; date: string; substituteTeacherId: string };
+        if (parsed.scheduledClassId && parsed.date && parsed.substituteTeacherId) {
+          // Parse yyyy-mm-dd as local midnight (not UTC) to avoid day shift in IST
+          const [y, m, d] = parsed.date.split("-").map(Number);
+          entries.push({
+            scheduledClassId: parsed.scheduledClassId,
+            date: new Date(y, m - 1, d),
+            substituteTeacherId: parsed.substituteTeacherId,
+          });
+        }
+      } catch { /* skip malformed */ }
+    }
+    i++;
+  }
+
+  if (entries.length === 0) {
+    flash("/teacher/substitutions/leave", "Please assign at least one substitute.", "error");
+  }
+
+  // Validate all scheduled classes belong to this teacher
+  const scIds = entries.map((e) => e.scheduledClassId);
+  const classes = await prisma.scheduledClass.findMany({
+    where: { id: { in: scIds }, offering: { teacherId: teacher.id } },
+    select: { id: true },
+  });
+  const valid = new Set(classes.map((c) => c.id));
+
+  await prisma.substitutionRequest.createMany({
+    data: entries
+      .filter((e) => valid.has(e.scheduledClassId))
+      .map((e) => ({
+        scheduledClassId: e.scheduledClassId,
+        date: e.date,
+        requestedById: teacher.id,
+        substituteTeacherId: e.substituteTeacherId,
+        reason,
+        status: "PENDING_TEACHER" as const,
+      })),
+    skipDuplicates: true,
+  });
+
+  revalidatePath("/teacher/substitutions");
+  flash("/teacher/substitutions", `${entries.length} substitution request${entries.length > 1 ? "s" : ""} sent.`);
 }
 
 /** Teacher Y accepts or declines a substitution request. */

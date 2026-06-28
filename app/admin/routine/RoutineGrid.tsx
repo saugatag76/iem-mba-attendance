@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useTransition, useState } from "react";
+import { useTransition, useState, useMemo } from "react";
 import { Pencil, Plus, Trash2, Check, X, Loader2, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -87,21 +87,49 @@ function SlotDialog({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const entry = target.type === "existing" ? target.entry : null;
+
+  // Two-step: pick subject first, then pick teacher for that subject.
+  const [selectedSubjectCode, setSelectedSubjectCode] = useState<string | null>(
+    entry?.offering?.subject.code ?? null,
+  );
   const [selectedId, setSelectedId] = useState<string | null>(entry?.offeringId ?? null);
   const [subgroup, setSubgroup] = useState(entry?.subgroup ?? "");
-  const [query, setQuery] = useState("");
+  const [subjectQuery, setSubjectQuery] = useState("");
 
-  const filtered = query.trim()
-    ? offerings.filter((o) =>
-        `${o.subject.code} ${o.subject.name} ${o.teacher.name}`
-          .toLowerCase()
-          .includes(query.toLowerCase()),
+  // Unique subjects from offerings, sorted alphabetically.
+  const subjects = useMemo(() => {
+    const seen = new Set<string>();
+    const result: { name: string; code: string }[] = [];
+    for (const o of offerings) {
+      if (!seen.has(o.subject.code)) {
+        seen.add(o.subject.code);
+        result.push(o.subject);
+      }
+    }
+    return result.sort((a, b) => a.name.localeCompare(b.name));
+  }, [offerings]);
+
+  // Teachers available for the selected subject.
+  const teachersForSubject = useMemo(
+    () => offerings.filter((o) => o.subject.code === selectedSubjectCode),
+    [offerings, selectedSubjectCode],
+  );
+
+  const filteredSubjects = subjectQuery.trim()
+    ? subjects.filter((s) =>
+        `${s.code} ${s.name}`.toLowerCase().includes(subjectQuery.toLowerCase()),
       )
-    : offerings;
+    : subjects;
 
   const selectedOffering = offerings.find((o) => o.id === selectedId) ?? null;
 
   function close() { onOpenChange(false); }
+
+  function selectSubject(code: string) {
+    setSelectedSubjectCode(code);
+    setSelectedId(null); // reset teacher when subject changes
+    setSubjectQuery("");
+  }
 
   function save() {
     startTransition(async () => {
@@ -150,53 +178,88 @@ function SlotDialog({
         </DialogHeader>
 
         <div className="flex flex-col gap-4">
-          {/* Current selection */}
-          {selectedOffering && (
-            <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/8 px-3 py-2 dark:bg-primary/12">
-              <Check className="h-4 w-4 flex-shrink-0 text-primary" />
-              <div className="min-w-0 flex-1">
-                <p className="text-sm font-semibold text-foreground">{selectedOffering.subject.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  <span className="font-mono">{selectedOffering.subject.code}</span> · {selectedOffering.teacher.name}
-                </p>
-              </div>
-              <button
-                onClick={() => setSelectedId(null)}
-                className="flex-shrink-0 rounded p-0.5 text-muted-foreground hover:text-foreground"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          )}
 
-          {/* Search + list */}
+          {/* ── Step 1: Subject picker ── */}
           <div>
-            <label className="mb-1.5 block text-xs font-medium text-muted-foreground">
-              {selectedOffering ? "Change to…" : "Select subject / teacher"}
-            </label>
-            <div className="relative mb-2">
-              <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-              <input
-                autoFocus
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search subject or teacher…"
-                className="w-full rounded-md border border-input bg-card py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-              />
+            <div className="mb-1.5 flex items-center justify-between">
+              <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                1. Subject
+              </label>
+              {selectedSubjectCode && (
+                <button
+                  onClick={() => { setSelectedSubjectCode(null); setSelectedId(null); }}
+                  className="text-[11px] text-primary hover:underline"
+                >
+                  Change
+                </button>
+              )}
             </div>
-            <div className="max-h-52 overflow-y-auto rounded-md border border-border">
-              {filtered.length === 0 ? (
-                <p className="px-3 py-4 text-center text-sm text-muted-foreground">No offerings found.</p>
-              ) : (
-                filtered.map((o) => {
+
+            {selectedSubjectCode ? (
+              /* Selected subject chip */
+              <div className="flex items-center gap-2 rounded-lg border border-primary/30 bg-primary/8 px-3 py-2 dark:bg-primary/12">
+                <Check className="h-4 w-4 flex-shrink-0 text-primary" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-semibold text-foreground">
+                    {subjects.find((s) => s.code === selectedSubjectCode)?.name}
+                  </p>
+                  <p className="font-mono text-xs text-muted-foreground">{selectedSubjectCode}</p>
+                </div>
+              </div>
+            ) : (
+              /* Subject search + list */
+              <>
+                <div className="relative mb-2">
+                  <Search className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+                  <input
+                    autoFocus
+                    value={subjectQuery}
+                    onChange={(e) => setSubjectQuery(e.target.value)}
+                    placeholder="Search subject…"
+                    className="w-full rounded-md border border-input bg-card py-1.5 pl-8 pr-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+                  />
+                </div>
+                <div className="max-h-44 overflow-y-auto rounded-md border border-border">
+                  {filteredSubjects.length === 0 ? (
+                    <p className="px-3 py-4 text-center text-sm text-muted-foreground">No subjects found.</p>
+                  ) : (
+                    filteredSubjects.map((s) => (
+                      <button
+                        key={s.code}
+                        onClick={() => selectSubject(s.code)}
+                        className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition hover:bg-accent"
+                      >
+                        <span className="font-mono text-xs text-muted-foreground w-16 flex-shrink-0">{s.code}</span>
+                        <span className="font-medium text-foreground">{s.name}</span>
+                        <span className="ml-auto text-[10px] text-muted-foreground">
+                          {offerings.filter((o) => o.subject.code === s.code).length} teacher{offerings.filter((o) => o.subject.code === s.code).length !== 1 ? "s" : ""}
+                        </span>
+                      </button>
+                    ))
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* ── Step 2: Teacher picker (only after subject selected) ── */}
+          {selectedSubjectCode && (
+            <div>
+              <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                2. Teacher
+              </label>
+              <div className="space-y-1.5">
+                {teachersForSubject.map((o) => {
                   const isSelected = selectedId === o.id;
                   return (
                     <button
                       key={o.id}
-                      onClick={() => setSelectedId(o.id)}
+                      onClick={() => setSelectedId(isSelected ? null : o.id)}
                       className={cn(
-                        "flex w-full items-center gap-3 px-3 py-2.5 text-left text-sm transition hover:bg-accent",
-                        isSelected && "bg-primary/8 dark:bg-primary/12",
+                        "flex w-full items-center gap-3 rounded-lg border px-3 py-2.5 text-left text-sm transition",
+                        isSelected
+                          ? "border-primary bg-primary/8 dark:bg-primary/12"
+                          : "border-border hover:bg-accent",
                       )}
                     >
                       <span className={cn(
@@ -205,61 +268,72 @@ function SlotDialog({
                       )}>
                         {isSelected && <span className="h-1.5 w-1.5 rounded-full bg-white" />}
                       </span>
-                      <div className="min-w-0">
-                        <p className={cn("font-medium text-foreground", isSelected && "text-primary")}>
-                          {o.subject.name}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          <span className="font-mono">{o.subject.code}</span> · {o.teacher.name}
-                        </p>
-                      </div>
+                      <span className={cn("font-medium", isSelected ? "text-primary" : "text-foreground")}>
+                        {o.teacher.name}
+                      </span>
                     </button>
                   );
-                })
-              )}
+                })}
+                {teachersForSubject.length === 0 && (
+                  <p className="py-3 text-center text-sm text-muted-foreground">No teachers mapped to this subject.</p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Subgroup */}
-          <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">
-              Subgroup <span className="font-normal opacity-70">(optional — e.g. A1, B2 for lab splits)</span>
-            </label>
-            <input
-              value={subgroup}
-              onChange={(e) => setSubgroup(e.target.value)}
-              placeholder="A1, B2, F1…"
-              className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-            />
-          </div>
+          {selectedSubjectCode && (
+            <div>
+              <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                Subgroup <span className="font-normal opacity-70">(optional — e.g. A1 for lab splits)</span>
+              </label>
+              <input
+                value={subgroup}
+                onChange={(e) => setSubgroup(e.target.value)}
+                placeholder="A1, B2, F1…"
+                className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+              />
+            </div>
+          )}
 
           {/* Actions */}
-          <div className="flex items-center gap-2 border-t border-border pt-3">
-            <button
-              onClick={save}
-              disabled={pending || !selectedId}
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:opacity-40"
-            >
-              {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
-              {entry ? "Update" : "Assign"}
-            </button>
-            {entry?.offeringId && (
-              <button onClick={clear} disabled={pending}
-                className="rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-accent disabled:opacity-40">
-                Clear
+          {selectedSubjectCode && (
+            <div className="flex items-center gap-2 border-t border-border pt-3">
+              <button
+                onClick={save}
+                disabled={pending || !selectedId}
+                className="flex flex-1 items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white transition hover:bg-primary/90 disabled:opacity-40"
+              >
+                {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                {entry ? "Update" : "Assign"}
               </button>
-            )}
-            {entry && (
-              <button onClick={remove} disabled={pending} title="Remove row"
-                className="rounded-md border border-red-500/25 px-2.5 py-2 text-red-600 transition hover:bg-red-500/10 disabled:opacity-40 dark:text-red-400">
-                <Trash2 className="h-4 w-4" />
+              {entry?.offeringId && (
+                <button onClick={clear} disabled={pending}
+                  className="rounded-md border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-accent disabled:opacity-40">
+                  Clear
+                </button>
+              )}
+              {entry && (
+                <button onClick={remove} disabled={pending} title="Remove row"
+                  className="rounded-md border border-red-500/25 px-2.5 py-2 text-red-600 transition hover:bg-red-500/10 disabled:opacity-40 dark:text-red-400">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              )}
+              <button onClick={close}
+                className="rounded-md border border-border px-2.5 py-2 text-muted-foreground transition hover:bg-accent">
+                <X className="h-4 w-4" />
               </button>
-            )}
+            </div>
+          )}
+
+          {/* Cancel when on subject step */}
+          {!selectedSubjectCode && (
             <button onClick={close}
-              className="rounded-md border border-border px-2.5 py-2 text-muted-foreground transition hover:bg-accent">
-              <X className="h-4 w-4" />
+              className="rounded-md border border-border px-3 py-2 text-sm text-muted-foreground transition hover:bg-accent">
+              Cancel
             </button>
-          </div>
+          )}
+
         </div>
       </DialogContent>
     </Dialog>
