@@ -7,7 +7,7 @@ import { Badge } from "@/app/_components/ui";
 import { autoCloseExpired } from "@/lib/sessions";
 import { closeSession } from "../../actions";
 import { LiveSession } from "./LiveSession";
-import { ManualScanButton } from "./ManualScanButton";
+import { ManualCodeEntry } from "./ManualCodeEntry";
 
 export default async function SessionPage({
   params,
@@ -67,7 +67,7 @@ export default async function SessionPage({
 
       {status === "OPEN" && (
         <div className="mt-4">
-          <ManualScanButton sessionId={s.id} />
+          <ManualCodeEntry sessionId={s.id} />
         </div>
       )}
     </div>

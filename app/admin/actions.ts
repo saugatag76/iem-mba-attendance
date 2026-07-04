@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import { uniquePersonalCode } from "@/lib/code";
 import { Role, Stream } from "@prisma/client";
 
 async function adminOnly() {
@@ -84,7 +85,7 @@ export async function createUser(formData: FormData) {
   await prisma.user.upsert({
     where: { email },
     update: { name, role },
-    create: { email, name, role, passwordHash },
+    create: { email, name, role, passwordHash, personalCode: await uniquePersonalCode() },
   });
   flash(formData, "/admin/people", `${name} saved`);
 }

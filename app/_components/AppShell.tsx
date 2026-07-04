@@ -7,7 +7,6 @@ import {
   GraduationCap,
   LayoutGrid,
   FileBarChart,
-  QrCode,
   CalendarDays,
   Layers,
   Users,
@@ -73,7 +72,7 @@ const NAV: Record<Role, { section: string; items: Item[] }[]> = {
       section: "Dashboards",
       items: [
         { href: "/student", label: "Overview", icon: LayoutGrid },
-        { href: "/student/scan", label: "Scan", icon: QrCode },
+        { href: "/student/scan", label: "Mark attendance", icon: KeyRound },
         { href: "/student/events", label: "Events", icon: CalendarRange },
         { href: "/student/timetable", label: "Timetable", icon: CalendarDays },
       ],

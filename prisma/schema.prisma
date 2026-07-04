@@ -48,8 +48,9 @@ enum AttendanceStatus {
 }
 
 enum AttendanceMethod {
-  QR // student scanned the teacher's rotating QR
-  MANUAL // teacher scanned the student's personal QR (fallback)
+  CODE // student typed the session's 6-digit code (self check-in)
+  QR // legacy — student scanned the teacher's rotating QR (historical records)
+  MANUAL // teacher entered the student's personal code (fallback)
 }
 
 enum SubstitutionStatus {
@@ -86,7 +87,8 @@ model Event {
   approvedById String?
   adminNote    String?
 
-  qrSecret     String          @default(cuid())
+  // Static 6-digit code students type to check in; set when the event is opened.
+  code         String?         @unique
 
   attendances  EventAttendance[]
   createdAt    DateTime        @default(now())
@@ -209,8 +211,8 @@ model User {
   passwordHash    String
   // Device binding: account is locked to the first device that logs in.
   deviceId        String?
-  // Per-account secret used to sign the student's permanent personal QR (digital ID / fallback).
-  personalQrSecret String      @default(cuid())
+  // Permanent 6-digit personal code — student reads it out for the teacher's manual fallback.
+  personalCode    String?     @unique
   createdAt       DateTime     @default(now())
 
   taughtOfferings   Offering[]         @relation("TeacherOfferings")
@@ -254,8 +256,8 @@ model Session {
   geoLat      Float?
   geoLng      Float?
   geoRadiusM  Int           @default(75)
-  // Secret used to sign rotating QR tokens for THIS session only.
-  qrSecret    String        @default(cuid())
+  // Static 6-digit check-in code students type. Set at open; globally unique.
+  code        String?       @unique
   createdAt   DateTime      @default(now())
 
   records AttendanceRecord[]
@@ -270,7 +272,7 @@ model AttendanceRecord {
   student   User             @relation(fields: [studentId], references: [id], onDelete: Cascade)
   studentId String
   status    AttendanceStatus @default(PRESENT)
-  method    AttendanceMethod @default(QR)
+  method    AttendanceMethod @default(CODE)
   scannedAt DateTime         @default(now())
   geoLat    Float?
   geoLng    Float?

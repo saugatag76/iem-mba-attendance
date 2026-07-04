@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { peekSessionId, verifySessionToken } from "@/lib/qrToken";
 import { withinGeofence } from "@/lib/geo";
 import { autoCloseExpired } from "@/lib/sessions";
 
 /**
- * Student scan endpoint — the anti-proxy gate. Validates, in order:
+ * Student self check-in endpoint — the anti-proxy gate. Validates, in order:
  *   1. authenticated student
- *   2. token signature valid + not expired (kills shared screenshots)
+ *   2. code matches a session (reverse lookup)
  *   3. session is OPEN
  *   4. student enrolled in the class
  *   5. not already marked (idempotent via unique constraint)
@@ -19,35 +18,25 @@ export async function POST(req: Request) {
   const session = await auth();
   if (!session?.user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
   if (session.user.role !== "STUDENT")
-    return NextResponse.json({ error: "Only students can scan in." }, { status: 403 });
+    return NextResponse.json({ error: "Only students can check in." }, { status: 403 });
 
   const studentId = session.user.id;
   const body = await req.json().catch(() => ({}));
-  const token = String(body.token ?? "");
+  const code = String(body.code ?? "").trim();
   const deviceId = String(body.deviceId ?? "");
   const lat = body.lat != null ? Number(body.lat) : null;
   const lng = body.lng != null ? Number(body.lng) : null;
 
-  if (!token) return NextResponse.json({ error: "Missing QR token." }, { status: 400 });
+  if (!/^\d{6}$/.test(code)) return NextResponse.json({ error: "Enter the 6-digit code." }, { status: 400 });
 
-  // 2. Verify token (need the session's secret first).
-  const sessionId = peekSessionId(token);
-  if (!sessionId) return NextResponse.json({ error: "Invalid QR." }, { status: 400 });
-
-  const cls = await prisma.session.findUnique({
-    where: { id: sessionId },
+  // 2. Reverse-lookup the OPEN session by its code.
+  const cls = await prisma.session.findFirst({
+    where: { code, status: "OPEN" },
     include: { offering: true },
   });
-  if (!cls) return NextResponse.json({ error: "Session not found." }, { status: 404 });
+  if (!cls) return NextResponse.json({ error: "Invalid or expired code." }, { status: 404 });
 
-  try {
-    await verifySessionToken(token, cls.qrSecret);
-  } catch {
-    return NextResponse.json(
-      { error: "QR expired — point your camera at the live code." },
-      { status: 401 },
-    );
-  }
+  const sessionId = cls.id;
 
   // 3. Session must be open (and not past its auto-close deadline).
   const status = await autoCloseExpired(cls);
@@ -121,9 +110,9 @@ export async function POST(req: Request) {
           sessionId,
           studentId,
           status: "ABSENT",
-          method: "QR",
+          method: "CODE",
           flagged: true,
-          flagReason: "Location not provided — student scanned without location access",
+          flagReason: "Location not provided — student checked in without location access",
         },
       });
       return NextResponse.json({
@@ -146,7 +135,7 @@ export async function POST(req: Request) {
       sessionId,
       studentId,
       status: "PRESENT",
-      method: "QR",
+      method: "CODE",
       geoLat: lat,
       geoLng: lng,
       flagged,

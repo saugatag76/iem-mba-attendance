@@ -2,13 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import QRCode from "qrcode";
-import { Maximize2, X, Flag, ScanLine, Users, Clock, MapPinOff, AlertTriangle } from "lucide-react";
+import { Maximize2, X, Flag, KeyRound, Users, Clock, MapPinOff, AlertTriangle } from "lucide-react";
 import { Avatar, cn } from "@/app/_components/ui";
 
 interface PresentRow {
   name: string;
-  method: "QR" | "MANUAL";
+  method: "CODE" | "QR" | "MANUAL";
   flagged: boolean;
   flagReason?: string | null;
   scannedAt: string;
@@ -22,8 +21,7 @@ interface NonCompliantRow {
 }
 interface LiveData {
   status: "OPEN" | "CLOSED";
-  ttl: number;
-  token: string | null;
+  code: string | null;
   expiresAt: string | null;
   total: number;
   geoLat: number | null;
@@ -63,12 +61,36 @@ function Countdown({ expiresAt, dark = false }: { expiresAt: string; dark?: bool
   );
 }
 
+/** Renders a 6-digit code as spaced, boxed digits. */
+function CodeDisplay({ code, size = "normal" }: { code: string; size?: "normal" | "huge" }) {
+  const digitCls =
+    size === "huge"
+      ? "h-[14vh] min-h-24 w-[10vw] min-w-16 text-[10vh] rounded-2xl"
+      : "h-16 w-12 text-4xl rounded-xl sm:h-20 sm:w-14 sm:text-5xl";
+  return (
+    <div className="flex justify-center gap-2 sm:gap-3">
+      {code.split("").map((d, i) => (
+        <span
+          key={i}
+          className={cn(
+            "flex items-center justify-center border font-bold tabular-nums",
+            size === "huge"
+              ? "border-white/15 bg-white/5 text-white"
+              : "border-border bg-muted text-foreground",
+            digitCls,
+          )}
+        >
+          {d}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export function LiveSession({ sessionId }: { sessionId: string }) {
   const router = useRouter();
   const [data, setData] = useState<LiveData | null>(null);
-  const [qr, setQr] = useState<string>("");
   const [presenting, setPresenting] = useState(false);
-  const lastToken = useRef<string>("");
   const wasOpen = useRef(false);
 
   const poll = useCallback(async () => {
@@ -77,12 +99,6 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
       if (!res.ok) return;
       const d: LiveData = await res.json();
       setData(d);
-      if (d.token && d.token !== lastToken.current) {
-        lastToken.current = d.token;
-        const url = `${window.location.origin}/student/scan?t=${encodeURIComponent(d.token)}`;
-        setQr(await QRCode.toDataURL(url, { width: 420, margin: 1 }));
-      }
-      if (!d.token) setQr("");
       if (d.status === "OPEN") wasOpen.current = true;
       else if (wasOpen.current) {
         router.push(`/reports/session/${sessionId}`);
@@ -102,6 +118,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
   const nonCompliant = data?.nonCompliant ?? [];
   const total = data?.total ?? 0;
   const open = data?.status === "OPEN";
+  const code = data?.code ?? null;
   const geofenceInactive = data != null && data.geoLat == null;
 
   return (
@@ -112,29 +129,29 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
           <AlertTriangle className="h-4 w-4 flex-shrink-0" />
           <span>
             <strong>Geofence inactive</strong> — location was not acquired when this session was opened.
-            Students can scan from any location. Re-open the session to enable geofencing.
+            Students can check in from any location. Re-open the session to enable geofencing.
           </span>
         </div>
       )}
 
       <div className="grid gap-4 lg:grid-cols-5">
-        {/* QR */}
+        {/* Code */}
         <div className="lg:col-span-3">
           <div className="flex flex-col items-center rounded-xl border border-border bg-card p-6 shadow-sm">
-            {open && qr ? (
+            {open && code ? (
               <>
-                <div className="rounded-2xl border border-border bg-card p-3 shadow-inner">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={qr} alt="Attendance QR" className="h-60 w-60 sm:h-72 sm:w-72" />
-                </div>
+                <p className="mb-4 text-sm font-medium uppercase tracking-widest text-muted-foreground">
+                  Attendance code
+                </p>
+                <CodeDisplay code={code} />
                 {data?.expiresAt && (
-                  <div className="mt-4">
+                  <div className="mt-5">
                     <Countdown expiresAt={data.expiresAt} />
                   </div>
                 )}
                 <p className="mt-3 flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <ScanLine className="h-4 w-4 text-primary" />
-                  Rotates every {data?.ttl}s · students scan to check in
+                  <KeyRound className="h-4 w-4 text-primary" />
+                  Students open the app and enter this code to check in
                 </p>
                 <button
                   onClick={() => setPresenting(true)}
@@ -144,7 +161,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                 </button>
               </>
             ) : (
-              <div className="flex h-72 w-full items-center justify-center rounded-lg bg-muted text-sm text-muted-foreground">
+              <div className="flex h-60 w-full items-center justify-center rounded-lg bg-muted text-sm text-muted-foreground">
                 {data?.status === "CLOSED" ? "Session closed" : "Loading…"}
               </div>
             )}
@@ -186,7 +203,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                 </li>
               ))}
               {present.length === 0 && (
-                <li className="py-6 text-center text-sm text-muted-foreground">No scans yet.</li>
+                <li className="py-6 text-center text-sm text-muted-foreground">No check-ins yet.</li>
               )}
             </ul>
           </div>
@@ -215,7 +232,7 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                 ))}
               </ul>
               <p className="mt-3 text-xs text-muted-foreground">
-                These students scanned but had no location. Use manual scan to mark them present if verified in person.
+                These students checked in but had no location. Use the manual fallback to mark them present if verified in person.
               </p>
             </div>
           )}
@@ -231,22 +248,15 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
           >
             <X className="h-5 w-5" />
           </button>
-          <h2 className="mb-1 text-2xl font-bold tracking-tight">Scan to mark attendance</h2>
-          <p className="mb-3 text-sm text-white/50">
-            Open the app on your phone and scan · rotates every {data?.ttl}s
-          </p>
+          <h2 className="mb-1 text-2xl font-bold tracking-tight">Enter this code to mark attendance</h2>
+          <p className="mb-8 text-sm text-white/50">Open the app on your phone and type the code below</p>
           {data?.expiresAt && (
-            <div className="mb-6 scale-125">
+            <div className="mb-8 scale-125">
               <Countdown expiresAt={data.expiresAt} dark />
             </div>
           )}
-          {qr && (
-            <div className="rounded-3xl bg-card p-5 shadow-2xl">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={qr} alt="Attendance QR" className="h-[min(70vh,560px)] w-[min(70vh,560px)]" />
-            </div>
-          )}
-          <div className="mt-6 text-center">
+          {code && <CodeDisplay code={code} size="huge" />}
+          <div className="mt-10 text-center">
             <div className="text-5xl font-bold tabular-nums">
               {present.length}
               <span className="text-2xl font-normal text-white/40">/{total}</span>

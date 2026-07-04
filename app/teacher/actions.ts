@@ -4,14 +4,18 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import { uniqueSessionCode } from "@/lib/code";
+import { CAMPUS_LAT, CAMPUS_LNG, CAMPUS_RADIUS_M } from "@/lib/campusLocation";
 
-/** Open a new attendance session for an offering, anchoring the geofence at the teacher's location. */
+/**
+ * Open a new attendance session for an offering. The geofence is anchored at the
+ * fixed, surveyed campus location (lib/campusLocation.ts) — not the teacher's live
+ * GPS — so every session always has a reliable geofence regardless of the teacher's
+ * device or indoor GPS accuracy at the moment they click "Open session".
+ */
 export async function openSession(formData: FormData) {
   const teacher = await requireRole("TEACHER", "ADMIN");
   const offeringId = String(formData.get("offeringId") ?? "");
-  const lat = formData.get("lat") ? Number(formData.get("lat")) : null;
-  const lng = formData.get("lng") ? Number(formData.get("lng")) : null;
-  const radius = Number(formData.get("radius") ?? 75) || 75;
   const customMin = Number(formData.get("customMin") ?? 0) || 0;
   const presetMin = Number(formData.get("presetMin") ?? 0) || 0;
   const durationMin = customMin > 0 ? customMin : presetMin;
@@ -24,9 +28,10 @@ export async function openSession(formData: FormData) {
     data: {
       offeringId,
       teacherId: teacher.id,
-      geoLat: lat,
-      geoLng: lng,
-      geoRadiusM: radius,
+      geoLat: CAMPUS_LAT,
+      geoLng: CAMPUS_LNG,
+      geoRadiusM: CAMPUS_RADIUS_M,
+      code: await uniqueSessionCode(),
       expiresAt: durationMin > 0 ? new Date(Date.now() + durationMin * 60_000) : null,
     },
   });

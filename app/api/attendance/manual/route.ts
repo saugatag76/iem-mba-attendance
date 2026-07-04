@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { peekUserId, verifyPersonalToken } from "@/lib/qrToken";
 import { autoCloseExpired } from "@/lib/sessions";
 
 /**
- * Manual fallback: a teacher scans a student's permanent personal QR to mark them present
- * (e.g. the student's own camera failed). No geofence — the teacher is physically scanning.
+ * Manual fallback: a teacher enters a student's permanent personal code to mark them present
+ * (e.g. the student's own device failed). No geofence — the teacher is physically present.
  */
 export async function POST(req: Request) {
   const session = await auth();
@@ -16,10 +15,10 @@ export async function POST(req: Request) {
 
   const body = await req.json().catch(() => ({}));
   const sessionId = String(body.sessionId ?? "");
-  const token = String(body.token ?? "");
+  const personalCode = String(body.personalCode ?? "").trim();
   const note = body.note ? String(body.note).slice(0, 500) : null;
-  if (!sessionId || !token)
-    return NextResponse.json({ error: "Missing data." }, { status: 400 });
+  if (!sessionId || !/^\d{6}$/.test(personalCode))
+    return NextResponse.json({ error: "Enter the student's 6-digit personal code." }, { status: 400 });
 
   const cls = await prisma.session.findUnique({
     where: { id: sessionId },
@@ -31,16 +30,9 @@ export async function POST(req: Request) {
   if ((await autoCloseExpired(cls)) !== "OPEN")
     return NextResponse.json({ error: "Session is closed." }, { status: 409 });
 
-  // Resolve + verify the student's personal token.
-  const userId = peekUserId(token);
-  if (!userId) return NextResponse.json({ error: "Invalid student QR." }, { status: 400 });
-  const student = await prisma.user.findUnique({ where: { id: userId } });
-  if (!student) return NextResponse.json({ error: "Student not found." }, { status: 404 });
-  try {
-    await verifyPersonalToken(token, student.personalQrSecret);
-  } catch {
-    return NextResponse.json({ error: "Invalid student QR." }, { status: 401 });
-  }
+  // Resolve the student by their personal code.
+  const student = await prisma.user.findUnique({ where: { personalCode } });
+  if (!student) return NextResponse.json({ error: "No student found with that code." }, { status: 404 });
 
   // Must be enrolled in this class.
   const enrolled = await prisma.enrollment.findUnique({

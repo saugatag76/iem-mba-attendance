@@ -2,7 +2,7 @@ import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Badge, EmptyState } from "@/app/_components/ui";
 import { Calendar, MapPin } from "lucide-react";
-import { EventScanButton } from "./EventScanButton";
+import { EventCodeEntry } from "./EventCodeEntry";
 
 export const dynamic = "force-dynamic";
 
@@ -37,7 +37,9 @@ export default async function StudentEventsPage() {
 
   return (
     <div>
-      <PageHeader title="Events" subtitle="Scan the QR code at the event entrance to mark your attendance." />
+      <PageHeader title="Events" subtitle="Enter the code shown at the event to mark your attendance." />
+
+      <EventCodeEntry />
 
       {openEvents.length > 0 && (
         <>
@@ -55,10 +57,7 @@ export default async function StudentEventsPage() {
                         {e.venue && <span className="flex items-center gap-1"><MapPin className="h-3 w-3" />{e.venue}</span>}
                       </div>
                     </div>
-                    {attended
-                      ? <Badge tone="green">Attended ✓</Badge>
-                      : <EventScanButton eventId={e.id} />
-                    }
+                    <Badge tone={attended ? "green" : "amber"}>{attended ? "Attended ✓" : "Enter code above"}</Badge>
                   </div>
                 </div>
               );

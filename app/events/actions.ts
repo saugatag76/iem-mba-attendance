@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import { uniqueEventCode } from "@/lib/code";
 
 function flash(to: string, msg: string, type?: "error") {
   const sep = to.includes("?") ? "&" : "?";
@@ -72,7 +73,9 @@ export async function openEvent(formData: FormData) {
     flash("/events", "Not found.", "error");
   }
   if (event!.status !== "APPROVED") flash("/events", "Event must be approved before opening.", "error");
-  await prisma.event.update({ where: { id }, data: { status: "OPEN" } });
+  // Assign a check-in code on first open; reuse if the event was opened before.
+  const code = event!.code ?? (await uniqueEventCode());
+  await prisma.event.update({ where: { id }, data: { status: "OPEN", code } });
   revalidatePath("/events");
   redirect(`/events/${id}`);
 }

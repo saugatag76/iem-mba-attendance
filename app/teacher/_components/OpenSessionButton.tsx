@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { QrCode, Loader2, X } from "lucide-react";
+import { KeyRound, Loader2, X } from "lucide-react";
 import { openSession } from "../actions";
 
 export function OpenSessionButton({
@@ -14,43 +14,20 @@ export function OpenSessionButton({
   label?: string;
 }) {
   const formRef = useRef<HTMLFormElement>(null);
-  const latRef = useRef<HTMLInputElement>(null);
-  const lngRef = useRef<HTMLInputElement>(null);
   const customRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [customMode, setCustomMode] = useState(false);
 
+  // Geofence is a fixed, pre-surveyed campus anchor (lib/campusLocation.ts) — no
+  // client-side GPS capture needed, so the session opens immediately.
   function start() {
     setBusy(true);
-    const submit = () => formRef.current?.requestSubmit();
-    if (!navigator.geolocation) return submit(); // no GPS → open without geofence
-
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        // Only anchor the geofence if the GPS accuracy is better than the
-        // geofence radius itself. On a PC, Wi-Fi positioning often returns
-        // ±100–500 m accuracy — setting an anchor that inaccurate would
-        // cause every student to be rejected even in the right classroom.
-        const GEOFENCE_M = 75;
-        if (pos.coords.accuracy <= GEOFENCE_M * 2) {
-          if (latRef.current) latRef.current.value = String(pos.coords.latitude);
-          if (lngRef.current) lngRef.current.value = String(pos.coords.longitude);
-        }
-        // If accuracy > 150 m, open without anchor (no geofence) so students aren't
-        // blocked by a wildly wrong anchor point from Wi-Fi positioning.
-        submit();
-      },
-      () => submit(), // denied / timed out → open without geofence
-      { enableHighAccuracy: true, timeout: 12000 },
-    );
+    formRef.current?.requestSubmit();
   }
 
   return (
     <form ref={formRef} action={openSession} className="flex flex-shrink-0 items-center gap-1.5">
       <input type="hidden" name="offeringId" value={offeringId} />
-      <input type="hidden" name="radius" value={75} />
-      <input ref={latRef} type="hidden" name="lat" />
-      <input ref={lngRef} type="hidden" name="lng" />
 
       {customMode ? (
         <div className="flex items-center gap-1">
@@ -105,7 +82,7 @@ export function OpenSessionButton({
             : "inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-primary/90 active:scale-[0.98] disabled:opacity-50"
         }
       >
-        {busy ? <Loader2 className={variant === "secondary" ? "h-3.5 w-3.5 animate-spin" : "h-4 w-4 animate-spin"} /> : <QrCode className={variant === "secondary" ? "h-3.5 w-3.5" : "h-4 w-4"} />}
+        {busy ? <Loader2 className={variant === "secondary" ? "h-3.5 w-3.5 animate-spin" : "h-4 w-4 animate-spin"} /> : <KeyRound className={variant === "secondary" ? "h-3.5 w-3.5" : "h-4 w-4"} />}
         {busy ? "Opening…" : label}
       </button>
     </form>

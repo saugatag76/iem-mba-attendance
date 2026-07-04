@@ -7,6 +7,15 @@ const prisma = new PrismaClient();
 const emailBase = (sectionName: string) =>
   sectionName.toLowerCase().replace(/[^a-z0-9]+/g, "");
 
+// Unique 6-digit personal code generator (in-memory dedupe within a seed run).
+const takenCodes = new Set<string>();
+function personalCode(): string {
+  let c = String(Math.floor(Math.random() * 1_000_000)).padStart(6, "0");
+  while (takenCodes.has(c)) c = String(Math.floor(Math.random() * 1_000_000)).padStart(6, "0");
+  takenCodes.add(c);
+  return c;
+}
+
 async function main() {
   console.log("Seeding from timetable-data.json …");
 
@@ -25,6 +34,7 @@ async function main() {
       name: "MBA Admin",
       role: Role.ADMIN,
       passwordHash: await bcrypt.hash("admin123", 10),
+      personalCode: personalCode(),
     },
   });
 
@@ -35,7 +45,7 @@ async function main() {
     const u = await prisma.user.upsert({
       where: { email: t.email },
       update: { name: t.name, role: Role.TEACHER },
-      create: { email: t.email, name: t.name, role: Role.TEACHER, passwordHash: teachHash },
+      create: { email: t.email, name: t.name, role: Role.TEACHER, passwordHash: teachHash, personalCode: personalCode() },
     });
     teacherId.set(t.initials, u.id);
   }
@@ -123,6 +133,7 @@ async function main() {
           name: `${sec.name} Student ${i}`,
           role: Role.STUDENT,
           passwordHash: studHash,
+          personalCode: personalCode(),
         },
       });
       await prisma.enrollment.upsert({

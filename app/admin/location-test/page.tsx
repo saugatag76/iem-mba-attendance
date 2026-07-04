@@ -9,8 +9,8 @@ export default async function LocationTestPage() {
   return (
     <div>
       <PageHeader
-        title="Location tester"
-        subtitle="See exactly what GPS coordinates and accuracy the system captures — and whether your current spot is reliable enough to anchor a geofenced session."
+        title="Geofence designer"
+        subtitle="Click or drag on the map to set an anchor point, then use the slider to preview exactly how far the geofence radius reaches. Use 'Use my location' to jump to your current GPS position."
       />
       <LocationTester />
     </div>

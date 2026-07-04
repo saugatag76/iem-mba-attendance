@@ -5,7 +5,6 @@ import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Badge, Avatar } from "@/app/_components/ui";
 import { openEvent, closeEvent, cancelEvent } from "../actions";
-import { EventQr } from "./EventQr";
 import type { EventStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -76,8 +75,18 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
         <div className="flex flex-col items-center gap-4 rounded-xl border border-border bg-card p-6 shadow-sm">
           {event.status === "OPEN" ? (
             <>
-              <EventQr eventId={event.id} qrSecret={event.qrSecret} />
-              <p className="text-xs text-muted-foreground">Students scan this QR to mark event attendance</p>
+              <p className="mb-1 text-sm font-medium uppercase tracking-widest text-muted-foreground">Event code</p>
+              <div className="flex gap-1.5 sm:gap-2">
+                {(event.code ?? "------").split("").map((d, i) => (
+                  <span
+                    key={i}
+                    className="flex h-16 w-12 items-center justify-center rounded-xl border border-border bg-muted text-4xl font-bold tabular-nums text-foreground sm:h-20 sm:w-14 sm:text-5xl"
+                  >
+                    {d}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">Students enter this code in the app to mark event attendance</p>
               {isOwnerOrAdmin && (
                 <form action={closeEvent}>
                   <input type="hidden" name="id" value={event.id} />
@@ -89,11 +98,11 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             </>
           ) : event.status === "APPROVED" && isOwnerOrAdmin ? (
             <div className="flex flex-col items-center gap-3 py-8 text-center">
-              <p className="text-sm text-muted-foreground">Event is approved. Open it to display the QR code for students to scan.</p>
+              <p className="text-sm text-muted-foreground">Event is approved. Open it to display the code for students to enter.</p>
               <form action={openEvent}>
                 <input type="hidden" name="id" value={event.id} />
                 <button className="rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-primary/90">
-                  Open event &amp; show QR
+                  Open event &amp; show code
                 </button>
               </form>
             </div>

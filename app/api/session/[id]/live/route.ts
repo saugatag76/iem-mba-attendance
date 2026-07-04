@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { ROTATION_TTL_SECONDS, signSessionToken } from "@/lib/qrToken";
 import { autoCloseExpired } from "@/lib/sessions";
 
 /**
- * Teacher-only polling endpoint for the live QR screen.
- * Returns a freshly-signed rotating token plus the current present roster.
+ * Teacher-only polling endpoint for the live session screen.
+ * Returns the static check-in code plus the current present roster.
  */
 export async function GET(
   _req: Request,
@@ -40,16 +39,12 @@ export async function GET(
     where: { classSectionId: s.offering.classSectionId },
   });
 
-  const token =
-    status === "OPEN" ? await signSessionToken(s.id, s.qrSecret) : null;
-
   const presentRecords = s.records.filter((r) => r.status === "PRESENT" || r.status === "LATE");
   const nonCompliantRecords = s.records.filter((r) => r.status === "ABSENT" && r.flagged);
 
   return NextResponse.json({
     status,
-    ttl: ROTATION_TTL_SECONDS,
-    token,
+    code: status === "OPEN" ? s.code : null,
     expiresAt: s.expiresAt,
     total,
     geoLat: s.geoLat,

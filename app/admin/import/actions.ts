@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
+import { uniquePersonalCode } from "@/lib/code";
 import bcrypt from "bcryptjs";
 import { Role } from "@prisma/client";
 
@@ -46,7 +47,7 @@ export async function importStudentsPreviewed(formData: FormData) {
     } else {
       const email = phoneEmail(phone);
       const student = await prisma.user.create({
-        data: { email, phone, name, role: Role.STUDENT, passwordHash },
+        data: { email, phone, name, role: Role.STUDENT, passwordHash, personalCode: await uniquePersonalCode() },
       });
       await prisma.enrollment.create({ data: { studentId: student.id, classSectionId } });
       created++;

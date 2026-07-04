@@ -1,12 +1,10 @@
 import Link from "next/link";
-import QRCode from "qrcode";
-import { QrCode, IdCard, BookOpen, CalendarClock, CalendarDays, ChevronRight, AlertTriangle } from "lucide-react";
+import { KeyRound, IdCard, BookOpen, CalendarClock, CalendarDays, ChevronRight, AlertTriangle } from "lucide-react";
 import type { SubjectStat } from "@/lib/attendance";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { studentSubjectStats } from "@/lib/attendance";
 import { studentClassesForDay, todayWeekday, WEEKDAY_LABEL } from "@/lib/schedule";
-import { signPersonalToken } from "@/lib/qrToken";
 import { Card, Badge, ProgressRing, EmptyState } from "@/app/_components/ui";
 import { ClassRow } from "@/app/_components/schedule-ui";
 import { DonutChart, Legend } from "@/app/_components/charts";
@@ -24,12 +22,7 @@ export default async function StudentHome() {
     studentClassesForDay(user.id, day),
   ]);
 
-  const personalQr = me
-    ? await QRCode.toDataURL(await signPersonalToken(me.id, me.personalQrSecret), {
-        width: 220,
-        margin: 1,
-      })
-    : "";
+  const personalCode = me?.personalCode ?? null;
 
   // Subjects with no sessions held yet have no attendance to report — keep them
   // out of the overall %, the below-75% alert, and the risk-sorted list.
@@ -51,17 +44,17 @@ export default async function StudentHome() {
 
   return (
     <div>
-      {/* Scan CTA */}
+      {/* Mark attendance CTA */}
       <Link
         href="/student/scan"
         className="group mb-4 flex items-center gap-3 rounded-xl bg-primary px-4 py-3 text-white shadow-sm shadow-primary/20 transition active:scale-[0.99]"
       >
         <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-card/15">
-          <QrCode className="h-5 w-5" />
+          <KeyRound className="h-5 w-5" />
         </span>
         <div className="flex-1">
-          <p className="text-sm font-semibold">Scan attendance QR</p>
-          <p className="text-xs text-white/80">Point your camera at the teacher&apos;s screen</p>
+          <p className="text-sm font-semibold">Mark attendance</p>
+          <p className="text-xs text-white/80">Enter the code shown on the teacher&apos;s screen</p>
         </div>
         <ChevronRight className="h-5 w-5 flex-shrink-0 text-white/70 transition group-hover:translate-x-0.5" />
       </Link>
@@ -156,14 +149,24 @@ export default async function StudentHome() {
         )}
       </Card>
 
-      <Card title="Your personal QR (digital ID)" icon={<IdCard className="h-4 w-4" />}>
-        <div className="flex items-center gap-4">
-          <div className="rounded-xl border border-border bg-card p-2 shadow-inner">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={personalQr} alt="Personal QR" className="h-32 w-32" />
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Show this to your teacher if your camera fails — they can scan it to mark you present.
+      <Card title="Your personal code (digital ID)" icon={<IdCard className="h-4 w-4" />}>
+        <div className="flex flex-wrap items-center gap-4">
+          {personalCode ? (
+            <div className="flex gap-1.5">
+              {personalCode.split("").map((d, i) => (
+                <span
+                  key={i}
+                  className="flex h-12 w-9 items-center justify-center rounded-lg border border-border bg-muted text-2xl font-bold tabular-nums text-foreground"
+                >
+                  {d}
+                </span>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">No personal code assigned yet — contact your admin.</p>
+          )}
+          <p className="max-w-xs text-sm text-muted-foreground">
+            Read this out to your teacher if your device fails — they can enter it to mark you present.
           </p>
         </div>
       </Card>
