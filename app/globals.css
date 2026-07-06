@@ -171,6 +171,14 @@
   }
 }
 
+/* Printing: always expand collapsible <details> groups (e.g. section-wise
+   student lists) so nothing is hidden in the printed / saved-as-PDF output. */
+@media print {
+  details:not([open]) > *:not(summary) {
+    display: block !important;
+  }
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;

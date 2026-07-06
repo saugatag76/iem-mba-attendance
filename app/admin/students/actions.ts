@@ -1,0 +1,86 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+import { requireRole } from "@/lib/session";
+import { uniquePersonalCode } from "@/lib/code";
+import { Role } from "@prisma/client";
+
+const PHONE_RE = /^\d{10,12}$/;
+
+function flash(to: string, msg: string, type?: "error") {
+  revalidatePath("/admin/students");
+  const sep = to.includes("?") ? "&" : "?";
+  redirect(`${to}${sep}toast=${encodeURIComponent(msg)}${type ? `&toastType=${type}` : ""}`);
+}
+
+/** Internal, never-shown email derived from phone — mirrors the bulk-import convention. */
+function phoneEmail(phone: string) {
+  return `p${phone}@iem.internal`;
+}
+
+/** Add a brand-new student: name + phone + section. Rejects if the phone is already in use. */
+export async function createStudent(formData: FormData) {
+  await requireRole("ADMIN");
+  const name = String(formData.get("name") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim().replace(/[\s+\-()]/g, "");
+  const sectionId = String(formData.get("sectionId") ?? "");
+
+  if (!name || !sectionId) flash("/admin/students", "Name and section are required.", "error");
+  if (!PHONE_RE.test(phone)) flash("/admin/students", "Enter a valid 10–12 digit phone number.", "error");
+
+  const existing = await prisma.user.findFirst({ where: { phone } });
+  if (existing) flash("/admin/students", "A student with this phone number already exists. Use Edit instead.", "error");
+
+  const passwordHash = await bcrypt.hash("stud123", 10);
+  const student = await prisma.user.create({
+    data: {
+      email: phoneEmail(phone),
+      phone,
+      name,
+      role: Role.STUDENT,
+      passwordHash,
+      personalCode: await uniquePersonalCode(),
+    },
+  });
+  await prisma.enrollment.create({ data: { studentId: student.id, classSectionId: sectionId } });
+
+  flash("/admin/students", `${name} added.`);
+}
+
+/** Edit an existing student's name, phone, and/or section (single primary section model). */
+export async function updateStudent(formData: FormData) {
+  await requireRole("ADMIN");
+  const id = String(formData.get("id") ?? "");
+  const name = String(formData.get("name") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim().replace(/[\s+\-()]/g, "");
+  const sectionId = String(formData.get("sectionId") ?? "");
+
+  if (!id || !name || !sectionId) flash("/admin/students", "Name and section are required.", "error");
+  if (!PHONE_RE.test(phone)) flash("/admin/students", "Enter a valid 10–12 digit phone number.", "error");
+
+  const dup = await prisma.user.findFirst({ where: { phone, id: { not: id } } });
+  if (dup) flash("/admin/students", "Another student already uses this phone number.", "error");
+
+  await prisma.user.update({
+    where: { id },
+    data: { name, phone, email: phoneEmail(phone) },
+  });
+
+  // Single-section model: replace any existing enrollments with the chosen one.
+  await prisma.enrollment.deleteMany({ where: { studentId: id } });
+  await prisma.enrollment.create({ data: { studentId: id, classSectionId: sectionId } });
+
+  flash("/admin/students", `${name} updated.`);
+}
+
+/** Permanently delete a student — cascades to enrollments, attendance and event records. */
+export async function deleteStudent(formData: FormData) {
+  await requireRole("ADMIN");
+  const id = String(formData.get("id") ?? "");
+  if (!id) flash("/admin/students", "Student not found.", "error");
+  const student = await prisma.user.delete({ where: { id } });
+  flash("/admin/students", `${student.name} removed.`);
+}

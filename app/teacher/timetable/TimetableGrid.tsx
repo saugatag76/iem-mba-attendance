@@ -27,7 +27,29 @@ function shortCode(code: string): string {
   return parts[0] === "ACT" ? "ACT" : code.slice(0, 7);
 }
 
-export function TimetableGrid({ byDay }: { byDay: Record<Weekday, ScheduleRow[]> }) {
+export type SubstitutedInfo = { by: string; date: string };
+export type CoveringInfo = {
+  subjectName: string;
+  subjectCode: string;
+  sectionName: string;
+  forName: string;
+  date: string;
+};
+
+function fmtDate(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y, m - 1, d).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+}
+
+export function TimetableGrid({
+  byDay,
+  substituted,
+  covering,
+}: {
+  byDay: Record<Weekday, ScheduleRow[]>;
+  substituted?: Map<string, SubstitutedInfo>;
+  covering?: Map<string, CoveringInfo>;
+}) {
   const slotNums = [1, 2, 3, 4, 5, 6, 7, 8];
 
   // Build a lookup: day → slotIndex → rows
@@ -79,6 +101,9 @@ export function TimetableGrid({ byDay }: { byDay: Record<Weekday, ScheduleRow[]>
                 </td>
                 {DAYS.map((day) => {
                   const rows = getSlotRows(day, slot);
+                  const key = `${day}-${slot}`;
+                  const coverInfo = covering?.get(key);
+                  const isEmpty = rows.length === 0 && !coverInfo;
                   return (
                     <td
                       key={day}
@@ -89,34 +114,64 @@ export function TimetableGrid({ byDay }: { byDay: Record<Weekday, ScheduleRow[]>
                       )}
                     >
                       <div className="flex min-h-[80px] flex-col gap-1">
-                        {rows.length === 0 ? (
+                        {isEmpty ? (
                           <div className="flex flex-1 items-center justify-center">
                             <span className="text-[10px] text-muted-foreground/30">—</span>
                           </div>
                         ) : (
-                          rows.map((r) =>
-                            r.offering ? (
-                              <div
-                                key={r.id}
-                                className="flex flex-col rounded-md bg-primary/8 px-2 py-1.5 ring-1 ring-inset ring-primary/20 dark:bg-primary/10"
-                              >
-                                <span className="min-w-0 text-xs font-semibold leading-tight text-foreground line-clamp-2">
-                                  {r.offering.subject.name}
-                                </span>
-                                <span className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
-                                  <span className="min-w-0 flex-1 truncate">{r.offering.classSection.name}</span>
-                                  <span className="flex-shrink-0 font-mono text-[9px] text-muted-foreground/60">
-                                    {shortCode(r.offering.subject.code)}
+                          <>
+                            {rows.map((r) => {
+                              if (!r.offering) return null;
+                              const subInfo = substituted?.get(key);
+                              return (
+                                <div
+                                  key={r.id}
+                                  className={cn(
+                                    "flex flex-col rounded-md px-2 py-1.5 ring-1 ring-inset",
+                                    subInfo
+                                      ? "bg-amber-500/8 ring-amber-500/25 dark:bg-amber-500/10"
+                                      : "bg-primary/8 ring-primary/20 dark:bg-primary/10",
+                                  )}
+                                >
+                                  <span className="min-w-0 text-xs font-semibold leading-tight text-foreground line-clamp-2">
+                                    {r.offering.subject.name}
                                   </span>
-                                  {r.subgroup && (
-                                    <span className="flex-shrink-0 rounded bg-primary/15 px-1 font-semibold text-primary">
-                                      {r.subgroup}
+                                  <span className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                                    <span className="min-w-0 flex-1 truncate">{r.offering.classSection.name}</span>
+                                    <span className="flex-shrink-0 font-mono text-[9px] text-muted-foreground/60">
+                                      {shortCode(r.offering.subject.code)}
+                                    </span>
+                                    {r.subgroup && (
+                                      <span className="flex-shrink-0 rounded bg-primary/15 px-1 font-semibold text-primary">
+                                        {r.subgroup}
+                                      </span>
+                                    )}
+                                  </span>
+                                  {subInfo && (
+                                    <span className="mt-1 truncate rounded bg-amber-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-amber-700 dark:text-amber-400">
+                                      {fmtDate(subInfo.date)} · Covered by {subInfo.by}
                                     </span>
                                   )}
+                                </div>
+                              );
+                            })}
+                            {coverInfo && (
+                              <div className="flex flex-col rounded-md bg-brand-100/60 px-2 py-1.5 ring-1 ring-inset ring-blue-500/25 dark:bg-blue-500/10">
+                                <span className="min-w-0 text-xs font-semibold leading-tight text-foreground line-clamp-2">
+                                  {coverInfo.subjectName}
+                                </span>
+                                <span className="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
+                                  <span className="min-w-0 flex-1 truncate">{coverInfo.sectionName}</span>
+                                  <span className="flex-shrink-0 font-mono text-[9px] text-muted-foreground/60">
+                                    {shortCode(coverInfo.subjectCode)}
+                                  </span>
+                                </span>
+                                <span className="mt-1 truncate rounded bg-blue-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-blue-700 dark:text-blue-400">
+                                  {fmtDate(coverInfo.date)} · Covering for {coverInfo.forName}
                                 </span>
                               </div>
-                            ) : null,
-                          )
+                            )}
+                          </>
                         )}
                       </div>
                     </td>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { CalendarClock, CalendarDays, BookOpen, Clock, FileBarChart } from "lucide-react";
+import { CalendarClock, CalendarDays, BookOpen, Clock, FileBarChart, ArrowLeftRight, Inbox } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { teacherClassesForDay, todayWeekday, WEEKDAY_LABEL } from "@/lib/schedule";
@@ -28,7 +28,7 @@ export default async function TeacherHome({
   const startUTC = new Date(midnightIST.getTime() - (5 * 60 + 30) * 60 * 1000);
   const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
 
-  const [today, offerings, scheduled, substitutingToday, substitutedToday] = await Promise.all([
+  const [today, offerings, scheduled, substitutingToday, substitutedToday, subNeedsResponse, subPendingSent, subCoveringUpcoming] = await Promise.all([
     teacherClassesForDay(teacher.id, day),
     prisma.offering.findMany({
       where: { teacherId: teacher.id },
@@ -53,6 +53,16 @@ export default async function TeacherHome({
     prisma.substitutionRequest.findMany({
       where: { requestedById: teacher.id, status: "APPROVED", date: { gte: startUTC, lt: endUTC } },
       include: { scheduledClass: true, substituteTeacher: true },
+    }),
+    // Requests sent to this teacher awaiting their accept/decline.
+    prisma.substitutionRequest.count({ where: { substituteTeacherId: teacher.id, status: "PENDING_TEACHER" } }),
+    // This teacher's own requests still working their way through the workflow.
+    prisma.substitutionRequest.count({
+      where: { requestedById: teacher.id, status: { in: ["PENDING_TEACHER", "TEACHER_ACCEPTED"] } },
+    }),
+    // Upcoming classes (today onward) this teacher has committed to cover for someone else.
+    prisma.substitutionRequest.count({
+      where: { substituteTeacherId: teacher.id, status: "APPROVED", date: { gte: startUTC } },
     }),
   ]);
 
@@ -127,10 +137,33 @@ export default async function TeacherHome({
         subtitle={day ? `Today is ${WEEKDAY_LABEL[day]}` : "It's the weekend — no scheduled classes."}
       />
 
-      <div className="mb-6 grid grid-cols-3 gap-3">
+      <div className="mb-3 grid grid-cols-3 gap-3">
         <StatCard icon={<CalendarClock className="h-4 w-4" />} label="Today" value={today.length} hint="scheduled" />
         <StatCard icon={<BookOpen className="h-4 w-4" />} label="Classes" value={offerings.length} hint="you teach" />
         <StatCard icon={<CalendarDays className="h-4 w-4" />} label="Sessions" value={sessionsHeld} hint="held" />
+      </div>
+      <div className="mb-6 grid grid-cols-3 gap-3">
+        <StatCard
+          icon={<Inbox className="h-4 w-4" />}
+          label="Needs your response"
+          value={subNeedsResponse}
+          hint="sub requests"
+          href={subNeedsResponse > 0 ? "/teacher/substitutions?tab=received" : undefined}
+        />
+        <StatCard
+          icon={<ArrowLeftRight className="h-4 w-4" />}
+          label="My requests pending"
+          value={subPendingSent}
+          hint="in progress"
+          href={subPendingSent > 0 ? "/teacher/substitutions?tab=sent" : undefined}
+        />
+        <StatCard
+          icon={<CalendarDays className="h-4 w-4" />}
+          label="Covering upcoming"
+          value={subCoveringUpcoming}
+          hint="approved"
+          href={subCoveringUpcoming > 0 ? "/teacher/timetable" : undefined}
+        />
       </div>
 
       {/* Up next — primary action */}

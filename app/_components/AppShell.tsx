@@ -26,6 +26,7 @@ import type { Role } from "@prisma/client";
 import { Avatar, cn } from "./ui";
 import { doSignOut } from "./auth-actions";
 import { ThemeToggle } from "./ThemeToggle";
+import { NotificationBell } from "./NotificationBell";
 import { CommandPalette } from "./CommandPalette";
 import { ToastListener } from "./ToastListener";
 import { PageTransition } from "./motion";
@@ -46,6 +47,7 @@ const NAV: Record<Role, { section: string; items: Item[] }[]> = {
       items: [
         { href: "/admin/academics", label: "Academics", icon: Layers },
         { href: "/admin/people", label: "People", icon: Users },
+        { href: "/admin/students", label: "Students", icon: GraduationCap },
         { href: "/admin/offerings", label: "Offerings", icon: Link2 },
         { href: "/admin/routine", label: "Routine", icon: CalendarDays },
         { href: "/admin/substitutions", label: "Substitutions", icon: ArrowLeftRight },
@@ -116,7 +118,7 @@ export function AppShell({
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground/80 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0",
+          "fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground/80 transition-transform duration-200 lg:sticky lg:top-0 lg:h-screen lg:translate-x-0 print:hidden",
           open ? "translate-x-0" : "-translate-x-full",
         )}
       >
@@ -200,7 +202,7 @@ export function AppShell({
 
       {/* Content */}
       <div className="min-w-0 flex-1">
-        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-md">
+        <header className="sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-border bg-background/80 px-4 backdrop-blur-md print:hidden">
           <button onClick={() => setOpen(true)} className="text-muted-foreground lg:hidden" aria-label="Open menu">
             <Menu className="h-5 w-5" />
           </button>
@@ -230,6 +232,7 @@ export function AppShell({
             <kbd className="hidden rounded border border-border bg-muted px-1.5 font-mono text-[10px] md:inline">⌘K</kbd>
           </button>
 
+          <NotificationBell />
           <ThemeToggle />
 
           <div className="flex items-center gap-2.5">

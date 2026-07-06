@@ -21,6 +21,10 @@ function formatDate(d: Date) {
   return d.toLocaleDateString("en-IN", { weekday: "short", day: "2-digit", month: "short", year: "numeric" });
 }
 
+function shortId(id: string) {
+  return id.slice(-6).toUpperCase();
+}
+
 export default async function TeacherSubstitutionsPage({
   searchParams,
 }: {
@@ -107,9 +111,12 @@ export default async function TeacherSubstitutionsPage({
                 <div key={req.id} className="rounded-xl border border-border bg-card p-4 shadow-sm">
                   <div className="flex flex-wrap items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-foreground">
-                        {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-foreground">
+                          {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
+                        </p>
+                        <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
                       </p>
@@ -156,9 +163,12 @@ export default async function TeacherSubstitutionsPage({
                 <div key={req.id} className={`rounded-xl border bg-card p-4 shadow-sm ${isPending ? "border-primary/40" : "border-border"}`}>
                   <div className="flex flex-wrap items-start gap-3">
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-foreground">
-                        {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-foreground">
+                          {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
+                        </p>
+                        <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
+                      </div>
                       <p className="text-sm text-muted-foreground">
                         {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
                       </p>

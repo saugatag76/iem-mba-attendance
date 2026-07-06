@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { PageHeader } from "@/app/_components/ui";
 import { createSubstitutionRequest } from "../actions";
 import { TeacherPicker, type TeacherOption } from "./TeacherPicker";
+import { ClassSelector } from "./ClassSelector";
 import type { Weekday } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -74,7 +75,7 @@ export default async function NewSubstitutionPage({
     orderBy: { name: "asc" },
   });
 
-  const teacherOptions: TeacherOption[] = allTeachers.map((t) => ({
+  const allTeacherOptions: TeacherOption[] = allTeachers.map((t) => ({
     id: t.id,
     name: t.name,
     email: t.email,
@@ -84,6 +85,11 @@ export default async function NewSubstitutionPage({
         (o) => "schedule" in o && Array.isArray(o.schedule) && o.schedule.length > 0,
       ),
   }));
+
+  // Hard-filter: once the slot's day/time is known, only show teachers who are free —
+  // busy ones are hidden entirely rather than just flagged.
+  const teacherOptions = slot ? allTeacherOptions.filter((t) => !t.hasConflict) : allTeacherOptions;
+  const hiddenBusyCount = slot ? allTeacherOptions.length - teacherOptions.length : 0;
 
   return (
     <div>
@@ -126,21 +132,15 @@ export default async function NewSubstitutionPage({
             >
               Which class needs covering? <span className="text-destructive">*</span>
             </label>
-            <select
-              id="scheduledClassId"
-              name="scheduledClassId"
-              required
-              className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-            >
-              <option value="">Select a class…</option>
-              {mySlots.map((sc) => (
-                <option key={sc.id} value={sc.id}>
-                  {sc.offering?.subject.name} — {sc.offering?.classSection.name} · {sc.day}{" "}
-                  {sc.startTime}–{sc.endTime}
-                </option>
-              ))}
-            </select>
-            <p className="mt-1 text-xs text-muted-foreground">All your scheduled weekly classes.</p>
+            <ClassSelector
+              slots={mySlots.map((sc) => ({
+                id: sc.id,
+                label: `${sc.offering?.subject.name} — ${sc.offering?.classSection.name} · ${sc.day} ${sc.startTime}–${sc.endTime}`,
+              }))}
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              All your scheduled weekly classes. Pick one to see who's available.
+            </p>
           </div>
         )}
 
@@ -188,14 +188,16 @@ export default async function NewSubstitutionPage({
           </p>
           {slot && (
             <p className="mb-3 text-xs text-muted-foreground">
-              Teachers with a conflict on{" "}
+              Showing only teachers who are <strong>free</strong> on{" "}
               <strong>
                 {slot.day} {slot.startTime}–{slot.endTime}
-              </strong>{" "}
-              are flagged — they can still accept if available.
+              </strong>
+              {hiddenBusyCount > 0 && (
+                <> — {hiddenBusyCount} teacher{hiddenBusyCount > 1 ? "s" : ""} hidden due to a scheduling conflict.</>
+              )}
             </p>
           )}
-          <TeacherPicker teachers={teacherOptions} showConflict={!!slot} />
+          <TeacherPicker teachers={teacherOptions} showConflict={false} />
         </div>
 
         {/* Submit */}

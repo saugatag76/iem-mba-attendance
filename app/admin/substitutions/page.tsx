@@ -1,4 +1,4 @@
-import { CheckCircle2, XCircle, ArrowLeftRight, Clock, TrendingUp, Download } from "lucide-react";
+import { CheckCircle2, XCircle, ArrowLeftRight, Clock, TrendingUp, Download, CalendarClock, CalendarRange } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Avatar, Badge, StatCard } from "@/app/_components/ui";
@@ -21,6 +21,10 @@ function formatDate(d: Date) {
   return d.toLocaleDateString("en-IN", { weekday: "short", day: "2-digit", month: "short", year: "numeric" });
 }
 
+function shortId(id: string) {
+  return id.slice(-6).toUpperCase();
+}
+
 export default async function AdminSubstitutionsPage({
   searchParams,
 }: {
@@ -36,7 +40,17 @@ export default async function AdminSubstitutionsPage({
       ? ["APPROVED", "REJECTED", "CANCELLED", "TEACHER_DECLINED"]
       : ["TEACHER_ACCEPTED"];
 
-  const [requests, stats, topRequesters, topSubstitutes] = await Promise.all([
+  // Today / this week (Mon–Fri) ranges in IST calendar terms — same convention
+  // used for SubstitutionRequest.date across the app.
+  const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
+  const todayStart = new Date(nowIST.getFullYear(), nowIST.getMonth(), nowIST.getDate());
+  const todayEnd = new Date(todayStart.getFullYear(), todayStart.getMonth(), todayStart.getDate() + 1);
+  const dow = nowIST.getDay();
+  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const weekStart = new Date(nowIST.getFullYear(), nowIST.getMonth(), nowIST.getDate() + mondayOffset);
+  const weekEnd = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + 6);
+
+  const [requests, stats, topRequesters, topSubstitutes, todaySubCount, weekSubCount] = await Promise.all([
     prisma.substitutionRequest.findMany({
       where: { status: { in: statusFilter } },
       include: {
@@ -66,6 +80,12 @@ export default async function AdminSubstitutionsPage({
       _count: { id: true },
       orderBy: { _count: { id: "desc" } },
       take: 3,
+    }),
+    prisma.substitutionRequest.count({
+      where: { status: "APPROVED", date: { gte: todayStart, lt: todayEnd } },
+    }),
+    prisma.substitutionRequest.count({
+      where: { status: "APPROVED", date: { gte: weekStart, lt: weekEnd } },
     }),
   ]);
 
@@ -99,13 +119,17 @@ export default async function AdminSubstitutionsPage({
       />
 
       {/* Stats */}
-      <div className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div className="mb-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
         <StatCard icon={<ArrowLeftRight className="h-4 w-4" />} label="Total requests" value={totalCount} />
         <StatCard icon={<Clock className="h-4 w-4" />} label="Awaiting approval" value={pendingCount}
           href={pendingCount > 0 ? "/admin/substitutions?filter=pending" : undefined} />
         <StatCard icon={<CheckCircle2 className="h-4 w-4" />} label="Approved" value={approvedCount} />
         <StatCard icon={<TrendingUp className="h-4 w-4" />} label="Declined / Rejected"
           value={countOf("TEACHER_DECLINED") + countOf("REJECTED")} />
+      </div>
+      <div className="mb-6 grid grid-cols-2 gap-3">
+        <StatCard icon={<CalendarClock className="h-4 w-4" />} label="Today's substitute classes" value={todaySubCount} hint="approved" />
+        <StatCard icon={<CalendarRange className="h-4 w-4" />} label="This week's substitute classes" value={weekSubCount} hint="approved" />
       </div>
 
       {/* Top teachers */}
@@ -188,9 +212,12 @@ export default async function AdminSubstitutionsPage({
                 {/* Header */}
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <p className="text-base font-semibold text-foreground">
-                      {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="text-base font-semibold text-foreground">
+                        {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
+                      </p>
+                      <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
+                    </div>
                     <p className="text-sm text-muted-foreground">
                       {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day}{" "}
                       {req.scheduledClass.startTime}–{req.scheduledClass.endTime} · {formatDate(req.date)}

@@ -227,6 +227,8 @@ model User {
   eventsCreated   Event[]          @relation("EventCreatedBy")
   eventsApproved  Event[]          @relation("EventApprovedBy")
   eventAttendances EventAttendance[] @relation("EventAttendances")
+
+  notifications Notification[]
 }
 
 model Enrollment {
@@ -314,4 +316,28 @@ model SubstitutionRequest {
   @@index([requestedById])
   @@index([substituteTeacherId])
   @@index([status])
+}
+
+enum NotificationType {
+  SUBSTITUTION_REQUEST_SENT   // to substitute teacher: new request awaiting response
+  SUBSTITUTION_ACCEPTED       // to requester: substitute accepted
+  SUBSTITUTION_DECLINED       // to requester: substitute declined
+  SUBSTITUTION_PENDING_ADMIN  // to admins: a request needs approval
+  SUBSTITUTION_ADMIN_APPROVED // to requester + substitute: admin approved
+  SUBSTITUTION_ADMIN_REJECTED // to requester + substitute: admin rejected
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipient   User             @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId String
+  type        NotificationType
+  title       String
+  body        String
+  link        String?          // where clicking the notification should navigate
+  read        Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  @@index([recipientId, read])
+  @@index([recipientId, createdAt])
 }
