@@ -61,11 +61,13 @@ export default async function NewSubstitutionPage({
       ? {
           taughtOfferings: {
             include: {
+              // Strict half-open overlap (matches findTimeConflict) so back-to-back
+              // classes that merely touch the boundary aren't flagged as conflicts.
               schedule: {
                 where: {
                   day: slot.day,
-                  startTime: { lte: slot.endTime },
-                  endTime: { gte: slot.startTime },
+                  startTime: { lt: slot.endTime },
+                  endTime: { gt: slot.startTime },
                 },
               },
             },
@@ -121,6 +123,7 @@ export default async function NewSubstitutionPage({
               </p>
               <p className="text-sm text-muted-foreground">
                 {slot.offering?.classSection.name} · {slot.day} {slot.startTime}–{slot.endTime}
+                {slot.offering?.term && <> · Sem {slot.offering.term}</>}
               </p>
             </div>
           </>

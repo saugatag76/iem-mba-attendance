@@ -81,7 +81,7 @@ export async function createSubstitutionRequest(formData: FormData) {
   const date = new Date(dateStr);
   if (isNaN(date.getTime())) flash("/teacher/substitutions/new", "Invalid date.", "error");
 
-  const req = await prisma.substitutionRequest.create({
+  await prisma.substitutionRequest.create({
     data: {
       scheduledClassId,
       date,
@@ -90,17 +90,11 @@ export async function createSubstitutionRequest(formData: FormData) {
       reason,
       status: "PENDING_TEACHER",
     },
-    include: { scheduledClass: { include: { offering: { include: { subject: true } } } } },
   });
 
-  await notify(
-    substituteTeacherId,
-    "SUBSTITUTION_REQUEST_SENT",
-    "New substitution request",
-    `${teacher.name} asked you to cover ${req.scheduledClass.offering?.subject.name ?? "a class"} on ${fmtDate(date)}.`,
-    "/teacher/substitutions?tab=received",
-  );
-
+  // Intentionally no notify() here — the initial request must surface only on the
+  // selected teacher's own Substitution page (its "Pending requests" section) and
+  // the sidebar badge count, not as a bell/dashboard pop-up seen elsewhere.
   revalidatePath("/teacher/substitutions");
   flash("/teacher/substitutions", "Substitution request sent. Waiting for the substitute teacher to respond.");
 }
@@ -189,20 +183,8 @@ export async function createLeaveSubstitutions(formData: FormData) {
     skipDuplicates: true,
   });
 
-  // Notify each substitute teacher (best-effort, one per entry)
-  await Promise.all(
-    toCreate.map((e) => {
-      const sc = classById.get(e.scheduledClassId)!;
-      return notify(
-        e.substituteTeacherId,
-        "SUBSTITUTION_REQUEST_SENT",
-        "New substitution request",
-        `${teacher.name} asked you to cover ${sc.offering?.subject.name ?? "a class"} on ${fmtDate(e.date)}.`,
-        "/teacher/substitutions?tab=received",
-      );
-    }),
-  );
-
+  // Intentionally no notify() here — same as the single-class flow, these only
+  // surface on each substitute teacher's own Substitution page + sidebar badge.
   revalidatePath("/teacher/substitutions");
   flash("/teacher/substitutions", `${toCreate.length} substitution request${toCreate.length > 1 ? "s" : ""} sent.`);
 }

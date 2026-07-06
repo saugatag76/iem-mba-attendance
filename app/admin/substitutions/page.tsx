@@ -222,6 +222,11 @@ export default async function AdminSubstitutionsPage({
                       {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day}{" "}
                       {req.scheduledClass.startTime}–{req.scheduledClass.endTime} · {formatDate(req.date)}
                     </p>
+                    {req.scheduledClass.offering?.term && (
+                      <p className="mt-0.5 text-xs text-muted-foreground">
+                        Semester: <span className="font-medium text-foreground">{req.scheduledClass.offering.term}</span>
+                      </p>
+                    )}
                   </div>
                   <Badge tone={tone}>{label}</Badge>
                 </div>

@@ -3,18 +3,28 @@ import { ArrowLeft, Clock, CheckCircle2, XCircle, Ban, AlertTriangle } from "luc
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Avatar, Badge } from "@/app/_components/ui";
+import { SectionHeader } from "@/app/_components/layout-ui";
 import { cancelSubstitutionRequest, respondToSubstitutionRequest } from "./actions";
 import type { SubstitutionStatus } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 
-const STATUS_BADGE: Record<SubstitutionStatus, { tone: "gray" | "amber" | "green" | "red" | "brand"; label: string }> = {
+// Labels from the sender's point of view ("sent" tab).
+const SENT_STATUS_BADGE: Record<SubstitutionStatus, { tone: "gray" | "amber" | "green" | "red" | "brand"; label: string }> = {
   PENDING_TEACHER:  { tone: "amber", label: "Awaiting teacher" },
   TEACHER_ACCEPTED: { tone: "brand", label: "Awaiting admin" },
   TEACHER_DECLINED: { tone: "red",   label: "Declined" },
   APPROVED:         { tone: "green", label: "Approved" },
   REJECTED:         { tone: "red",   label: "Rejected" },
   CANCELLED:        { tone: "gray",  label: "Cancelled" },
+};
+
+// Labels from the recipient's point of view ("received" tab) — a request
+// that's PENDING_TEACHER is *this* teacher's own action item, so it reads
+// as "Pending", not "Awaiting teacher" (which sounds like someone else).
+const RECEIVED_STATUS_BADGE: Record<SubstitutionStatus, { tone: "gray" | "amber" | "green" | "red" | "brand"; label: string }> = {
+  ...SENT_STATUS_BADGE,
+  PENDING_TEACHER: { tone: "amber", label: "Pending" },
 };
 
 function formatDate(d: Date) {
@@ -105,7 +115,7 @@ export default async function TeacherSubstitutionsPage({
             </p>
           ) : (
             sent.map((req) => {
-              const { tone, label } = STATUS_BADGE[req.status];
+              const { tone, label } = SENT_STATUS_BADGE[req.status];
               const canCancel = req.status === "PENDING_TEACHER" || req.status === "TEACHER_ACCEPTED";
               return (
                 <div key={req.id} className="rounded-xl border border-border bg-card p-4 shadow-sm">
@@ -119,6 +129,7 @@ export default async function TeacherSubstitutionsPage({
                       </div>
                       <p className="text-sm text-muted-foreground">
                         {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
+                        {req.scheduledClass.offering?.term && <> · Sem {req.scheduledClass.offering.term}</>}
                       </p>
                       <p className="mt-1 text-sm text-muted-foreground">
                         Date: <span className="font-medium text-foreground">{formatDate(req.date)}</span>
@@ -150,88 +161,141 @@ export default async function TeacherSubstitutionsPage({
           )}
         </div>
       ) : (
-        <div className="space-y-3">
+        <div>
           {received.length === 0 ? (
             <p className="rounded-xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
               No substitution requests have been sent to you.
             </p>
           ) : (
-            received.map((req) => {
-              const { tone, label } = STATUS_BADGE[req.status];
-              const isPending = req.status === "PENDING_TEACHER";
-              return (
-                <div key={req.id} className={`rounded-xl border bg-card p-4 shadow-sm ${isPending ? "border-primary/40" : "border-border"}`}>
-                  <div className="flex flex-wrap items-start gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <p className="font-semibold text-foreground">
-                          {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
-                        </p>
-                        <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
-                      </p>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Date: <span className="font-medium text-foreground">{formatDate(req.date)}</span>
-                      </p>
-                    </div>
-                    <Badge tone={tone as "gray" | "green" | "red" | "amber" | "brand"}>{label}</Badge>
-                  </div>
+            <>
+              {/* Pending requests — this teacher's own action items, only Accept/Decline. */}
+              <SectionHeader title={`Pending requests (${received.filter((r) => r.status === "PENDING_TEACHER").length})`} />
+              <div className="space-y-3">
+                {received.filter((r) => r.status === "PENDING_TEACHER").length === 0 ? (
+                  <p className="rounded-xl border border-dashed border-border py-6 text-center text-sm text-muted-foreground">
+                    No pending requests right now.
+                  </p>
+                ) : (
+                  received
+                    .filter((req) => req.status === "PENDING_TEACHER")
+                    .map((req) => (
+                      <div key={req.id} className="rounded-xl border border-primary/40 bg-card p-4 shadow-sm">
+                        <div className="flex flex-wrap items-start gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className="font-semibold text-foreground">
+                                {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
+                              </p>
+                              <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
+                              {req.scheduledClass.offering?.term && <> · Sem {req.scheduledClass.offering.term}</>}
+                            </p>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                              Date: <span className="font-medium text-foreground">{formatDate(req.date)}</span>
+                            </p>
+                          </div>
+                          <Badge tone="amber">Pending</Badge>
+                        </div>
 
-                  <div className="mt-3 space-y-1 text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground">Requested by:</span>
-                      <Avatar name={req.requestedBy.name} className="h-5 w-5 text-[9px]" />
-                      <span className="font-medium text-foreground">{req.requestedBy.name}</span>
-                    </div>
-                    <p><span className="text-muted-foreground">Reason:</span> {req.reason}</p>
-                  </div>
+                        <div className="mt-3 space-y-1 text-sm">
+                          <div className="flex items-center gap-2">
+                            <span className="text-muted-foreground">Requested by:</span>
+                            <Avatar name={req.requestedBy.name} className="h-5 w-5 text-[9px]" />
+                            <span className="font-medium text-foreground">{req.requestedBy.name}</span>
+                          </div>
+                          <p><span className="text-muted-foreground">Reason:</span> {req.reason}</p>
+                        </div>
 
-                  {isPending && (
-                    <div className="mt-4 space-y-3">
-                      <div>
-                        <label htmlFor={`note-${req.id}`} className="mb-1 block text-xs font-medium text-muted-foreground">
-                          Optional note (visible to admin and requester)
-                        </label>
-                        <textarea
-                          id={`note-${req.id}`}
-                          form={`accept-${req.id}`}
-                          name="teacherNote"
-                          rows={2}
-                          placeholder="Add a note if needed…"
-                          className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
-                        />
+                        <div className="mt-4 space-y-3">
+                          <div>
+                            <label htmlFor={`note-${req.id}`} className="mb-1 block text-xs font-medium text-muted-foreground">
+                              Optional note (visible to admin and requester)
+                            </label>
+                            <textarea
+                              id={`note-${req.id}`}
+                              form={`accept-${req.id}`}
+                              name="teacherNote"
+                              rows={2}
+                              placeholder="Add a note if needed…"
+                              className="w-full rounded-md border border-input bg-card px-3 py-1.5 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+                            />
+                          </div>
+                          <div className="flex gap-2">
+                            {/* Accept — dedicated form with hidden response=accept */}
+                            <form id={`accept-${req.id}`} action={respondToSubstitutionRequest}>
+                              <input type="hidden" name="id" value={req.id} />
+                              <input type="hidden" name="response" value="accept" />
+                              <button
+                                type="submit"
+                                className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary/90"
+                              >
+                                <CheckCircle2 className="h-4 w-4" /> Accept
+                              </button>
+                            </form>
+                            {/* Decline — separate form with hidden response=decline */}
+                            <form action={respondToSubstitutionRequest}>
+                              <input type="hidden" name="id" value={req.id} />
+                              <input type="hidden" name="response" value="decline" />
+                              <button
+                                type="submit"
+                                className="flex items-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400"
+                              >
+                                <XCircle className="h-4 w-4" /> Decline
+                              </button>
+                            </form>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex gap-2">
-                        {/* Accept — dedicated form with hidden response=accept */}
-                        <form id={`accept-${req.id}`} action={respondToSubstitutionRequest}>
-                          <input type="hidden" name="id" value={req.id} />
-                          <input type="hidden" name="response" value="accept" />
-                          <button
-                            type="submit"
-                            className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-1.5 text-sm font-semibold text-white transition hover:bg-primary/90"
-                          >
-                            <CheckCircle2 className="h-4 w-4" /> Accept
-                          </button>
-                        </form>
-                        {/* Decline — separate form with hidden response=decline */}
-                        <form action={respondToSubstitutionRequest}>
-                          <input type="hidden" name="id" value={req.id} />
-                          <input type="hidden" name="response" value="decline" />
-                          <button
-                            type="submit"
-                            className="flex items-center gap-1.5 rounded-lg border border-red-500/25 px-4 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-500/10 dark:text-red-400"
-                          >
-                            <XCircle className="h-4 w-4" /> Decline
-                          </button>
-                        </form>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-            })
+                    ))
+                )}
+              </div>
+
+              {/* History — already responded to; read-only. */}
+              {received.some((r) => r.status !== "PENDING_TEACHER") && (
+                <>
+                  <SectionHeader title="History" />
+                  <div className="space-y-3">
+                    {received
+                      .filter((req) => req.status !== "PENDING_TEACHER")
+                      .map((req) => {
+                        const { tone, label } = RECEIVED_STATUS_BADGE[req.status];
+                        return (
+                          <div key={req.id} className="rounded-xl border border-border bg-card p-4 shadow-sm">
+                            <div className="flex flex-wrap items-start gap-3">
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <p className="font-semibold text-foreground">
+                                    {req.scheduledClass.offering?.subject.name ?? "Unknown subject"}
+                                  </p>
+                                  <span className="font-mono text-[10px] text-muted-foreground/60">#{shortId(req.id)}</span>
+                                </div>
+                                <p className="text-sm text-muted-foreground">
+                                  {req.scheduledClass.offering?.classSection.name} · {req.scheduledClass.day} {req.scheduledClass.startTime}–{req.scheduledClass.endTime}
+                                  {req.scheduledClass.offering?.term && <> · Sem {req.scheduledClass.offering.term}</>}
+                                </p>
+                                <p className="mt-1 text-sm text-muted-foreground">
+                                  Date: <span className="font-medium text-foreground">{formatDate(req.date)}</span>
+                                </p>
+                              </div>
+                              <Badge tone={tone as "gray" | "green" | "red" | "amber" | "brand"}>{label}</Badge>
+                            </div>
+                            <div className="mt-3 space-y-1 text-sm">
+                              <div className="flex items-center gap-2">
+                                <span className="text-muted-foreground">Requested by:</span>
+                                <Avatar name={req.requestedBy.name} className="h-5 w-5 text-[9px]" />
+                                <span className="font-medium text-foreground">{req.requestedBy.name}</span>
+                              </div>
+                              <p><span className="text-muted-foreground">Reason:</span> {req.reason}</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                </>
+              )}
+            </>
           )}
         </div>
       )}
