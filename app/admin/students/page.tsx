@@ -7,7 +7,7 @@ import { FilterBar } from "@/app/_components/FilterBar";
 import { createStudent } from "./actions";
 import { EditStudentDialog } from "./EditStudentDialog";
 import { DeleteStudentButton } from "./DeleteStudentButton";
-import { PrintButton } from "./PrintButton";
+import { PrintButton } from "@/app/_components/PrintButton";
 
 export const dynamic = "force-dynamic";
 

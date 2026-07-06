@@ -86,6 +86,7 @@ export default async function ReportsOfferings({
           { label: "Overview", href: `/reports${qs}` },
           { label: "By subject", href: `/reports/offerings${qs}` },
           { label: "By student", href: `/reports/students${qs}` },
+          { label: "Substitutions", href: `/reports/substitutions${qs}` },
         ]}
       />
 

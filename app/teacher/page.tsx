@@ -21,12 +21,13 @@ export default async function TeacherHome({
   const { q = "" } = await searchParams;
   const needle = q.trim().toLowerCase();
 
-  // "Today" in IST — convert to UTC bounds for the DB query.
+  // "Today" in IST — convert to UTC bounds for the DB query. Building the bounds
+  // from nowIST's own local Y/M/D (rather than a fixed ±5:30 offset) keeps this
+  // correct regardless of the server's own runtime timezone (UTC on Vercel, IST
+  // on this dev machine) — same pattern used in teacher/timetable and admin/substitutions.
   const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
-  const midnightIST = new Date(nowIST);
-  midnightIST.setHours(0, 0, 0, 0);
-  const startUTC = new Date(midnightIST.getTime() - (5 * 60 + 30) * 60 * 1000);
-  const endUTC   = new Date(startUTC.getTime() + 24 * 60 * 60 * 1000);
+  const startUTC = new Date(nowIST.getFullYear(), nowIST.getMonth(), nowIST.getDate());
+  const endUTC = new Date(startUTC.getFullYear(), startUTC.getMonth(), startUTC.getDate() + 1);
 
   const [today, offerings, scheduled, substitutingToday, substitutedToday, subNeedsResponse, subPendingSent, subCoveringUpcoming] = await Promise.all([
     teacherClassesForDay(teacher.id, day),
@@ -96,12 +97,15 @@ export default async function TeacherHome({
   );
 
   // Merge regular classes + approved substitutions into one time-sorted list.
-  type SubInfo = { coveringFor: string } | null;
+  type SubInfo = { coveringFor: string; date: Date; term: string | null } | null;
   const allToday: { row: (typeof today)[number]; sub: SubInfo }[] = [
     ...today.map((r) => ({ row: r, sub: null })),
     ...substitutingToday
       .filter((s) => s.scheduledClass.offering)
-      .map((s) => ({ row: s.scheduledClass as (typeof today)[number], sub: { coveringFor: s.requestedBy.name } })),
+      .map((s) => ({
+        row: s.scheduledClass as (typeof today)[number],
+        sub: { coveringFor: s.requestedBy.name, date: s.date, term: s.scheduledClass.offering?.term ?? null },
+      })),
   ].sort((a, b) => a.row.slotIndex - b.row.slotIndex);
 
   // Current time in IST (timetable times are local India time; server runs UTC).
@@ -113,6 +117,15 @@ export default async function TeacherHome({
   // Find the first class (regular or sub) that is currently running or still upcoming.
   const upNext = allToday.find(({ row }) => row.offering && toMins(row.endTime) > nowMins)?.row ?? null;
   const upNextIsNow = upNext != null && toMins(upNext.startTime) <= nowMins;
+  // Per-class Upcoming/Now/Completed status, used for substitute-class rows.
+  function rowStatus(startTime: string, endTime: string): "completed" | "now" | "upcoming" {
+    if (toMins(endTime) <= nowMins) return "completed";
+    if (toMins(startTime) <= nowMins) return "now";
+    return "upcoming";
+  }
+  function fmtDate(d: Date) {
+    return d.toLocaleDateString("en-IN", { day: "2-digit", month: "short" });
+  }
 
   // After all today's classes end (or on weekends), show the next teaching day.
 
@@ -214,6 +227,7 @@ export default async function TeacherHome({
               const isUpNext = r.id === upNext?.id;
               const coveredByName = !sub ? substitutedSlotIds.get(r.id) : undefined;
               const isSubstituted = !!coveredByName; // Teacher X handed this class off
+              const subStatus = sub ? rowStatus(r.startTime, r.endTime) : null;
 
               return (
                 <ClassRow
@@ -226,12 +240,24 @@ export default async function TeacherHome({
                     : "px-4"
                   }
                   badge={
-                    sub ? <Badge tone="brand">Substituting</Badge>
+                    sub ? (
+                      <>
+                        <Badge tone="brand">Substitute class</Badge>
+                        <Badge tone={subStatus === "completed" ? "gray" : subStatus === "now" ? "green" : "amber"}>
+                          {subStatus === "completed" ? "Completed" : subStatus === "now" ? "In progress" : "Upcoming"}
+                        </Badge>
+                      </>
+                    )
                     : isSubstituted ? <Badge tone="amber">Substituted</Badge>
                     : undefined
                   }
                   subtitle={
-                    sub ? `Covering for ${sub.coveringFor}`
+                    sub ? (
+                      <>
+                        Covering for {sub.coveringFor}
+                        {sub.term && <> · Sem {sub.term}</>} · {fmtDate(sub.date)}
+                      </>
+                    )
                     : isSubstituted ? `Covered by ${coveredByName}`
                     : undefined
                   }
