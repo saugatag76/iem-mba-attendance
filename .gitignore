@@ -17,9 +17,14 @@ next-env.d.ts
 # anywhere in the repo, not just root
 *.xlsx
 
-# internal docs — kept local except the technical handoff
-/docs/
+# internal docs — kept local except the technical handoff and the two
+# user-facing guides (student/teacher), which are meant to be public.
+# (/docs/* not /docs/ — a directory-level match blocks descending into it
+# at all, which breaks the negations below for files never tracked before)
+/docs/*
 !/docs/handoff.md
+!/docs/teacher-guide.md
+!/docs/student-guide.md
 
 # Claude Code skill packages — local tooling, not part of the app
 /skills/
