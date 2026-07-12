@@ -44,7 +44,7 @@ const check = (n: string, ok: boolean) => {
 
 (async () => {
   console.log("Schedule UI checks:\n");
-  const teacher = await login("nm@iem.edu", "teach123"); // Dr. Nivedita Mandal (Maths/Micro Eco)
+  const teacher = await login("nm@iem.edu.in", "Teacher@2026"); // Dr. Nivedita Mandal (Maths/Micro Eco)
   const tHome = await get(teacher, "/teacher");
   check("teacher home loads", tHome.includes("All your classes") || tHome.includes("Today"));
   check("teacher sees a real subject", /Mathematics|Micro Economics/.test(tHome));

@@ -204,8 +204,10 @@ model ScheduledClass {
 model User {
   id              String       @id @default(cuid())
   email           String       @unique
-  // Students log in with phone number; teachers/admins use email.
+  // Year-1 students log in with phone number; year-2 students log in with
+  // enrollment number instead (no phone collected for them); teachers/admins use email.
   phone           String?      @unique
+  enrollmentNo    String?      @unique
   name            String
   role            Role         @default(STUDENT)
   passwordHash    String
@@ -213,6 +215,9 @@ model User {
   deviceId        String?
   // Permanent 6-digit personal code — student reads it out for the teacher's manual fallback.
   personalCode    String?     @unique
+  // Students created with a shared default password must change it before they
+  // can use the portal or mark attendance. Cleared on a successful password change.
+  mustChangePassword Boolean  @default(false)
   createdAt       DateTime     @default(now())
 
   taughtOfferings   Offering[]         @relation("TeacherOfferings")

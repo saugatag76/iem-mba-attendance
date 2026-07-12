@@ -29,12 +29,9 @@ Next.js (App Router, TS) · Tailwind CSS v4 · PostgreSQL + Prisma · Auth.js (N
 
 ### Seeded logins (MBA department)
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | admin@iem.edu | admin123 |
-| Teacher | teacher1@iem.edu … teacher5@iem.edu | teach123 |
-| Student (Year 1, Sec A) | y1a1@iem.edu … y1a6@iem.edu | stud123 |
-| Student (Year 2 Finance A) | finA1@iem.edu … finA5@iem.edu | stud123 |
+- **Admin / Teacher** log in with their `@iem.edu.in` email + password.
+- **Student** logs in with their **phone number** (Year 1) or **enrollment number** (Year 2) + password.
+- Default passwords are set in `lib/studentDefaults.ts` (students) and `prisma/seed.ts` (admin/teacher) — not published here. Ask the system admin, or use **Reset password** in the admin People/Students page.
 
 Seeded structure: **MBA** dept · trimesters (Sem 1–6) · Year 1 sections A–D (all-common
 subjects) · Year 2 streams Finance ×2 / HR ×1 / Tech-Mgmt ×1 + a shared **Year 2 — Common

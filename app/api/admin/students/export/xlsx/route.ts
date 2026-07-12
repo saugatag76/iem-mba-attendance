@@ -15,15 +15,16 @@ export async function GET() {
     orderBy: { name: "asc" },
   });
 
-  const bySection = new Map<string, { name: string; phone: string }[]>();
-  const allRows: { name: string; phone: string; sectionName: string }[] = [];
+  const bySection = new Map<string, { name: string; identifier: string }[]>();
+  const allRows: { name: string; identifier: string; sectionName: string }[] = [];
 
   for (const s of students) {
     const primary = s.enrollments[0]?.classSection;
     const sectionName = primary?.name ?? "Unassigned";
-    allRows.push({ name: s.name, phone: s.phone ?? "", sectionName });
+    const identifier = s.phone ?? s.enrollmentNo ?? "";
+    allRows.push({ name: s.name, identifier, sectionName });
     if (!bySection.has(sectionName)) bySection.set(sectionName, []);
-    bySection.get(sectionName)!.push({ name: s.name, phone: s.phone ?? "" });
+    bySection.get(sectionName)!.push({ name: s.name, identifier });
   }
 
   const wb = XLSX.utils.book_new();
@@ -31,21 +32,21 @@ export async function GET() {
   const allSheetData = allRows.map((r, i) => ({
     "Sl. No.": i + 1,
     "Student Name": r.name,
-    "Phone Number": r.phone,
+    "Phone / Enrollment": r.identifier,
     Section: r.sectionName,
   }));
   const allWs = XLSX.utils.json_to_sheet(allSheetData);
-  allWs["!cols"] = [{ wch: 8 }, { wch: 28 }, { wch: 16 }, { wch: 16 }];
+  allWs["!cols"] = [{ wch: 8 }, { wch: 28 }, { wch: 18 }, { wch: 16 }];
   XLSX.utils.book_append_sheet(wb, allWs, "All Students");
 
   for (const [sectionName, rows] of bySection) {
     const data = rows.map((r, i) => ({
       "Sl. No.": i + 1,
       "Student Name": r.name,
-      "Phone Number": r.phone,
+      "Phone / Enrollment": r.identifier,
     }));
     const ws = XLSX.utils.json_to_sheet(data);
-    ws["!cols"] = [{ wch: 8 }, { wch: 28 }, { wch: 16 }];
+    ws["!cols"] = [{ wch: 8 }, { wch: 28 }, { wch: 18 }];
     // Sheet names: max 31 chars, no \ / ? * [ ] :
     const safeName = sectionName.replace(/[\\/?*[\]:]/g, "").slice(0, 31) || "Section";
     XLSX.utils.book_append_sheet(wb, ws, safeName);

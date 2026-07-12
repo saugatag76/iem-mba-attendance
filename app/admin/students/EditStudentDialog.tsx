@@ -16,7 +16,7 @@ export function EditStudentDialog({
   student,
   sections,
 }: {
-  student: { id: string; name: string; phone: string | null; sectionId: string | null };
+  student: { id: string; name: string; phone: string | null; enrollmentNo: string | null; sectionId: string | null };
   sections: Section[];
 }) {
   const [open, setOpen] = useState(false);
@@ -49,12 +49,12 @@ export function EditStudentDialog({
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-foreground">Phone number</label>
+              <label className="mb-1.5 block text-sm font-medium text-foreground">Phone number or enrollment no.</label>
               <input
-                name="phone"
+                name="identifier"
                 required
-                defaultValue={student.phone ?? ""}
-                placeholder="9876543210"
+                defaultValue={student.phone ?? student.enrollmentNo ?? ""}
+                placeholder="9876543210 or 14-digit enrollment no."
                 className="w-full rounded-md border border-input bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
               />
             </div>

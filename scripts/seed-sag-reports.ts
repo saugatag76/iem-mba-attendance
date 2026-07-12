@@ -34,8 +34,8 @@ function pastOccurrences(dayCode: string, count: number): Date[] {
 }
 
 async function main() {
-  const teacher = await prisma.user.findUnique({ where: { email: "sag@iem.edu" } });
-  if (!teacher) throw new Error("Prof. Saugata Ghosh (sag@iem.edu) not found — run the main seed first.");
+  const teacher = await prisma.user.findUnique({ where: { email: "sag@iem.edu.in" } });
+  if (!teacher) throw new Error("Prof. Saugata Ghosh (sag@iem.edu.in) not found — run the main seed first.");
 
   const offerings = await prisma.offering.findMany({
     where: { teacherId: teacher.id },

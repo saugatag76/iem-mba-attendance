@@ -1,6 +1,6 @@
 /**
  * 1. Removes all dummy sessions for NM (seed-nm-sessions.ts) and SAG (seed-sag-reports.ts).
- * 2. Creates a dedicated test teacher account (test@iem.edu) with realistic dummy
+ * 2. Creates a dedicated test teacher account (test@iem.edu.in) with realistic dummy
  *    offerings, sessions, and varied attendance so every report view has data.
  *
  * Run:  npx tsx scripts/setup-test-account.ts
@@ -35,7 +35,7 @@ const ATTENDANCE_RATES = [0.95, 0.85, 0.72, 0.55, 0.30];
 async function main() {
   // ── 1. Remove dummy sessions for NM and SAG ────────────────────────────────
   console.log("Removing dummy sessions for NM and SAG…");
-  for (const email of ["nm@iem.edu", "sag@iem.edu"]) {
+  for (const email of ["nm@iem.edu.in", "sag@iem.edu.in"]) {
     const teacher = await prisma.user.findUnique({ where: { email } });
     if (!teacher) continue;
     const sessions = await prisma.session.findMany({
@@ -55,13 +55,13 @@ async function main() {
   const dept = await prisma.department.findFirst();
   if (!dept) throw new Error("No department found — run seed first.");
 
-  const hash = await bcrypt.hash("teach123", 10);
+  const hash = await bcrypt.hash("Teacher@2026", 10);
   const testTeacher = await prisma.user.upsert({
-    where: { email: "test@iem.edu" },
+    where: { email: "test@iem.edu.in" },
     update: { name: "Test Teacher", role: "TEACHER" },
-    create: { email: "test@iem.edu", name: "Test Teacher", role: "TEACHER", passwordHash: hash },
+    create: { email: "test@iem.edu.in", name: "Test Teacher", role: "TEACHER", passwordHash: hash },
   });
-  console.log(`  ✓ test@iem.edu (password: teach123)`);
+  console.log(`  ✓ test@iem.edu.in (password set — see lib/studentDefaults.ts sibling constant / rotate script)`);
 
   // ── 3. Find subjects + sections to create offerings for ───────────────────
   // Use existing Year-1 sections (Sec A + Sec B) and a variety of subjects
@@ -183,7 +183,7 @@ async function main() {
   }
 
   console.log(`\n✅ Done!
-  Test teacher:  test@iem.edu  /  teach123
+  Test teacher:  test@iem.edu.in  (password set above, not printed)
   Offerings:     ${offerings.length} (${subjects.length} subjects × 2 sections)
   Sessions:      ${totalSessions}
   Attendance:    ${totalRecords} records

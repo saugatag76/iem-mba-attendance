@@ -1,5 +1,5 @@
 /**
- * Seeds realistic dummy attendance sessions for Dr. Nivedita Mandal (nm@iem.edu).
+ * Seeds realistic dummy attendance sessions for Dr. Nivedita Mandal (nm@iem.edu.in).
  * Generates 8 sessions per offering over the past 6 weeks with varied attendance.
  * Run:  npx tsx scripts/seed-nm-sessions.ts
  */
@@ -28,7 +28,7 @@ function pastDates(count: number): Date[] {
 }
 
 async function main() {
-  const teacher = await prisma.user.findUniqueOrThrow({ where: { email: "nm@iem.edu" } });
+  const teacher = await prisma.user.findUniqueOrThrow({ where: { email: "nm@iem.edu.in" } });
 
   const offerings = await prisma.offering.findMany({
     where: { teacherId: teacher.id },

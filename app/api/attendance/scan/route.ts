@@ -7,12 +7,13 @@ import { autoCloseExpired } from "@/lib/sessions";
 /**
  * Student self check-in endpoint — the anti-proxy gate. Validates, in order:
  *   1. authenticated student
- *   2. code matches a session (reverse lookup)
- *   3. session is OPEN
- *   4. student enrolled in the class
- *   5. not already marked (idempotent via unique constraint)
- *   6. device binding (one account ↔ one device)
- *   7. geofence (student within radius of class anchor)
+ *   2. must have changed their default password
+ *   3. code matches a session (reverse lookup)
+ *   4. session is OPEN
+ *   5. student enrolled in the class
+ *   6. not already marked (idempotent via unique constraint)
+ *   7. device binding (one account ↔ one device)
+ *   8. geofence (student within radius of class anchor)
  */
 export async function POST(req: Request) {
   const session = await auth();
@@ -21,6 +22,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Only students can check in." }, { status: 403 });
 
   const studentId = session.user.id;
+
+  const requester = await prisma.user.findUnique({ where: { id: studentId }, select: { mustChangePassword: true } });
+  if (requester?.mustChangePassword) {
+    return NextResponse.json(
+      {
+        error: "must_change_password",
+        message: "You must change your default password before you can mark attendance.",
+        redirect: "/settings/change-password?forced=1",
+      },
+      { status: 403 },
+    );
+  }
+
   const body = await req.json().catch(() => ({}));
   const code = String(body.code ?? "").trim();
   const deviceId = String(body.deviceId ?? "");
@@ -29,7 +43,7 @@ export async function POST(req: Request) {
 
   if (!/^\d{6}$/.test(code)) return NextResponse.json({ error: "Enter the 6-digit code." }, { status: 400 });
 
-  // 2. Reverse-lookup the OPEN session by its code.
+  // 3. Reverse-lookup the OPEN session by its code.
   const cls = await prisma.session.findFirst({
     where: { code, status: "OPEN" },
     include: { offering: true },
@@ -38,12 +52,12 @@ export async function POST(req: Request) {
 
   const sessionId = cls.id;
 
-  // 3. Session must be open (and not past its auto-close deadline).
+  // 4. Session must be open (and not past its auto-close deadline).
   const status = await autoCloseExpired(cls);
   if (status !== "OPEN")
     return NextResponse.json({ error: "This session is closed." }, { status: 409 });
 
-  // 4. Enrollment check.
+  // 5. Enrollment check.
   const enrolled = await prisma.enrollment.findUnique({
     where: {
       studentId_classSectionId: {
@@ -58,14 +72,14 @@ export async function POST(req: Request) {
       { status: 403 },
     );
 
-  // 5. Already marked?
+  // 6. Already marked?
   const existing = await prisma.attendanceRecord.findUnique({
     where: { sessionId_studentId: { sessionId, studentId } },
   });
   if (existing)
     return NextResponse.json({ ok: true, already: true, message: "Already marked present." });
 
-  // 6. Device binding — cross-ownership check first, then per-account binding.
+  // 7. Device binding — cross-ownership check first, then per-account binding.
   let flagged = false;
   let flagReason: string | null = null;
   if (deviceId) {
@@ -100,7 +114,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // 7. Geofence — only enforced when the session has an anchor.
+  // 8. Geofence — only enforced when the session has an anchor.
   if (cls.geoLat != null && cls.geoLng != null) {
     if (lat == null || lng == null) {
       // No GPS — create an ABSENT record so the teacher can see the non-compliance

@@ -249,7 +249,7 @@ function main() {
   const teachers = [...usedInitials].sort().map((init) => ({
     initials: init,
     name: FACULTY[init] ?? init,
-    email: (init === "NA" ? "staff" : init.toLowerCase()) + "@iem.edu",
+    email: (init === "NA" ? "staff" : init.toLowerCase()) + "@iem.edu.in",
   }));
 
   const out = {

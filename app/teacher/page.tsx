@@ -200,7 +200,7 @@ export default async function TeacherHome({
       <Card title="Today's classes" icon={<CalendarClock className="h-4 w-4" />}>
         {allToday.length === 0 && offerings.length === 0 ? (
           <EmptyState icon={<CalendarDays className="h-8 w-8" />} title="No classes assigned yet" />
-        ) : allToday.length === 0 && teacher.email === "demo.teacher@iem.edu" ? (
+        ) : allToday.length === 0 && teacher.email === "demo.teacher@iem.edu.in" ? (
           /* Demo account only — show all offerings any day so demos work on weekends */
           <ul className="divide-y divide-border">
             {offerings.map((o) => (

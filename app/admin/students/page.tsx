@@ -1,13 +1,15 @@
+import Link from "next/link";
 import { UserPlus, Download, GraduationCap } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
-import { Card, Field, inputClass, selectClass, Submit, PageHeader, Avatar, Badge, EmptyState } from "@/app/_components/ui";
-import { SectionHeader, CollapsibleGroup } from "@/app/_components/layout-ui";
+import { Card, Field, inputClass, selectClass, Submit, PageHeader, Avatar, Badge, EmptyState, cn } from "@/app/_components/ui";
+import { SectionHeader } from "@/app/_components/layout-ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { createStudent } from "./actions";
 import { EditStudentDialog } from "./EditStudentDialog";
 import { DeleteStudentButton } from "./DeleteStudentButton";
 import { PrintButton } from "@/app/_components/PrintButton";
+import { ResetPasswordDialog } from "@/app/_components/ResetPasswordDialog";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +38,7 @@ export default async function StudentsPage({
     id: string;
     name: string;
     phone: string | null;
+    enrollmentNo: string | null;
     sectionId: string | null;
     sectionName: string | null;
     attendanceCount: number;
@@ -47,32 +50,47 @@ export default async function StudentsPage({
       id: s.id,
       name: s.name,
       phone: s.phone,
+      enrollmentNo: s.enrollmentNo,
       sectionId: primary?.id ?? null,
       sectionName: primary?.name ?? null,
       attendanceCount: s._count.attendanceRecords,
     };
   });
 
-  const filtered = allRows.filter((r) => {
-    if (section && r.sectionId !== section) return false;
-    if (needle) {
-      const hay = `${r.name} ${r.phone ?? ""}`.toLowerCase();
-      if (!hay.includes(needle)) return false;
-    }
-    return true;
+  // Search text applies regardless of which section tab is active — used both
+  // to filter the table and to compute the per-tab counts below.
+  const searchFiltered = allRows.filter((r) => {
+    if (!needle) return true;
+    const hay = `${r.name} ${r.phone ?? ""} ${r.enrollmentNo ?? ""}`.toLowerCase();
+    return hay.includes(needle);
   });
 
-  // Group by section for the section-wise lists
-  const bySection = new Map<string, Row[]>();
-  const unassigned: Row[] = [];
-  for (const r of filtered) {
-    if (!r.sectionId) { unassigned.push(r); continue; }
-    if (!bySection.has(r.sectionId)) bySection.set(r.sectionId, []);
-    bySection.get(r.sectionId)!.push(r);
+  const filtered = searchFiltered.filter((r) => {
+    if (!section) return true;
+    if (section === "unassigned") return !r.sectionId;
+    return r.sectionId === section;
+  });
+
+  function tabHref(sectionId: string) {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (sectionId) params.set("section", sectionId);
+    const qs = params.toString();
+    return `/admin/students${qs ? `?${qs}` : ""}`;
   }
-  const sectionGroups = sections
-    .map((s) => ({ section: s, rows: bySection.get(s.id) ?? [] }))
-    .filter((g) => g.rows.length > 0);
+  const sectionCounts = new Map<string, number>();
+  let unassignedCount = 0;
+  for (const r of searchFiltered) {
+    if (!r.sectionId) { unassignedCount++; continue; }
+    sectionCounts.set(r.sectionId, (sectionCounts.get(r.sectionId) ?? 0) + 1);
+  }
+  const sectionTabs = [
+    { label: `All (${searchFiltered.length})`, href: tabHref(""), value: "" },
+    ...sections
+      .filter((s) => (sectionCounts.get(s.id) ?? 0) > 0)
+      .map((s) => ({ label: `${s.name} (${sectionCounts.get(s.id)})`, href: tabHref(s.id), value: s.id })),
+    ...(unassignedCount > 0 ? [{ label: `Unassigned (${unassignedCount})`, href: tabHref("unassigned"), value: "unassigned" }] : []),
+  ];
 
   return (
     <div>
@@ -96,7 +114,7 @@ export default async function StudentsPage({
       <Card title="Add student" icon={<UserPlus className="h-4 w-4" />} className="print:hidden">
         <form action={createStudent} className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <Field label="Student name"><input name="name" placeholder="Full name" className={inputClass} required /></Field>
-          <Field label="Phone number"><input name="phone" placeholder="9876543210" className={inputClass} required /></Field>
+          <Field label="Phone or enrollment no."><input name="identifier" placeholder="9876543210 or 14-digit enrollment no." className={inputClass} required /></Field>
           <Field label="Section">
             <select name="sectionId" className={selectClass} required defaultValue="">
               <option value="" disabled>Select section…</option>
@@ -111,16 +129,24 @@ export default async function StudentsPage({
 
       <div className="print:hidden">
         <SectionHeader title={`All students (${filtered.length})`} />
-        <FilterBar
-          placeholder="Search by name or phone…"
-          filters={[
-            {
-              name: "section",
-              label: "Section",
-              options: sections.map((s) => ({ value: s.id, label: s.name })),
-            },
-          ]}
-        />
+        <div className="mb-4 flex flex-wrap gap-1 rounded-xl border border-border bg-card p-1 shadow-sm">
+          {sectionTabs.map((t) => (
+            <Link
+              key={t.value}
+              href={t.href}
+              aria-current={section === t.value ? "page" : undefined}
+              className={cn(
+                "rounded-lg px-3.5 py-1.5 text-sm font-medium transition",
+                section === t.value
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+              )}
+            >
+              {t.label}
+            </Link>
+          ))}
+        </div>
+        <FilterBar placeholder="Search by name, phone or enrollment no…" />
       </div>
 
       {/* Master table */}
@@ -133,7 +159,7 @@ export default async function StudentsPage({
               <tr>
                 <th className="px-4 py-2.5 font-medium">Sl. No.</th>
                 <th className="px-4 py-2.5 font-medium">Student Name</th>
-                <th className="px-4 py-2.5 font-medium">Phone Number</th>
+                <th className="px-4 py-2.5 font-medium">Phone / Enrollment</th>
                 <th className="px-4 py-2.5 font-medium">Section</th>
                 <th className="px-4 py-2.5 text-right font-medium print:hidden">Actions</th>
               </tr>
@@ -148,16 +174,17 @@ export default async function StudentsPage({
                       <span className="font-medium text-foreground">{r.name}</span>
                     </div>
                   </td>
-                  <td className="px-4 py-2.5 font-mono text-foreground">{r.phone ?? "—"}</td>
+                  <td className="px-4 py-2.5 font-mono text-foreground">{r.phone ?? r.enrollmentNo ?? "—"}</td>
                   <td className="px-4 py-2.5">
                     {r.sectionName ? <Badge tone="brand">{r.sectionName}</Badge> : <span className="text-muted-foreground">Unassigned</span>}
                   </td>
                   <td className="px-4 py-2.5 print:hidden">
                     <div className="flex items-center justify-end gap-2">
                       <EditStudentDialog
-                        student={{ id: r.id, name: r.name, phone: r.phone, sectionId: r.sectionId }}
+                        student={{ id: r.id, name: r.name, phone: r.phone, enrollmentNo: r.enrollmentNo, sectionId: r.sectionId }}
                         sections={sections.map((s) => ({ id: s.id, name: s.name }))}
                       />
+                      <ResetPasswordDialog userId={r.id} userName={r.name} role="STUDENT" redirectTo="/admin/students" />
                       <DeleteStudentButton id={r.id} name={r.name} attendanceCount={r.attendanceCount} />
                     </div>
                   </td>
@@ -167,59 +194,6 @@ export default async function StudentsPage({
           </table>
         </div>
       )}
-
-      {/* Section-wise lists */}
-      <div className="mt-8">
-        <SectionHeader title="Section-wise lists" />
-        {sectionGroups.length === 0 ? (
-          <p className="py-4 text-center text-sm text-muted-foreground">No sections with students to show.</p>
-        ) : (
-          sectionGroups.map(({ section: s, rows }) => (
-            <CollapsibleGroup key={s.id} title={s.name} count={rows.length} defaultOpen={sectionGroups.length <= 4}>
-              <table className="w-full text-sm">
-                <thead className="bg-muted/60 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                  <tr>
-                    <th className="px-4 py-2 font-medium">Sl. No.</th>
-                    <th className="px-4 py-2 font-medium">Student Name</th>
-                    <th className="px-4 py-2 font-medium">Phone Number</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {rows.map((r, i) => (
-                    <tr key={r.id}>
-                      <td className="px-4 py-2 tabular-nums text-muted-foreground">{i + 1}</td>
-                      <td className="px-4 py-2 font-medium text-foreground">{r.name}</td>
-                      <td className="px-4 py-2 font-mono text-muted-foreground">{r.phone ?? "—"}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </CollapsibleGroup>
-          ))
-        )}
-        {unassigned.length > 0 && (
-          <CollapsibleGroup title="Unassigned" count={unassigned.length}>
-            <table className="w-full text-sm">
-              <thead className="bg-muted/60 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <tr>
-                  <th className="px-4 py-2 font-medium">Sl. No.</th>
-                  <th className="px-4 py-2 font-medium">Student Name</th>
-                  <th className="px-4 py-2 font-medium">Phone Number</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border">
-                {unassigned.map((r, i) => (
-                  <tr key={r.id}>
-                    <td className="px-4 py-2 tabular-nums text-muted-foreground">{i + 1}</td>
-                    <td className="px-4 py-2 font-medium text-foreground">{r.name}</td>
-                    <td className="px-4 py-2 font-mono text-muted-foreground">{r.phone ?? "—"}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </CollapsibleGroup>
-        )}
-      </div>
     </div>
   );
 }

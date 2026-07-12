@@ -1,7 +1,7 @@
 /**
  * Creates a fully synced demo environment:
- *   - demo.teacher@iem.edu  / demo123  (Teacher)
- *   - demo.student@iem.edu  / demo123  (Student, enrolled in demo class)
+ *   - demo.teacher@iem.edu.in  / demo123  (Teacher)
+ *   - demo.student@iem.edu     / demo123  (Student, enrolled in demo class)
  *
  * The teacher has 4 subjects with realistic past attendance so reports
  * look rich. The student has varied attendance — good in some subjects,
@@ -38,11 +38,11 @@ async function main() {
 
   // ── 1. Demo Teacher ────────────────────────────────────────────────────────
   const teacher = await prisma.user.upsert({
-    where: { email: "demo.teacher@iem.edu" },
+    where: { email: "demo.teacher@iem.edu.in" },
     update: { name: "Demo Teacher", role: "TEACHER", passwordHash: hash },
-    create: { email: "demo.teacher@iem.edu", name: "Demo Teacher", role: "TEACHER", passwordHash: hash },
+    create: { email: "demo.teacher@iem.edu.in", name: "Demo Teacher", role: "TEACHER", passwordHash: hash },
   });
-  console.log("✓ Teacher: demo.teacher@iem.edu / demo123");
+  console.log("✓ Teacher: demo.teacher@iem.edu.in / demo123");
 
   // ── 2. Demo Student ────────────────────────────────────────────────────────
   const student = await prisma.user.upsert({
@@ -226,7 +226,7 @@ async function main() {
 
   console.log(`\n✅ Demo environment ready!
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  TEACHER   demo.teacher@iem.edu / demo123
+  TEACHER   demo.teacher@iem.edu.in / demo123
   STUDENT   demo.student@iem.edu / demo123
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   Class:    Demo Class (${allStudents.length} students)

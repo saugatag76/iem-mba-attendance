@@ -6,6 +6,7 @@ import { resetStudentDevice } from "@/app/teacher/actions";
 import { SmartphoneNfc } from "lucide-react";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { SectionHeader } from "@/app/_components/layout-ui";
+import { ResetPasswordDialog } from "@/app/_components/ResetPasswordDialog";
 import { createUser } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -90,6 +91,7 @@ export default async function PeoplePage({
                   <td className="px-4 py-2.5 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <Badge tone={ROLE_TONE[u.role]}>{u.role}</Badge>
+                      <ResetPasswordDialog userId={u.id} userName={u.name} role={u.role} redirectTo="/admin/people" />
                       {u.role === "STUDENT" && u.deviceId && (
                         <form action={resetStudentDevice}>
                           <input type="hidden" name="studentId" value={u.id} />

@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { uniquePersonalCode } from "@/lib/code";
+import { DEFAULT_STUDENT_PASSWORD } from "@/lib/studentDefaults";
 import bcrypt from "bcryptjs";
 import { Role } from "@prisma/client";
 
@@ -16,7 +17,7 @@ export async function importStudentsPreviewed(formData: FormData) {
   await requireRole("ADMIN");
   const classSectionId = String(formData.get("classSectionId") ?? "");
   const csv = String(formData.get("csv") ?? "");
-  const defaultPassword = String(formData.get("defaultPassword") ?? "stud123") || "stud123";
+  const defaultPassword = String(formData.get("defaultPassword") ?? DEFAULT_STUDENT_PASSWORD) || DEFAULT_STUDENT_PASSWORD;
 
   const passwordHash = await bcrypt.hash(defaultPassword, 10);
   const rows = csv
@@ -47,7 +48,7 @@ export async function importStudentsPreviewed(formData: FormData) {
     } else {
       const email = phoneEmail(phone);
       const student = await prisma.user.create({
-        data: { email, phone, name, role: Role.STUDENT, passwordHash, personalCode: await uniquePersonalCode() },
+        data: { email, phone, name, role: Role.STUDENT, passwordHash, personalCode: await uniquePersonalCode(), mustChangePassword: true },
       });
       await prisma.enrollment.create({ data: { studentId: student.id, classSectionId } });
       created++;

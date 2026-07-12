@@ -4,9 +4,6 @@ import data from "./timetable-data.json";
 
 const prisma = new PrismaClient();
 
-const emailBase = (sectionName: string) =>
-  sectionName.toLowerCase().replace(/[^a-z0-9]+/g, "");
-
 // Unique 6-digit personal code generator (in-memory dedupe within a seed run).
 const takenCodes = new Set<string>();
 function personalCode(): string {
@@ -27,19 +24,19 @@ async function main() {
 
   // --- Admin ---
   await prisma.user.upsert({
-    where: { email: "admin@iem.edu" },
+    where: { email: "admin@iem.edu.in" },
     update: { role: Role.ADMIN },
     create: {
-      email: "admin@iem.edu",
+      email: "admin@iem.edu.in",
       name: "MBA Admin",
       role: Role.ADMIN,
-      passwordHash: await bcrypt.hash("admin123", 10),
+      passwordHash: await bcrypt.hash("Admin@2026", 10),
       personalCode: personalCode(),
     },
   });
 
   // --- Teachers (incl. "Staff / NA" + "Guest Faculty") ---
-  const teachHash = await bcrypt.hash("teach123", 10);
+  const teachHash = await bcrypt.hash("Teacher@2026", 10);
   const teacherId = new Map<string, string>(); // initials -> userId
   for (const t of data.teachers) {
     const u = await prisma.user.upsert({
@@ -118,40 +115,18 @@ async function main() {
     scheduled++;
   }
 
-  // --- Sample students (5 per section) ---
-  const studHash = await bcrypt.hash("stud123", 10);
-  for (const sec of data.sections) {
-    const csid = sectionId.get(sec.name)!;
-    const base = emailBase(sec.name);
-    for (let i = 1; i <= 5; i++) {
-      const email = `${base}.s${i}@iem.edu`;
-      const u = await prisma.user.upsert({
-        where: { email },
-        update: {},
-        create: {
-          email,
-          name: `${sec.name} Student ${i}`,
-          role: Role.STUDENT,
-          passwordHash: studHash,
-          personalCode: personalCode(),
-        },
-      });
-      await prisma.enrollment.upsert({
-        where: { studentId_classSectionId: { studentId: u.id, classSectionId: csid } },
-        update: {},
-        create: { studentId: u.id, classSectionId: csid },
-      });
-    }
-  }
+  // Students are the real admitted roster, imported separately via
+  // scripts/import-real-students.ts — this seed never creates dummy students,
+  // so it can't overwrite the real roster on a re-run.
 
   console.log(
     `Done. teachers=${data.teachers.length} subjects=${data.subjects.length} ` +
       `sections=${data.sections.length} offerings=${data.offerings.length} scheduled=${scheduled}`,
   );
   console.log("Logins:");
-  console.log("  admin@iem.edu (admin123)");
-  console.log("  teachers: <initials>@iem.edu (teach123) — e.g. nm@iem.edu, sc@iem.edu, kkg@iem.edu");
-  console.log("  students: <section>.s1..5@iem.edu (stud123) — e.g. seca.s1@iem.edu, finance1.s1@iem.edu, hr.s1@iem.edu");
+  console.log("  admin@iem.edu.in (see lib/studentDefaults.ts sibling constant / rotate script for current password)");
+  console.log("  teachers: <initials>@iem.edu.in — e.g. nm@iem.edu.in, sc@iem.edu.in, kkg@iem.edu.in (password set above, not printed)");
+  console.log("  students: real roster imported via scripts/import-real-students.ts (see that script for the default password).");
 }
 
 main()

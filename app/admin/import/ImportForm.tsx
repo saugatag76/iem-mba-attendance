@@ -3,6 +3,7 @@
 import { useRef, useState, useTransition } from "react";
 import { Upload, Download, CheckCircle2, AlertTriangle, UserPlus, RefreshCw, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DEFAULT_STUDENT_PASSWORD } from "@/lib/studentDefaults";
 import { importStudentsPreviewed } from "./actions";
 
 type ClassOption = { id: string; name: string; enrolled: number };
@@ -38,7 +39,7 @@ function parsePreview(csv: string): Omit<PreviewRow, "status" | "reason">[] {
 export function ImportForm({ classes }: { classes: ClassOption[] }) {
   const [csv, setCsv] = useState("");
   const [classSectionId, setClassSectionId] = useState("");
-  const [password, setPassword] = useState("stud123");
+  const [password, setPassword] = useState(DEFAULT_STUDENT_PASSWORD);
   const [preview, setPreview] = useState<PreviewRow[] | null>(null);
   const [loadingPreview, setLoadingPreview] = useState(false);
   const [result, setResult] = useState<{ created: number; enrolled: number; skipped: number } | null>(null);

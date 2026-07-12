@@ -45,14 +45,14 @@ export default async function LoginPage({
           {error && (
             <div className="mb-6 flex items-start gap-2 rounded-lg border border-red-500/20 bg-red-500/8 p-3 dark:border-red-500/25 dark:bg-red-500/12">
               <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600" />
-              <p className="text-sm text-red-600 dark:text-red-400">Invalid email / phone or password. Please try again.</p>
+              <p className="text-sm text-red-600 dark:text-red-400">Invalid email, phone, enrollment no. or password. Please try again.</p>
             </div>
           )}
 
           <form action={login} className="space-y-4">
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-foreground">
-                Email or phone number
+                Email, phone or enrollment no.
               </label>
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
@@ -62,7 +62,7 @@ export default async function LoginPage({
                   type="text"
                   required
                   autoComplete="username"
-                  placeholder="you@iem.edu"
+                  placeholder="you@iem.edu.in"
                   className="block w-full rounded-lg border border-input py-2.5 pl-10 pr-3 text-foreground placeholder:text-muted-foreground transition focus:border-ring focus:outline-none focus:ring-2 focus:ring-ring/30"
                 />
               </div>

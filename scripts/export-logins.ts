@@ -19,12 +19,12 @@ function writeSheet(filename: string, rows: { Name: string; Email: string; Passw
 }
 
 // --- Admin ---
-writeSheet("admin-logins.xlsx", [{ Name: "MBA Admin", Email: "admin@iem.edu", Password: "admin123" }]);
+writeSheet("admin-logins.xlsx", [{ Name: "MBA Admin", Email: "admin@iem.edu.in", Password: "Admin@2026" }]);
 
 // --- Teachers ---
 writeSheet(
   "teacher-logins.xlsx",
-  data.teachers.map((t) => ({ Name: t.name, Email: t.email, Password: "teach123" })),
+  data.teachers.map((t) => ({ Name: t.name, Email: t.email, Password: "Teacher@2026" })),
 );
 
 // --- Students (5 sample students per section, matching prisma/seed.ts) ---

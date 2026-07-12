@@ -13,6 +13,10 @@ next-env.d.ts
 # raw source data dumps (timetables, imports) — kept local, never pushed
 /data/
 
+# student rosters / timetables (contain names, phone, enrollment no.) — local only,
+# anywhere in the repo, not just root
+*.xlsx
+
 # internal docs — kept local except the technical handoff
 /docs/
 !/docs/handoff.md

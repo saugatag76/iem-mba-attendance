@@ -43,7 +43,7 @@ const check = (n: string, ok: boolean) => {
 
 (async () => {
   console.log("Admin IA + reports filtering checks:\n");
-  const a = await login("admin@iem.edu", "admin123");
+  const a = await login("admin@iem.edu.in", "Admin@2026");
 
   const overview = await get(a, "/admin");
   check("admin overview loads (Quick actions)", overview.includes("Quick actions"));

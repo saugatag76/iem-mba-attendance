@@ -1,24 +1,34 @@
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, CalendarDays } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { teacherWeekly } from "@/lib/schedule";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, EmptyState } from "@/app/_components/ui";
 import { TimetableGrid, type SubstitutedInfo, type CoveringInfo } from "./TimetableGrid";
-import { CalendarDays } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-export default async function TeacherTimetablePage() {
+export default async function TeacherTimetablePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ week?: string }>;
+}) {
   const teacher = await requireRole("TEACHER", "ADMIN");
+  const { week: weekParam } = await searchParams;
+  const week = Number.isFinite(Number(weekParam)) ? Math.trunc(Number(weekParam)) : 0;
   const byDay = await teacherWeekly(teacher.id);
   const hasAny = Object.values(byDay).some((d) => d.length > 0);
 
-  // This week's Mon–Fri range (IST calendar dates, stored as midnight-UTC — same
-  // convention as SubstitutionRequest.date elsewhere in the app).
+  // Selected week's Mon–Fri range (IST calendar dates, stored as midnight-UTC —
+  // same convention as SubstitutionRequest.date elsewhere in the app). `week` is
+  // an offset in weeks from the current one (0 = this week, -1 = last, +1 = next).
   const nowIST = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Kolkata" }));
   const dow = nowIST.getDay(); // 0=Sun … 6=Sat
-  const mondayOffset = dow === 0 ? -6 : 1 - dow;
+  const mondayOffset = (dow === 0 ? -6 : 1 - dow) + week * 7;
   const monday = new Date(nowIST.getFullYear(), nowIST.getMonth(), nowIST.getDate() + mondayOffset);
   const saturday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 5);
+  const friday = new Date(monday.getFullYear(), monday.getMonth(), monday.getDate() + 4);
+  const rangeLabel = `${monday.toLocaleDateString("en-IN", { day: "numeric", month: "short" })} – ${friday.toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}`;
 
   const [substitutedAway, covering] = await Promise.all([
     // This teacher's own classes that someone else is covering this week.
@@ -60,6 +70,36 @@ export default async function TeacherTimetablePage() {
       <PageHeader
         title="My Timetable"
         subtitle="Your full weekly schedule across all subjects and sections"
+        action={
+          <div className="flex items-center gap-1.5">
+            <Link
+              href={`/teacher/timetable?week=${week - 1}`}
+              aria-label="Previous week"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Link>
+            <div className="min-w-[170px] rounded-lg border border-border bg-card px-3 py-2 text-center text-sm font-medium text-foreground">
+              {rangeLabel}
+              {week === 0 && <span className="ml-1.5 text-xs font-normal text-muted-foreground">(this week)</span>}
+            </div>
+            <Link
+              href={`/teacher/timetable?week=${week + 1}`}
+              aria-label="Next week"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-card text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Link>
+            {week !== 0 && (
+              <Link
+                href="/teacher/timetable"
+                className="ml-1 rounded-lg border border-border bg-card px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+              >
+                Today
+              </Link>
+            )}
+          </div>
+        }
       />
       {!hasAny && coveringMap.size === 0 ? (
         <EmptyState
@@ -72,10 +112,10 @@ export default async function TeacherTimetablePage() {
           {(substituted.size > 0 || coveringMap.size > 0) && (
             <div className="mb-3 flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" /> Handed off this week
+                <span className="h-2.5 w-2.5 rounded-full bg-amber-500/70" /> Handed off
               </span>
               <span className="flex items-center gap-1.5">
-                <span className="h-2.5 w-2.5 rounded-full bg-blue-500/70" /> You're covering this week
+                <span className="h-2.5 w-2.5 rounded-full bg-blue-500/70" /> You're covering
               </span>
             </div>
           )}

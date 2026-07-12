@@ -91,6 +91,33 @@ export async function createUser(formData: FormData) {
 }
 
 /**
+ * Manually set/reset a user's password — there is no self-serve "forgot password"
+ * flow, so the admin does this directly and tells the person their new password
+ * out of band. For students, this also flips mustChangePassword back on so they're
+ * forced to pick their own password again before they can mark attendance.
+ */
+export async function resetPassword(formData: FormData) {
+  await adminOnly();
+  const id = String(formData.get("id") ?? "");
+  const newPassword = String(formData.get("newPassword") ?? "").trim();
+  if (!id) flash(formData, "/admin/people", "User not found", "error");
+  if (newPassword.length < 6) flash(formData, "/admin/people", "Password must be at least 6 characters", "error");
+
+  const user = await prisma.user.findUnique({ where: { id } });
+  if (!user) flash(formData, "/admin/people", "User not found", "error");
+
+  const passwordHash = await bcrypt.hash(newPassword, 10);
+  await prisma.user.update({
+    where: { id },
+    data: {
+      passwordHash,
+      ...(user!.role === "STUDENT" ? { mustChangePassword: true } : {}),
+    },
+  });
+  flash(formData, "/admin/people", `Password reset for ${user!.name}`);
+}
+
+/**
  * Bulk-import students from pasted CSV (one "email,name" per line) and enroll them all
  * into the chosen class. Existing users are reused; new ones get the default password.
  */

@@ -5,7 +5,8 @@ import { autoCloseExpired } from "@/lib/sessions";
 
 /**
  * Teacher-only polling endpoint for the live session screen.
- * Returns the static check-in code plus the current present roster.
+ * Returns the static check-in code, who's present, who's flagged for a
+ * location non-compliance, and who in the class hasn't been marked at all yet.
  */
 export async function GET(
   _req: Request,
@@ -34,19 +35,28 @@ export async function GET(
 
   const status = await autoCloseExpired(s);
 
-  // Total enrolled in this class (denominator for the live counter).
-  const total = await prisma.enrollment.count({
+  // Full enrolled roster for this class — also the denominator for the live counter,
+  // and the source for the "not yet marked" list (so a teacher can mark someone
+  // present directly from the roster, no personal code required).
+  const enrollments = await prisma.enrollment.findMany({
     where: { classSectionId: s.offering.classSectionId },
+    include: { student: true },
+    orderBy: { student: { name: "asc" } },
   });
 
   const presentRecords = s.records.filter((r) => r.status === "PRESENT" || r.status === "LATE");
   const nonCompliantRecords = s.records.filter((r) => r.status === "ABSENT" && r.flagged);
 
+  const markedIds = new Set(s.records.map((r) => r.studentId));
+  const notMarked = enrollments
+    .filter((e) => !markedIds.has(e.studentId))
+    .map((e) => ({ studentId: e.studentId, name: e.student.name }));
+
   return NextResponse.json({
     status,
     code: status === "OPEN" ? s.code : null,
     expiresAt: s.expiresAt,
-    total,
+    total: enrollments.length,
     geoLat: s.geoLat,
     geoLng: s.geoLng,
     geoRadiusM: s.geoRadiusM,
@@ -64,5 +74,6 @@ export async function GET(
       flagReason: r.flagReason,
       scannedAt: r.scannedAt,
     })),
+    notMarked,
   });
 }

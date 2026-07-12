@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import { KeyRound, CheckCircle2, XCircle, Loader2, MapPinOff, AlertTriangle } from "lucide-react";
 import { getDeviceId } from "@/lib/device";
 
@@ -30,6 +31,7 @@ function getPosition(): Promise<PositionResult> {
 }
 
 export function CodeEntry() {
+  const router = useRouter();
   const [code, setCode] = useState("");
   const [phase, setPhase] = useState<Phase>("idle");
   const [message, setMessage] = useState("");
@@ -66,11 +68,13 @@ export function CodeEntry() {
     } else if (res.ok && data.absent) {
       setOk(false); setIsAbsent(true); setPhase("done");
       setMessage(data.message ?? "Marked absent: location not available.");
+    } else if (data.error === "must_change_password") {
+      router.push(data.redirect ?? "/settings/change-password?forced=1");
     } else {
       setOk(false); setIsAbsent(false); setPhase("error");
       setMessage(data.error ?? "Something went wrong. Try again.");
     }
-  }, [code]);
+  }, [code, router]);
 
   const reset = () => { setPhase("idle"); setMessage(""); setIsAbsent(false); };
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { Eye, EyeOff, CheckCircle2, AlertTriangle, Loader2 } from "lucide-react";
 import { changePassword } from "./actions";
 
@@ -28,13 +29,15 @@ function PasswordInput({ name, placeholder }: { name: string; placeholder: strin
   );
 }
 
-export function ChangePasswordForm() {
+export function ChangePasswordForm({ forced }: { forced?: boolean }) {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [result, setResult] = useState<{ ok: boolean; message: string } | null>(null);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     if (fd.get("newPassword") !== fd.get("confirmPassword")) {
       setResult({ ok: false, message: "New passwords don't match." });
       return;
@@ -42,7 +45,16 @@ export function ChangePasswordForm() {
     startTransition(async () => {
       const res = await changePassword(fd);
       setResult(res);
-      if (res.ok) (e.target as HTMLFormElement).reset();
+      if (res.ok) {
+        if (forced) {
+          setTimeout(() => {
+            router.push("/student");
+            router.refresh();
+          }, 900);
+        } else {
+          form.reset();
+        }
+      }
     });
   }
 

@@ -22,7 +22,7 @@ export async function changePassword(formData: FormData) {
 
   await prisma.user.update({
     where: { id: user.id },
-    data: { passwordHash: await bcrypt.hash(newPassword, 10) },
+    data: { passwordHash: await bcrypt.hash(newPassword, 10), mustChangePassword: false },
   });
 
   return { ok: true, message: "Password updated successfully." };

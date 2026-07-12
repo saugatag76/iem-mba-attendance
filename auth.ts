@@ -23,7 +23,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
     Credentials({
       credentials: {
-        email: { label: "Email or phone number", type: "text" },
+        email: { label: "Email, phone or enrollment no.", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
@@ -31,13 +31,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const password = String(credentials?.password ?? "");
         if (!identifier || !password) return null;
 
-        // If identifier is all digits (10–12 chars) → phone login (students).
-        // Otherwise → email login (teachers / admins).
-        const isPhone = /^\d{10,12}$/.test(identifier);
-        const user = isPhone
-          ? await prisma.user.findFirst({ where: { phone: identifier } })
-          : await prisma.user.findFirst({
+        // An "@" means email login (teachers/admins). Otherwise it's a student
+        // logging in by year-1 phone number or year-2 enrollment number —
+        // both are unique columns, so either can match without a length check.
+        const isEmail = identifier.includes("@");
+        const user = isEmail
+          ? await prisma.user.findFirst({
               where: { email: { equals: identifier, mode: "insensitive" } },
+            })
+          : await prisma.user.findFirst({
+              where: { OR: [{ phone: identifier }, { enrollmentNo: identifier }] },
             });
         if (!user) return null;
 

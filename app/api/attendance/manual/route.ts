@@ -4,8 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { autoCloseExpired } from "@/lib/sessions";
 
 /**
- * Manual fallback: a teacher enters a student's permanent personal code to mark them present
- * (e.g. the student's own device failed). No geofence — the teacher is physically present.
+ * Manual fallback: a teacher marks a student present without the student self-checking-in.
+ * Two ways to identify the student:
+ *   - `personalCode` — the student reads out their 6-digit personal code (their device failed).
+ *   - `studentId` — the teacher picks the student directly from the live session's class roster
+ *     (the student's phone is dead/lost/forgotten, so no code is available at all).
+ * No geofence either way — the teacher is physically present and vouching for them.
  */
 export async function POST(req: Request) {
   const session = await auth();
@@ -15,10 +19,11 @@ export async function POST(req: Request) {
 
   const body = await req.json().catch(() => ({}));
   const sessionId = String(body.sessionId ?? "");
-  const personalCode = String(body.personalCode ?? "").trim();
+  const studentId = body.studentId ? String(body.studentId) : null;
+  const personalCode = body.personalCode ? String(body.personalCode).trim() : null;
   const note = body.note ? String(body.note).slice(0, 500) : null;
-  if (!sessionId || !/^\d{6}$/.test(personalCode))
-    return NextResponse.json({ error: "Enter the student's 6-digit personal code." }, { status: 400 });
+  if (!sessionId || (!studentId && !/^\d{6}$/.test(personalCode ?? "")))
+    return NextResponse.json({ error: "Provide the student's 6-digit personal code, or pick them from the roster." }, { status: 400 });
 
   const cls = await prisma.session.findUnique({
     where: { id: sessionId },
@@ -30,8 +35,10 @@ export async function POST(req: Request) {
   if ((await autoCloseExpired(cls)) !== "OPEN")
     return NextResponse.json({ error: "Session is closed." }, { status: 409 });
 
-  // Resolve the student by their personal code.
-  const student = await prisma.user.findUnique({ where: { personalCode } });
+  // Resolve the student — by roster pick (studentId) or by their personal code.
+  const student = studentId
+    ? await prisma.user.findUnique({ where: { id: studentId } })
+    : await prisma.user.findUnique({ where: { personalCode: personalCode! } });
   if (!student) return NextResponse.json({ error: "No student found with that code." }, { status: 404 });
 
   // Must be enrolled in this class.
@@ -49,7 +56,11 @@ export async function POST(req: Request) {
       { status: 403 },
     );
 
-  const flagReason = note ? `Manual override — teacher note: ${note}` : "Manual override by teacher";
+  const flagReason = studentId
+    ? "Manual override by teacher (from roster)"
+    : note
+      ? `Manual override — teacher note: ${note}`
+      : "Manual override by teacher";
   const record = await prisma.attendanceRecord.upsert({
     where: { sessionId_studentId: { sessionId, studentId: student.id } },
     // If there was a prior ABSENT (location non-compliance), upgrade to PRESENT with consent log.

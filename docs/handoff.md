@@ -372,11 +372,10 @@ npm run db:seed
 npm run dev
 # → http://localhost:3000
 
-# Test accounts (after seed):
-# admin@iem.edu / admin123
-# nm@iem.edu / teach123  (Dr. Nivedita Mandal)
-# seca.s1@iem.edu / stud123  (Sec A Student 1)
-# demo.teacher@iem.edu / demo123  (Demo Teacher — works any day/time)
+# Test accounts (after seed) — see prisma/seed.ts / lib/studentDefaults.ts for current passwords, not published here:
+# admin@iem.edu.in
+# nm@iem.edu.in  (Dr. Nivedita Mandal)
+# demo.teacher@iem.edu.in / demo123  (Demo Teacher — works any day/time)
 # demo.student@iem.edu / demo123  (Demo Student)
 ```
 
@@ -753,7 +752,7 @@ npx vercel --prod
 1. Admin → People → Add user → Role: TEACHER → set password
 2. Admin → Offerings → Create offering → assign their subjects/classes
 3. Admin → Routine → assign their weekly schedule slots
-4. Communicate login: `{initials}@iem.edu` / `teach123` (tell them to change password)
+4. Communicate login: `{initials}@iem.edu.in` + the current teacher default password (see `prisma/seed.ts`, not published here)
 
 ### Adding a new class section (e.g. new batch)
 
@@ -771,8 +770,12 @@ CSV format (no header row):
 9123456789,Priya Das
 
 Admin → Import → upload file OR paste → Preview → Confirm
-Students log in with their phone number + default password (stud123)
+Students log in with their phone number (or enrollment no. for Year 2) + the default password (see `lib/studentDefaults.ts`, not published here)
 ```
+
+Year-2 (enrollment-number login) students are currently imported via `scripts/import-second-year-students.ts`
+(dry-run by default, `--apply` to write) rather than the admin UI — see the comment block at the top of that
+script for the specialization → section mapping. Finance is deferred pending the Finance 1/2 per-student split.
 
 ### Resetting a student's device (new phone)
 
@@ -783,8 +786,10 @@ Students log in with their phone number + default password (stud123)
 ### Resetting a password (admin)
 
 ```
-Currently: Admin → People → re-save the user with a new password
-(the "Add user" form is an upsert — same email updates the record)
+Admin → People (or Students) → find the user → "Reset password" button
+Set a new password directly — for students this also flips mustChangePassword
+back on, so they're forced to pick their own password on next login.
+There is no self-serve "forgot password" flow — this is the only path.
 ```
 
 ### Updating the timetable (new semester)
@@ -836,7 +841,7 @@ SELECT s.id, u.name, s.status, s.createdAt FROM "Session" s JOIN "User" u ON u.i
 2. **Push notifications** — When Teacher Y receives a substitution request, they only see it on next login. Browser Push API would allow real-time alerts.
 3. **Event CSV export** — Events attendance has no CSV export yet (class session reports do).
 4. **Auto-close expired sessions** — Sessions with `expiresAt` in the past are closed on the next API request, not proactively. Add a Vercel Cron job every 5 minutes.
-5. **Student phone update** — No UI for admin to update a student's phone number (only device reset is available).
+5. ~~**Student phone update**~~ — Resolved: the Students page "Edit" button now accepts either a phone number or a 14-digit enrollment number.
 6. **Multi-department support** — Currently one department (MBA). Schema supports multiple but UI doesn't expose it.
 7. **Attendance correction** — Teacher cannot mark a student absent if they accidentally scanned. No attendance correction UI.
 
@@ -900,6 +905,13 @@ prisma/seed.ts  (npm run db:seed)
 | Haversine geofencing (75m) | Industry standard for indoor geofencing; GPS accuracy ±15–30m leaves ~45m true buffer | Feb 2026 |
 | PgBouncer transaction mode | Prisma uses a connection per request; transaction mode pools efficiently; session mode not compatible | Jun 2026 |
 | `prisma db push` over `migrate dev` | On Windows, migrate dev requires interactive terminal; db push works in CI/CD | Throughout |
+| Teacher/admin login domain moved `@iem.edu` → `@iem.edu.in` | Institution's real domain; reused existing faculty-initials convention (e.g. `sag@iem.edu.in`) | Jul 2026 |
+| Enrollment number as a second login identifier (alongside phone) | Year-2 students have no phone on file; `auth.ts` now resolves `phone` OR `enrollmentNo` for non-email identifiers | Jul 2026 |
+| Admin can manually reset any user's password | No self-serve "forgot password" flow exists; admin sets it and communicates it out of band; flips `mustChangePassword` back on for students | Jul 2026 |
+| Teacher can mark a student present from a collapsible session roster (with confirm + search) | The personal-code fallback fails exactly when needed most — dead/lost phone; reuses the existing manual-mark API, tagged with a distinct `flagReason` for audit | Jul 2026 |
+| Year-2 import batched by specialization, Finance deferred | Marketing/Supply Chain/Tech Mgmt/HR map to one section each and were imported; Finance 1/2 split needs admin's per-student decision first | Jul 2026 |
+| Shared default passwords rotated off values previously discussed in plaintext chat/docs | Old defaults were exposed in conversation history; rotated via a script that only touches accounts still on the old hash (skips anyone who already set their own password) | Jul 2026 |
+| Student rosters / timetables (`*.xlsx`) gitignored repo-wide | Contain student PII (names, phone, enrollment no.); never meant to be pushed | Jul 2026 |
 
 ---
 
@@ -910,8 +922,8 @@ prisma/seed.ts  (npm run db:seed)
 | GitHub | `github.com/saugatag76/iem-mba-attendance` |
 | Vercel project | `iem-mba-attendance` (saugatag76 team) |
 | Neon project | `iem-mba-attendance` |
-| Admin login | `admin@iem.edu` |
-| Demo teacher | `demo.teacher@iem.edu` / `demo123` |
+| Admin login | `admin@iem.edu.in` |
+| Demo teacher | `demo.teacher@iem.edu.in` / `demo123` |
 | Demo student | `demo.student@iem.edu` / `demo123` |
 
 ---

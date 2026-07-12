@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Maximize2, X, Flag, KeyRound, Users, Clock, MapPinOff, AlertTriangle } from "lucide-react";
+import { Maximize2, X, Flag, KeyRound, Users, Clock, MapPinOff, AlertTriangle, Search, UserCheck, UserPlus, ChevronDown, Loader2 } from "lucide-react";
 import { Avatar, cn } from "@/app/_components/ui";
 
 interface PresentRow {
@@ -19,6 +19,10 @@ interface NonCompliantRow {
   flagReason: string | null;
   scannedAt: string;
 }
+interface NotMarkedRow {
+  studentId: string;
+  name: string;
+}
 interface LiveData {
   status: "OPEN" | "CLOSED";
   code: string | null;
@@ -29,6 +33,7 @@ interface LiveData {
   geoRadiusM: number;
   present: PresentRow[];
   nonCompliant: NonCompliantRow[];
+  notMarked: NotMarkedRow[];
 }
 
 function Countdown({ expiresAt, dark = false }: { expiresAt: string; dark?: boolean }) {
@@ -87,10 +92,32 @@ function CodeDisplay({ code, size = "normal" }: { code: string; size?: "normal" 
   );
 }
 
+/** Small "Mark present" action, shared by the roster panel and the non-compliant list. */
+function MarkPresentButton({
+  busy,
+  onClick,
+}: {
+  busy: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={busy}
+      className="inline-flex flex-shrink-0 items-center gap-1 rounded-md border border-primary/30 px-2 py-1 text-[11px] font-medium text-primary transition hover:bg-primary/10 disabled:opacity-50"
+    >
+      {busy ? <Loader2 className="h-3 w-3 animate-spin" /> : <UserCheck className="h-3 w-3" />}
+      Mark present
+    </button>
+  );
+}
+
 export function LiveSession({ sessionId }: { sessionId: string }) {
   const router = useRouter();
   const [data, setData] = useState<LiveData | null>(null);
   const [presenting, setPresenting] = useState(false);
+  const [rosterSearch, setRosterSearch] = useState("");
+  const [markingId, setMarkingId] = useState<string | null>(null);
   const wasOpen = useRef(false);
 
   const poll = useCallback(async () => {
@@ -114,12 +141,31 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
     return () => clearInterval(interval);
   }, [poll]);
 
+  const markPresent = useCallback(async (studentId: string, name: string) => {
+    if (!window.confirm(`Mark ${name} present?`)) return;
+    setMarkingId(studentId);
+    try {
+      const res = await fetch("/api/attendance/manual", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, studentId }),
+      });
+      if (res.ok) await poll();
+    } finally {
+      setMarkingId(null);
+    }
+  }, [sessionId, poll]);
+
   const present = data?.present ?? [];
   const nonCompliant = data?.nonCompliant ?? [];
+  const notMarked = data?.notMarked ?? [];
   const total = data?.total ?? 0;
   const open = data?.status === "OPEN";
   const code = data?.code ?? null;
   const geofenceInactive = data != null && data.geoLat == null;
+
+  const needle = rosterSearch.trim().toLowerCase();
+  const filteredNotMarked = needle ? notMarked.filter((r) => r.name.toLowerCase().includes(needle)) : notMarked;
 
   return (
     <>
@@ -228,14 +274,53 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
                     <span className="text-xs tabular-nums text-muted-foreground">
                       {new Date(r.scannedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
+                    <MarkPresentButton busy={markingId === r.studentId} onClick={() => markPresent(r.studentId, r.name)} />
                   </li>
                 ))}
               </ul>
               <p className="mt-3 text-xs text-muted-foreground">
-                These students checked in but had no location. Use the manual fallback to mark them present if verified in person.
+                These students checked in but had no location — verified in person? Mark them present directly.
               </p>
             </div>
           )}
+
+          {/* Full class roster — mark someone present with no code at all (e.g. dead/lost phone) */}
+          <details className="group/roster rounded-xl border border-border bg-card shadow-sm">
+            <summary className="flex cursor-pointer list-none items-center justify-between p-5 [&::-webkit-details-marker]:hidden">
+              <span className="flex items-center gap-1.5 text-sm font-semibold text-foreground">
+                <UserPlus className="h-4 w-4 text-primary" /> Not yet marked
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="text-2xl font-bold tabular-nums text-foreground">{notMarked.length}</span>
+                <ChevronDown className="h-4 w-4 text-muted-foreground transition group-open/roster:rotate-180" />
+              </span>
+            </summary>
+            <div className="border-t border-border p-5 pt-4">
+              <div className="relative mb-3">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
+                <input
+                  value={rosterSearch}
+                  onChange={(e) => setRosterSearch(e.target.value)}
+                  placeholder="Search by name…"
+                  className="w-full rounded-md border border-input bg-card py-2 pl-9 pr-3 text-sm text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
+                />
+              </div>
+              <ul className="max-h-72 space-y-1 overflow-auto">
+                {filteredNotMarked.map((r) => (
+                  <li key={r.studentId} className="flex items-center gap-2 rounded-lg px-1 py-1.5">
+                    <Avatar name={r.name} />
+                    <span className="flex-1 truncate text-sm text-foreground">{r.name}</span>
+                    <MarkPresentButton busy={markingId === r.studentId} onClick={() => markPresent(r.studentId, r.name)} />
+                  </li>
+                ))}
+                {filteredNotMarked.length === 0 && (
+                  <li className="py-6 text-center text-sm text-muted-foreground">
+                    {notMarked.length === 0 ? "Everyone enrolled has been marked." : "No students match."}
+                  </li>
+                )}
+              </ul>
+            </div>
+          </details>
         </div>
       </div>
 

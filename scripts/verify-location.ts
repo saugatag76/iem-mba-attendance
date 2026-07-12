@@ -74,7 +74,7 @@ async function main() {
     },
   });
 
-  const cookies = await login(offering.teacher.email, "teach123");
+  const cookies = await login(offering.teacher.email, "Teacher@2026");
   const html = await fetch(`${BASE}/reports/session/${session.id}`, {
     headers: { Cookie: cookies.header() },
   }).then((r) => r.text());
