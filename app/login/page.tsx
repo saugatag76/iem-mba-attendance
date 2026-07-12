@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
+import Image from "next/image";
 import { AuthError } from "next-auth";
-import { GraduationCap, Mail, AlertCircle } from "lucide-react";
+import { Mail, AlertCircle } from "lucide-react";
 import { auth, signIn } from "@/auth";
 import { homeForRole } from "@/lib/session";
 import { PasswordField } from "./PasswordField";
@@ -32,9 +33,22 @@ export default async function LoginPage({
         <div className="rounded-2xl border border-border bg-card p-8 shadow-xl shadow-slate-900/5">
           {/* Brand */}
           <div className="mb-6 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/30">
-              <GraduationCap className="h-8 w-8 text-white" strokeWidth={2} />
-            </div>
+            <Image
+              src="/iem-logo-onlight.webp"
+              alt="Institute of Engineering & Management"
+              width={751}
+              height={460}
+              priority
+              className="h-16 w-auto dark:hidden"
+            />
+            <Image
+              src="/iem-logo-ondark.webp"
+              alt="Institute of Engineering & Management"
+              width={751}
+              height={460}
+              priority
+              className="hidden h-16 w-auto dark:block"
+            />
           </div>
 
           <div className="mb-8 text-center">

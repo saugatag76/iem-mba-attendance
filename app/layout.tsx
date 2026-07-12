@@ -15,6 +15,7 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "MBA Attendance",
   description: "Day-to-day, class-wise, per-subject attendance via rotating QR codes.",
+  icons: { icon: "/iem-logo-onlight.webp" },
 };
 
 export const viewport: Viewport = {

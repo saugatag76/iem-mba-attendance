@@ -1,3 +1,8 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="public/iem-logo-ondark.webp">
+  <img alt="Institute of Engineering & Management" src="public/iem-logo-onlight.webp" width="280">
+</picture>
+
 # QR Attendance Tracker
 
 Day-to-day, class-wise, per-subject attendance via **rotating QR codes**, with strong

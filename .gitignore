@@ -13,6 +13,9 @@ next-env.d.ts
 # raw source data dumps (timetables, imports) — kept local, never pushed
 /data/
 
+# DB backup dumps taken before destructive scripts (contain real student/teacher PII)
+/backups/
+
 # student rosters / timetables (contain names, phone, enrollment no.) — local only,
 # anywhere in the repo, not just root
 *.xlsx
@@ -25,6 +28,7 @@ next-env.d.ts
 !/docs/handoff.md
 !/docs/teacher-guide.md
 !/docs/student-guide.md
+!/docs/production-readiness.md
 
 # Claude Code skill packages — local tooling, not part of the app
 /skills/

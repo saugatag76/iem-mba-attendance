@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   GraduationCap,
@@ -123,14 +124,27 @@ export function AppShell({
         )}
       >
         <div className="flex h-16 items-center gap-2.5 px-5">
-          <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-white shadow-lg shadow-primary/30">
-            <GraduationCap className="h-5 w-5" />
-          </span>
-          <div className="leading-tight">
-            <div className="text-sm font-bold text-white">MBA Attendance</div>
-            <div className="text-[10px] uppercase tracking-wider text-sidebar-foreground/40">IEM · MBA Dept</div>
-          </div>
-          <button onClick={() => setOpen(false)} className="ml-auto text-sidebar-foreground/60 lg:hidden">
+          <Link href={`/${role.toLowerCase()}`} className="flex min-w-0 flex-1 items-center gap-2.5">
+            <Image
+              src="/iem-logo-onlight.webp"
+              alt="Institute of Engineering & Management"
+              width={751}
+              height={460}
+              className="h-9 w-auto dark:hidden"
+            />
+            <Image
+              src="/iem-logo-ondark.webp"
+              alt="Institute of Engineering & Management"
+              width={751}
+              height={460}
+              className="hidden h-9 w-auto dark:block"
+            />
+            <div className="min-w-0 leading-tight">
+              <div className="truncate text-sm font-bold text-sidebar-foreground">MBA Attendance</div>
+              <div className="text-[10px] uppercase tracking-wider text-sidebar-foreground/40">IEM · MBA Dept</div>
+            </div>
+          </Link>
+          <button onClick={() => setOpen(false)} className="ml-auto flex-shrink-0 text-sidebar-foreground/60 lg:hidden">
             <X className="h-5 w-5" />
           </button>
         </div>

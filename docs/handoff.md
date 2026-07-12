@@ -321,8 +321,8 @@ DATABASE_URL="postgresql://user:pass@ep-xxx.ap-southeast-1.aws.neon.tech/neondb?
 # DATABASE_URL="postgresql://user:pass@ep-xxx-pooler.ap-southeast-1.aws.neon.tech/neondb?pgbouncer=true&connect_timeout=15&sslmode=require"
 
 # ── Auth ──────────────────────────────────────────────────────────────────
-NEXTAUTH_SECRET="generate-with: openssl rand -base64 32"
-NEXTAUTH_URL="https://your-domain.com"   # required in production
+AUTH_SECRET="generate-with: openssl rand -base64 32"
+AUTH_URL="https://your-domain.com"   # required in production
 
 # ── App ───────────────────────────────────────────────────────────────────
 NODE_ENV="production"
@@ -331,7 +331,7 @@ NODE_ENV="production"
 ### Generating secrets
 
 ```bash
-# NEXTAUTH_SECRET
+# AUTH_SECRET
 openssl rand -base64 32
 
 # Or: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
@@ -359,7 +359,7 @@ npm install
 
 # 3. Environment
 cp .env.example .env   # (create this file manually if not present)
-# Fill in DATABASE_URL and NEXTAUTH_SECRET
+# Fill in DATABASE_URL and AUTH_SECRET
 
 # 4. Database — generate client + run migrations
 npx prisma generate
@@ -588,7 +588,7 @@ sudo ufw enable
 ### Authentication & access
 
 - [x] Passwords hashed with bcrypt (cost 10)
-- [x] JWT signed with `NEXTAUTH_SECRET` (env var)
+- [x] JWT signed with `AUTH_SECRET` (env var)
 - [x] Phone-number login (no email guessing for students)
 - [x] Device binding (one device per student account)
 - [x] Cross-device proxy detection (device bound to another student → hard block)
@@ -615,7 +615,7 @@ sudo ufw enable
 
 - [x] `.env` in `.gitignore`
 - [x] Secrets in Vercel environment variables (not in code)
-- [ ] **TODO:** Rotate `NEXTAUTH_SECRET` annually (all active sessions invalidated — communicate to users)
+- [ ] **TODO:** Rotate `AUTH_SECRET` annually (all active sessions invalidated — communicate to users)
 
 ### Headers to add in `next.config.js`
 

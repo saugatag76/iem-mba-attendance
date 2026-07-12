@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Maximize2, X, Flag, KeyRound, Users, Clock, MapPinOff, AlertTriangle, Search, UserCheck, UserPlus, ChevronDown, Loader2 } from "lucide-react";
 import { Avatar, cn } from "@/app/_components/ui";
 
@@ -327,6 +328,13 @@ export function LiveSession({ sessionId }: { sessionId: string }) {
       {/* Presentation mode overlay */}
       {presenting && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-950 p-6 text-white">
+          <Image
+            src="/iem-logo-ondark.webp"
+            alt="Institute of Engineering & Management"
+            width={751}
+            height={460}
+            className="absolute left-5 top-5 h-10 w-auto opacity-80"
+          />
           <button
             onClick={() => setPresenting(false)}
             className="absolute right-5 top-5 flex h-10 w-10 items-center justify-center rounded-lg border border-white/20 text-white/70 transition hover:bg-card/10"
