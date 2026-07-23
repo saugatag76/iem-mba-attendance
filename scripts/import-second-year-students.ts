@@ -42,7 +42,9 @@ const XLSX_PATH = args.find((a) => !a.startsWith("--")) ?? "SecondYear_25-27.xls
 // FINANCE is intentionally absent — deferred until the user decides the Finance 1/2
 // per-student split. HUMAN RESOURCE is confirmed single-section and included below.
 const SPECIALIZATION_SECTION: Record<string, string> = {
-  MARKETING: "MM",
+  "FINANCE 1": "F1",
+  "FINANCE 2": "F2",
+  "MARKETING": "MM",
   "SUPPLY CHAIN MANAGEMENT": "SC",
   "TECHNOLOGY MANAGEMENT": "TM",
   "HUMAN RESOURCE": "HR",
