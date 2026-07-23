@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, AlertTriangle, BookOpen, Check, Minus } from "lucide-react";
+import { ArrowLeft, AlertTriangle, BookOpen, Check, Minus, Download } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { studentSubjectStats, studentDayWiseReport } from "@/lib/attendance";
@@ -10,6 +10,7 @@ import { PageHeader, Card, Badge, ProgressRing, EmptyState } from "@/app/_compon
 import { SectionHeader } from "@/app/_components/layout-ui";
 import { DonutChart, Legend } from "@/app/_components/charts";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,22 @@ export default async function StudentReport({
       <Link href={`/reports/students${qs}`} className="mb-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary">
         <ArrowLeft className="h-4 w-4" /> Back to students
       </Link>
-      <PageHeader title={student.name} subtitle={student.email} action={<DateRangePicker />} />
+      <PageHeader
+        title={student.name}
+        subtitle={student.email}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <DateRangePicker />
+            <a
+              href={`/api/reports/student/${id}/csv${qs}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+            >
+              <Download className="h-4 w-4" /> Export CSV
+            </a>
+            <GlobalExportButton qs={qs} />
+          </div>
+        }
+      />
 
       {stats.length === 0 ? (
         <EmptyState icon={<BookOpen className="h-8 w-8" />} title="No subjects to report" />

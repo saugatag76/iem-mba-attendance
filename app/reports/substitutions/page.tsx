@@ -7,6 +7,7 @@ import { PageHeader, StatCard, Badge, EmptyState } from "@/app/_components/ui";
 import { RouteTabs } from "@/app/_components/layout-ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 import { PrintButton } from "@/app/_components/PrintButton";
 
 export const dynamic = "force-dynamic";
@@ -72,7 +73,12 @@ export default async function SubstitutionReportPage({
       <PageHeader
         title="Substitution report"
         subtitle={isAdmin ? "Every substitute class taken, across all faculty" : "Every substitute class you've taken — a permanent record"}
-        action={<div className="flex items-center gap-2 print:hidden"><DateRangePicker /></div>}
+        action={
+          <div className="flex flex-wrap items-center gap-2 print:hidden">
+            <DateRangePicker />
+            <GlobalExportButton qs={qs} />
+          </div>
+        }
       />
 
       <RouteTabs

@@ -19,7 +19,7 @@ export default async function ImportPage() {
         subtitle="Paste a CSV or upload a file — preview every row before committing."
       />
       <ImportForm
-        classes={classes.map((c) => ({ id: c.id, name: c.name, enrolled: c._count.enrollments }))}
+        classes={classes.map((c) => ({ id: c.id, name: c.name, enrolled: c._count.enrollments, year: c.year }))}
       />
     </div>
   );

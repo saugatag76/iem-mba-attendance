@@ -8,6 +8,7 @@ import { FilterBar } from "@/app/_components/FilterBar";
 import { ShowMore } from "@/app/_components/ShowMore";
 import { CollapsibleGroup, RouteTabs } from "@/app/_components/layout-ui";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 import { STREAMS } from "@/lib/streams";
 
 export const dynamic = "force-dynamic";
@@ -77,7 +78,12 @@ export default async function ReportsOfferings({
       <PageHeader
         title="Attendance reports"
         subtitle={`${filtered.length} of ${offerings.length} offerings · per-subject %, registers & scan locations`}
-        action={<DateRangePicker />}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <DateRangePicker />
+            <GlobalExportButton qs={qs} />
+          </div>
+        }
       />
 
       <RouteTabs

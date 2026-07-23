@@ -6,6 +6,7 @@ import { parseDateRange, rangeQuery } from "@/lib/dateRange";
 import { PageHeader, EmptyState, Avatar, Badge } from "@/app/_components/ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +50,7 @@ export default async function DefaultersReport({
             >
               <Download className="h-4 w-4" /> Export CSV
             </a>
+            <GlobalExportButton qs={qs} />
           </div>
         }
       />

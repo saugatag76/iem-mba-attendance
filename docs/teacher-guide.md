@@ -50,6 +50,7 @@ You can view attendance reports for your own classes only. See the [Reports Guid
 - **By subject**: drill into a subject for a full register (who attended which session) and export to CSV.
 - **By student**: look up an individual student's attendance across your subjects.
 - **Session report**: per-session detail, including check-in times, manual-entry tags, flags, and a map of where students checked in from.
+- **Export all**: one button, on every reports tab, downloads a single Excel workbook with everything above in one file.
 
 ## Quick tips
 - Open the session right when class starts and leave it open (presentation mode if you're projecting) — the code stays valid for the whole session, so there's no need to keep refreshing anything.

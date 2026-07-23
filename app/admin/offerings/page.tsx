@@ -6,7 +6,8 @@ import { Card, Field, selectClass, Submit, PageHeader, Avatar, Badge } from "@/a
 import { FilterBar } from "@/app/_components/FilterBar";
 import { SectionHeader, CollapsibleGroup } from "@/app/_components/layout-ui";
 import { STREAMS } from "@/lib/streams";
-import { createOffering, deleteOffering } from "../actions";
+import { createOffering, deleteOffering, reassignOfferingTeacher } from "../actions";
+import { ReassignTeacherSelect } from "./ReassignTeacherSelect";
 
 export const dynamic = "force-dynamic";
 
@@ -129,9 +130,12 @@ export default async function OfferingsPage({
                   <div className="flex flex-shrink-0 items-center gap-3">
                     <div className="hidden items-center gap-2 sm:flex">
                       <Avatar name={o.teacher.name} className="h-7 w-7 text-[10px]" />
-                      <div className="leading-tight">
-                        <p className="text-xs font-medium text-foreground">{o.teacher.name}</p>
-                      </div>
+                      <ReassignTeacherSelect
+                        offeringId={o.id}
+                        currentTeacherId={o.teacherId}
+                        teachers={teachers}
+                        action={reassignOfferingTeacher}
+                      />
                     </div>
                     <DeleteOfferingButton
                       id={o.id}

@@ -5,7 +5,8 @@ import { Card, Field, inputClass, selectClass, Submit, PageHeader, Badge } from 
 import { TabNav } from "@/app/_components/layout-ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { STREAMS, STREAM_LABEL } from "@/lib/streams";
-import { createDepartment, createClass, createSubject } from "../actions";
+import { createDepartment, createClass, createSubject, deleteClass } from "../actions";
+import { DeleteClassButton } from "./DeleteClassButton";
 
 export const dynamic = "force-dynamic";
 
@@ -122,7 +123,10 @@ export default async function AcademicsPage({
 
 async function ClassList({ needle }: { needle: string }) {
   const classes = await prisma.classSection.findMany({
-    include: { _count: { select: { offerings: true, enrollments: true } } },
+    include: {
+      _count: { select: { offerings: true, enrollments: true } },
+      offerings: { select: { _count: { select: { sessions: true } } } },
+    },
     orderBy: [{ year: "asc" }, { name: "asc" }],
   });
   const rows = needle ? classes.filter((c) => c.name.toLowerCase().includes(needle)) : classes;
@@ -137,18 +141,31 @@ async function ClassList({ needle }: { needle: string }) {
             <th className="px-4 py-2.5 font-medium">Stream</th>
             <th className="px-4 py-2.5 text-right font-medium">Offerings</th>
             <th className="px-4 py-2.5 text-right font-medium">Students</th>
+            <th className="px-4 py-2.5 text-right font-medium">Actions</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-border">
-          {rows.map((c) => (
-            <tr key={c.id}>
-              <td className="px-4 py-2.5 font-medium text-foreground">{c.name}</td>
-              <td className="px-4 py-2.5 text-muted-foreground">Year {c.year}</td>
-              <td className="px-4 py-2.5"><Badge tone="gray">{STREAM_LABEL[c.stream] ?? c.stream}</Badge></td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.offerings}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.enrollments}</td>
-            </tr>
-          ))}
+          {rows.map((c) => {
+            const sessionCount = c.offerings.reduce((a, o) => a + o._count.sessions, 0);
+            return (
+              <tr key={c.id}>
+                <td className="px-4 py-2.5 font-medium text-foreground">{c.name}</td>
+                <td className="px-4 py-2.5 text-muted-foreground">Year {c.year}</td>
+                <td className="px-4 py-2.5"><Badge tone="gray">{STREAM_LABEL[c.stream] ?? c.stream}</Badge></td>
+                <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.offerings}</td>
+                <td className="px-4 py-2.5 text-right tabular-nums text-muted-foreground">{c._count.enrollments}</td>
+                <td className="px-4 py-2.5 text-right">
+                  <DeleteClassButton
+                    id={c.id}
+                    offeringsCount={c._count.offerings}
+                    enrollmentsCount={c._count.enrollments}
+                    sessionCount={sessionCount}
+                    action={deleteClass}
+                  />
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

@@ -6,11 +6,11 @@ import { cn } from "@/lib/utils";
 import { DEFAULT_STUDENT_PASSWORD } from "@/lib/studentDefaults";
 import { importStudentsPreviewed } from "./actions";
 
-type ClassOption = { id: string; name: string; enrolled: number };
+type ClassOption = { id: string; name: string; enrolled: number; year: number };
 
 type PreviewRow = {
   line: number;
-  email: string;
+  identifier: string;
   name: string;
   status: "new" | "exists" | "already_enrolled" | "invalid";
   reason?: string;
@@ -29,10 +29,10 @@ function parsePreview(csv: string): Omit<PreviewRow, "status" | "reason">[] {
     .map((l, i) => ({ raw: l.trim(), lineNum: i + 1 }))
     .filter((r) => r.raw)
     .map(({ raw, lineNum }) => {
-      const [emailRaw, ...rest] = raw.split(",");
-      const email = (emailRaw ?? "").toLowerCase().trim();
-      const name = rest.join(",").trim() || email.split("@")[0] || "";
-      return { line: lineNum, email, name };
+      const [identifierRaw, ...rest] = raw.split(",");
+      const identifier = (identifierRaw ?? "").trim();
+      const name = rest.join(",").trim() || "";
+      return { line: lineNum, identifier, name };
     });
 }
 
@@ -48,6 +48,8 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
 
   const parsed = parsePreview(csv);
   const hasContent = parsed.length > 0;
+  const selectedClass = classes.find((c) => c.id === classSectionId);
+  const isYear2 = selectedClass?.year === 2;
 
   async function buildPreview() {
     if (!classSectionId || !hasContent) return;
@@ -78,7 +80,9 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
   }
 
   function downloadTemplate() {
-    const content = "phone,name\n9876543210,Rahul Sharma\n9123456789,Priya Das\n8012345678,Amit Roy\n";
+    const content = isYear2
+      ? "enrollment no,name\n12025051001001,Rahul Sharma\n12025051001002,Priya Das\n12025051001003,Amit Roy\n"
+      : "phone,name\n9876543210,Rahul Sharma\n9123456789,Priya Das\n8012345678,Amit Roy\n";
     const blob = new Blob([content], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -154,7 +158,11 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
           value={csv}
           onChange={(e) => { setCsv(e.target.value); setPreview(null); setResult(null); }}
           rows={7}
-          placeholder={"9876543210,Rahul Sharma\n9123456789,Priya Das\n8012345678,Amit Roy"}
+          placeholder={
+            isYear2
+              ? "12025051001001,Rahul Sharma\n12025051001002,Priya Das\n12025051001003,Amit Roy"
+              : "9876543210,Rahul Sharma\n9123456789,Priya Das\n8012345678,Amit Roy"
+          }
           className="w-full rounded-md border border-input bg-card px-3 py-2 font-mono text-xs text-foreground placeholder:text-muted-foreground outline-none focus:border-ring focus:ring-2 focus:ring-ring/30"
         />
 
@@ -201,7 +209,7 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
               <thead className="border-b border-border bg-muted/40 text-xs uppercase tracking-wide text-muted-foreground">
                 <tr>
                   <th className="px-4 py-2.5 text-left font-medium">#</th>
-                  <th className="px-4 py-2.5 text-left font-medium">Email</th>
+                  <th className="px-4 py-2.5 text-left font-medium">Phone / Enrollment</th>
                   <th className="px-4 py-2.5 text-left font-medium">Name</th>
                   <th className="px-4 py-2.5 text-left font-medium">Status</th>
                 </tr>
@@ -213,7 +221,7 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
                   return (
                     <tr key={row.line} className={cn(row.status === "invalid" && "bg-red-500/5", row.status === "already_enrolled" && "opacity-60")}>
                       <td className="px-4 py-2.5 tabular-nums text-muted-foreground">{row.line}</td>
-                      <td className="px-4 py-2.5 font-mono text-xs text-foreground">{row.email || <span className="text-red-500">missing</span>}</td>
+                      <td className="px-4 py-2.5 font-mono text-xs text-foreground">{row.identifier || <span className="text-red-500">missing</span>}</td>
                       <td className="px-4 py-2.5 text-foreground">{row.name || <span className="text-muted-foreground italic">—</span>}</td>
                       <td className="px-4 py-2.5">
                         <span className={cn("inline-flex items-center gap-1 text-xs font-medium", cfg.cls)}>
@@ -266,8 +274,11 @@ export function ImportForm({ classes }: { classes: ClassOption[] }) {
 
       {/* Format hint */}
       <div className="rounded-xl border border-border bg-muted/30 px-4 py-3 text-xs text-muted-foreground">
-        <p className="font-semibold text-foreground">Format: <code className="font-mono">phone,name</code> — one student per line. Phone must be 10–12 digits.</p>
-        <p className="mt-1">Students log in with their phone number + the default password. Existing students (matched by phone) are re-enrolled without changing their password.</p>
+        <p className="font-semibold text-foreground">
+          Format: <code className="font-mono">identifier,name</code> — one student per line. Identifier is either a
+          10–12 digit phone number (Year 1) or a 14-digit enrollment number (Year 2){isYear2 ? " — this class is Year 2, so use enrollment numbers" : selectedClass ? " — this class is Year 1, so use phone numbers" : ""}.
+        </p>
+        <p className="mt-1">Students log in with their phone/enrollment number + the default password. Existing students (matched by the same identifier) are re-enrolled without changing their password.</p>
       </div>
     </div>
   );

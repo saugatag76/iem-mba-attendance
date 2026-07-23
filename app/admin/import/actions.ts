@@ -4,15 +4,12 @@ import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { uniquePersonalCode } from "@/lib/code";
 import { DEFAULT_STUDENT_PASSWORD } from "@/lib/studentDefaults";
+import { classifyIdentifier, identifierEmail } from "@/lib/identifier";
 import bcrypt from "bcryptjs";
 import { Role } from "@prisma/client";
 
-/** Generate a system-internal email from a phone number (never shown to student). */
-function phoneEmail(phone: string) {
-  return `p${phone}@iem.internal`;
-}
-
-/** Import + enroll students by phone number, returning a structured result. */
+/** Import + enroll students by phone number (Year 1) or enrollment number
+ *  (Year 2), returning a structured result. */
 export async function importStudentsPreviewed(formData: FormData) {
   await requireRole("ADMIN");
   const classSectionId = String(formData.get("classSectionId") ?? "");
@@ -29,26 +26,38 @@ export async function importStudentsPreviewed(formData: FormData) {
   let enrolled = 0;
   let skipped = 0;
 
-  const phoneRegex = /^\d{10,12}$/;
-
   for (const row of rows) {
-    const [phoneRaw, ...rest] = row.split(",");
-    const phone = (phoneRaw ?? "").trim().replace(/[\s+\-()]/g, "");
-    const name = rest.join(",").trim() || `Student ${phone}`;
-    if (!phone || !phoneRegex.test(phone)) { skipped++; continue; }
+    const [identifierRaw, ...rest] = row.split(",");
+    const identifier = classifyIdentifier(identifierRaw ?? "");
+    const name = rest.join(",").trim() || `Student ${(identifierRaw ?? "").trim()}`;
+    if (!identifier) { skipped++; continue; }
 
-    const existing = await prisma.user.findFirst({ where: { phone } });
+    const existing = await prisma.user.findFirst({
+      where: identifier.kind === "phone" ? { phone: identifier.value } : { enrollmentNo: identifier.value },
+    });
     if (existing) {
       const enr = await prisma.enrollment.findUnique({
         where: { studentId_classSectionId: { studentId: existing.id, classSectionId } },
       });
       if (enr) { skipped++; continue; }
+      // Single-section model (matches admin/students Edit): moving a student into
+      // this class replaces any other section they're in, rather than adding a
+      // second enrollment alongside it.
+      await prisma.enrollment.deleteMany({ where: { studentId: existing.id } });
       await prisma.enrollment.create({ data: { studentId: existing.id, classSectionId } });
       enrolled++;
     } else {
-      const email = phoneEmail(phone);
       const student = await prisma.user.create({
-        data: { email, phone, name, role: Role.STUDENT, passwordHash, personalCode: await uniquePersonalCode(), mustChangePassword: true },
+        data: {
+          email: identifierEmail(identifier.kind, identifier.value),
+          phone: identifier.kind === "phone" ? identifier.value : null,
+          enrollmentNo: identifier.kind === "enrollment" ? identifier.value : null,
+          name,
+          role: Role.STUDENT,
+          passwordHash,
+          personalCode: await uniquePersonalCode(),
+          mustChangePassword: true,
+        },
       });
       await prisma.enrollment.create({ data: { studentId: student.id, classSectionId } });
       created++;

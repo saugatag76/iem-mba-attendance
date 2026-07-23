@@ -486,3 +486,78 @@ export async function studentsForReports(teacherId?: string): Promise<StudentLis
   }
   return [...byStudent.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
+
+export interface StudentOverallStat extends StudentListItem {
+  totalSessions: number;
+  attended: number;
+  percent: number; // 0..100
+}
+
+/** Overall (all-subjects) attendance per student, for the "By student" bulk export —
+ *  same visibility rule as studentsForReports, aggregated in bulk (not per-student
+ *  queries) to stay fast across the full roster. */
+export async function studentsOverallStats(teacherId?: string, range?: DateRange): Promise<StudentOverallStat[]> {
+  // Seed every visible student first (same visibility rule as studentsForReports),
+  // so students with zero sessions held so far still appear at 0% rather than being
+  // silently dropped from the export.
+  const enrollments = await prisma.enrollment.findMany({
+    where: teacherId ? { classSection: { offerings: { some: { teacherId } } } } : {},
+    include: { student: true, classSection: true },
+  });
+  const byStudent = new Map<string, StudentOverallStat>();
+  for (const e of enrollments) {
+    if (!byStudent.has(e.studentId)) {
+      byStudent.set(e.studentId, {
+        id: e.studentId,
+        name: e.student.name,
+        email: e.student.email,
+        className: e.classSection.name,
+        totalSessions: 0,
+        attended: 0,
+        percent: 0,
+      });
+    }
+  }
+
+  const offerings = await prisma.offering.findMany({
+    where: teacherId ? { teacherId } : {},
+    include: {
+      classSection: { include: { enrollments: true } },
+      sessions: { where: sessionDateWhere(range), select: { id: true } },
+    },
+  });
+
+  const allSessionIds = offerings.flatMap((o) => o.sessions.map((s) => s.id));
+  const records = allSessionIds.length
+    ? await prisma.attendanceRecord.findMany({
+        where: { sessionId: { in: allSessionIds }, status: { in: ["PRESENT", "LATE"] } },
+        select: { sessionId: true, studentId: true },
+      })
+    : [];
+
+  const sessionToOffering = new Map<string, string>();
+  for (const o of offerings) for (const s of o.sessions) sessionToOffering.set(s.id, o.id);
+
+  const presentByOfferingStudent = new Map<string, number>();
+  for (const r of records) {
+    const offeringId = sessionToOffering.get(r.sessionId);
+    if (!offeringId) continue;
+    const key = `${offeringId}:${r.studentId}`;
+    presentByOfferingStudent.set(key, (presentByOfferingStudent.get(key) ?? 0) + 1);
+  }
+
+  for (const o of offerings) {
+    const total = o.sessions.length;
+    if (total === 0) continue;
+    for (const e of o.classSection.enrollments) {
+      const stat = byStudent.get(e.studentId);
+      if (!stat) continue;
+      stat.totalSessions += total;
+      stat.attended += presentByOfferingStudent.get(`${o.id}:${e.studentId}`) ?? 0;
+    }
+  }
+
+  const stats = [...byStudent.values()];
+  for (const s of stats) s.percent = s.totalSessions > 0 ? Math.round((s.attended / s.totalSessions) * 100) : 0;
+  return stats.sort((a, b) => a.name.localeCompare(b.name));
+}

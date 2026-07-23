@@ -41,6 +41,17 @@ export async function createClass(formData: FormData) {
   flash(formData, "/admin/academics", `Class “${name}” created`);
 }
 
+export async function deleteClass(formData: FormData) {
+  await adminOnly();
+  const id = String(formData.get("id") ?? "");
+  if (!id) flash(formData, "/admin/academics?tab=classes", "Class ID missing", "error");
+  // Offerings, enrollments and scheduled classes cascade via schema (sessions/
+  // attendance cascade further, through each offering); students themselves are
+  // never deleted, only unenrolled.
+  const cls = await prisma.classSection.delete({ where: { id } });
+  flash(formData, "/admin/academics?tab=classes", `Class “${cls.name}” removed`);
+}
+
 export async function createSubject(formData: FormData) {
   await adminOnly();
   const name = String(formData.get("name") ?? "").trim();
@@ -63,6 +74,15 @@ export async function createOffering(formData: FormData) {
     flash(formData, "/admin/offerings", "Subject, class and teacher are required", "error");
   await prisma.offering.create({ data: { subjectId, classSectionId, teacherId, term } });
   flash(formData, "/admin/offerings", "Offering created");
+}
+
+export async function reassignOfferingTeacher(formData: FormData) {
+  await adminOnly();
+  const id = String(formData.get("id") ?? "");
+  const teacherId = String(formData.get("teacherId") ?? "");
+  if (!id || !teacherId) flash(formData, "/admin/offerings", "Offering and teacher are required", "error");
+  await prisma.offering.update({ where: { id }, data: { teacherId } });
+  flash(formData, "/admin/offerings", "Teacher reassigned");
 }
 
 export async function deleteOffering(formData: FormData) {

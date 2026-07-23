@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { PageHeader } from "@/app/_components/ui";
 import { RoutineGrid, type GridCell, type OfferingOption } from "./RoutineGrid";
 import { SectionSelector } from "./SectionSelector";
+import { RoutineImportForm } from "./RoutineImportForm";
 import type { Weekday } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
@@ -82,6 +83,15 @@ export default async function RoutinePage({
           />
         }
       />
+
+      <details className="mb-5 rounded-xl border border-border bg-card shadow-sm">
+        <summary className="cursor-pointer list-none px-5 py-4 text-sm font-semibold text-foreground [&::-webkit-details-marker]:hidden">
+          Bulk import from Excel
+        </summary>
+        <div className="border-t border-border p-5">
+          <RoutineImportForm />
+        </div>
+      </details>
 
       {!activeSectionId ? (
         <p className="py-10 text-center text-sm text-muted-foreground">

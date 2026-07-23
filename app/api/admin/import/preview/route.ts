@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { classifyIdentifier } from "@/lib/identifier";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -12,39 +13,40 @@ export async function POST(req: Request) {
 
   const { classSectionId, rows } = body as {
     classSectionId: string;
-    rows: { line: number; email: string; name: string }[];
+    rows: { line: number; identifier: string; name: string }[];
   };
 
-  // Fetch all existing users and enrollments in one batch
-  const phoneRegex = /^\d{10,12}$/;
-  const phones = rows
-    .map((r) => r.email.trim().replace(/[\s+\-()]/g, ""))
-    .filter((p) => phoneRegex.test(p));
+  const classified = rows.map((r) => ({ row: r, identifier: classifyIdentifier(r.identifier) }));
+  const phones = classified.filter((c) => c.identifier?.kind === "phone").map((c) => c.identifier!.value);
+  const enrollmentNos = classified.filter((c) => c.identifier?.kind === "enrollment").map((c) => c.identifier!.value);
 
   const [existingUsers, existingEnrollments] = await Promise.all([
     prisma.user.findMany({
-      where: { phone: { in: phones } },
-      select: { id: true, phone: true },
+      where: { OR: [{ phone: { in: phones } }, { enrollmentNo: { in: enrollmentNos } }] },
+      select: { phone: true, enrollmentNo: true },
     }),
     prisma.enrollment.findMany({
-      where: { classSectionId, student: { phone: { in: phones } } },
-      select: { student: { select: { phone: true } } },
+      where: {
+        classSectionId,
+        student: { OR: [{ phone: { in: phones } }, { enrollmentNo: { in: enrollmentNos } }] },
+      },
+      select: { student: { select: { phone: true, enrollmentNo: true } } },
     }),
   ]);
 
-  const existingPhones = new Set(existingUsers.map((u) => u.phone ?? ""));
-  const alreadyEnrolledPhones = new Set(existingEnrollments.map((e) => e.student.phone ?? ""));
+  const existingIdentifiers = new Set(existingUsers.flatMap((u) => [u.phone, u.enrollmentNo].filter(Boolean)));
+  const alreadyEnrolledIdentifiers = new Set(
+    existingEnrollments.flatMap((e) => [e.student.phone, e.student.enrollmentNo].filter(Boolean)),
+  );
 
-  const result = rows.map((row) => {
-    // row.email actually contains phone (field reuse from ImportForm parsing)
-    const phone = row.email.trim().replace(/[\s+\-()]/g, "");
-    if (!phone || !phoneRegex.test(phone)) {
-      return { ...row, status: "invalid", reason: !phone ? "missing phone" : "invalid phone number (10–12 digits)" };
+  const result = classified.map(({ row, identifier }) => {
+    if (!identifier) {
+      return { ...row, status: "invalid", reason: !row.identifier.trim() ? "missing identifier" : "invalid phone (10–12 digits) or enrollment no. (14 digits)" };
     }
-    if (alreadyEnrolledPhones.has(phone)) {
+    if (alreadyEnrolledIdentifiers.has(identifier.value)) {
       return { ...row, status: "already_enrolled", reason: "already in this class" };
     }
-    if (existingPhones.has(phone)) {
+    if (existingIdentifiers.has(identifier.value)) {
       return { ...row, status: "exists" };
     }
     return { ...row, status: "new" };

@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { defaultersList } from "@/lib/attendance";
+import { studentsOverallStats } from "@/lib/attendance";
 import { parseDateRange } from "@/lib/dateRange";
 import { toCsv } from "@/lib/csv";
 
@@ -15,17 +15,17 @@ export async function GET(req: Request) {
     to: url.searchParams.get("to") ?? undefined,
   });
 
-  const rows = await defaultersList(isAdmin ? {} : { teacherId: session.user.id }, range);
+  const stats = await studentsOverallStats(isAdmin ? undefined : session.user.id, range);
 
   const csv = toCsv(
-    ["Student", "Email", "Subject Code", "Subject", "Section", "Teacher", "Attended", "Total", "Percent"],
-    rows.map((r) => [r.studentName, r.studentEmail, r.subjectCode, r.subjectName, r.className, r.teacherName, r.attended, r.total, r.percent]),
+    ["Name", "Email", "Section", "Sessions", "Attended", "Percent"],
+    stats.map((s) => [s.name, s.email, s.className, s.totalSessions, s.attended, s.percent]),
   );
 
   return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
-      "Content-Disposition": `attachment; filename="below-75-attendance.csv"`,
+      "Content-Disposition": `attachment; filename="students-attendance.csv"`,
     },
   });
 }

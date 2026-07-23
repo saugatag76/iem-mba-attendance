@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TrendingUp, BookOpen, AlertTriangle, ChevronRight, CalendarCheck } from "lucide-react";
+import { TrendingUp, BookOpen, AlertTriangle, ChevronRight, CalendarCheck, Download } from "lucide-react";
 import { SessionsChart } from "./SessionsChart";
 import { requireRole } from "@/lib/session";
 import { reportsOverview } from "@/lib/attendance";
@@ -9,6 +9,7 @@ import { SectionHeader, RouteTabs } from "@/app/_components/layout-ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { TrendLineChart } from "@/app/_components/charts";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 
 export const dynamic = "force-dynamic";
 
@@ -53,7 +54,18 @@ export default async function ReportsOverview({
       <PageHeader
         title="Attendance reports"
         subtitle={isAdmin ? "Macro view across every subject and section" : "Macro view across your classes"}
-        action={<DateRangePicker />}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <DateRangePicker />
+            <a
+              href={`/api/reports/overview/csv${qs}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+            >
+              <Download className="h-4 w-4" /> Export CSV
+            </a>
+            <GlobalExportButton qs={qs} />
+          </div>
+        }
       />
 
       <RouteTabs

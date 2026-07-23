@@ -1,10 +1,6 @@
 import { auth } from "@/auth";
 import { offeringReport } from "@/lib/attendance";
-
-function csvCell(v: string | number): string {
-  const s = String(v);
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-}
+import { toCsv } from "@/lib/csv";
 
 export async function GET(
   _req: Request,
@@ -20,14 +16,13 @@ export async function GET(
   if (session.user.role !== "ADMIN" && report.offering.teacherId !== session.user.id)
     return new Response("forbidden", { status: 403 });
 
-  const header = ["Name", "Email", "Attended", "Total", "Percent"];
-  const lines = [header.join(",")];
-  for (const r of report.rows) {
-    lines.push([r.name, r.email, r.attended, r.total, r.percent].map(csvCell).join(","));
-  }
+  const csv = toCsv(
+    ["Name", "Email", "Attended", "Total", "Percent"],
+    report.rows.map((r) => [r.name, r.email, r.attended, r.total, r.percent]),
+  );
   const filename = `${report.offering.subject.code}-${report.offering.classSection.name}.csv`;
 
-  return new Response(lines.join("\n"), {
+  return new Response(csv, {
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
       "Content-Disposition": `attachment; filename="${filename}"`,

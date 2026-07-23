@@ -8,6 +8,7 @@ import { Badge, Avatar, StatCard } from "@/app/_components/ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { SectionHeader } from "@/app/_components/layout-ui";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 
 const THRESHOLD = 75;
 
@@ -62,6 +63,7 @@ export default async function OfferingReport({
           >
             <Download className="h-4 w-4" /> Export CSV
           </a>
+          <GlobalExportButton qs={qs} />
         </div>
       </div>
 

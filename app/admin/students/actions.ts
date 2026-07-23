@@ -7,30 +7,13 @@ import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/session";
 import { uniquePersonalCode } from "@/lib/code";
 import { DEFAULT_STUDENT_PASSWORD } from "@/lib/studentDefaults";
+import { classifyIdentifier, identifierEmail } from "@/lib/identifier";
 import { Role } from "@prisma/client";
-
-const PHONE_RE = /^\d{10,12}$/;
-const ENROLLMENT_RE = /^\d{14}$/;
 
 function flash(to: string, msg: string, type?: "error") {
   revalidatePath("/admin/students");
   const sep = to.includes("?") ? "&" : "?";
   redirect(`${to}${sep}toast=${encodeURIComponent(msg)}${type ? `&toastType=${type}` : ""}`);
-}
-
-/** Internal, never-shown email derived from the login identifier — mirrors the
- *  bulk-import convention (`p<phone>` for year-1, `e<enrollmentNo>` for year-2). */
-function identifierEmail(kind: "phone" | "enrollment", value: string) {
-  return kind === "phone" ? `p${value}@iem.internal` : `e${value}@iem.internal`;
-}
-
-/** Classifies a typed identifier as a phone number (10–12 digits, year-1) or an
- *  enrollment number (14 digits, year-2). Returns null if neither shape matches. */
-function classifyIdentifier(raw: string): { kind: "phone" | "enrollment"; value: string } | null {
-  const digits = raw.trim().replace(/[\s+\-()]/g, "");
-  if (PHONE_RE.test(digits)) return { kind: "phone", value: digits };
-  if (ENROLLMENT_RE.test(digits)) return { kind: "enrollment", value: digits };
-  return null;
 }
 
 /** Add a brand-new student: name + phone-or-enrollment-no + section. */

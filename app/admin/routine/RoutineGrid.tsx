@@ -450,52 +450,54 @@ export function RoutineGrid({
 
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[700px] border-collapse">
+      <table className="w-full table-fixed border-collapse">
         <thead>
           <tr>
-            {/* Slot header */}
+            {/* Day header */}
             <th className="w-[90px] border-b border-r border-border bg-muted/60 px-3 py-3 text-left">
-              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Slot</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Day</span>
             </th>
-            {DAYS.map((d) => (
-              <th key={d} className="border-b border-r border-border bg-muted/60 px-3 py-3 text-center last:border-r-0">
-                <span className="block text-sm font-bold text-foreground">{DAY_SHORT[d]}</span>
-                <span className="block text-[10px] font-normal text-muted-foreground">{DAY_LABEL[d]}</span>
-              </th>
-            ))}
+            {slotNums.map((slot) => {
+              const times = SLOT_TIMES[slot];
+              return (
+                <th
+                  key={slot}
+                  className={cn(
+                    "border-b border-r border-border bg-muted/60 px-2 py-3 text-center last:border-r-0",
+                    slot === 5 && "border-l-2 border-l-amber-500/30",
+                  )}
+                >
+                  <span className="block text-xs font-bold text-foreground">Slot {slot}</span>
+                  <span className="block font-mono text-[9px] tabular-nums text-muted-foreground">
+                    {times.start}–{times.end}
+                  </span>
+                  {slot === 5 && (
+                    <span className="mt-1 inline-block rounded bg-amber-500/15 px-1 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400">
+                      Post lunch
+                    </span>
+                  )}
+                </th>
+              );
+            })}
           </tr>
         </thead>
         <tbody>
-          {slotNums.map((slot) => {
-            const times = SLOT_TIMES[slot];
+          {DAYS.map((day) => {
             return (
-              <tr key={`slot-${slot}`} className="group/row">
-                <td className={cn(
-                  "border-b border-r border-border bg-muted/30 px-3 py-2 align-middle",
-                  slot === 5 && "border-t-2 border-t-amber-500/30",
-                )}>
+              <tr key={`day-${day}`} className="group/row">
+                <td className="border-b border-r border-border bg-muted/30 px-3 py-2 align-middle">
                   <div className="flex flex-col items-start gap-0.5">
-                    <span className="text-xs font-bold text-foreground">Slot {slot}</span>
-                    <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
-                      {times.start}
-                    </span>
-                    <span className="font-mono text-[10px] tabular-nums text-muted-foreground/60">
-                      {times.end}
-                    </span>
-                    {slot === 5 && (
-                      <span className="mt-1 rounded bg-amber-500/15 px-1 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-amber-600 dark:text-amber-400">
-                        Post lunch
-                      </span>
-                    )}
+                    <span className="text-sm font-bold text-foreground">{DAY_SHORT[day]}</span>
+                    <span className="text-[10px] font-normal text-muted-foreground">{DAY_LABEL[day]}</span>
                   </div>
                 </td>
-                {DAYS.map((day) => (
+                {slotNums.map((slot) => (
                   <td
-                    key={day}
+                    key={slot}
                     className={cn(
                       "border-b border-r border-border align-top p-0 last:border-r-0",
                       "transition-colors group-hover/row:bg-muted/20",
-                      slot === 5 && "border-t-2 border-t-amber-500/30",
+                      slot === 5 && "border-l-2 border-l-amber-500/30",
                     )}
                   >
                     <GridCellView

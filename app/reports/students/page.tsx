@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ChevronRight, Users } from "lucide-react";
+import { ChevronRight, Users, Download } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { studentsForReports } from "@/lib/attendance";
 import { rangeQuery } from "@/lib/dateRange";
@@ -7,6 +7,7 @@ import { PageHeader, EmptyState, Avatar, Badge } from "@/app/_components/ui";
 import { RouteTabs } from "@/app/_components/layout-ui";
 import { FilterBar } from "@/app/_components/FilterBar";
 import { DateRangePicker } from "@/app/_components/DateRangePicker";
+import { GlobalExportButton } from "@/app/_components/GlobalExportButton";
 
 export const dynamic = "force-dynamic";
 
@@ -32,7 +33,18 @@ export default async function ReportsStudents({
       <PageHeader
         title="Attendance reports"
         subtitle={isAdmin ? "Look up any student's attendance across their subjects" : "Look up a student in your classes"}
-        action={<DateRangePicker />}
+        action={
+          <div className="flex flex-wrap items-center gap-2">
+            <DateRangePicker />
+            <a
+              href={`/api/reports/students/csv${qs}`}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-input px-3 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+            >
+              <Download className="h-4 w-4" /> Export CSV
+            </a>
+            <GlobalExportButton qs={qs} />
+          </div>
+        }
       />
 
       <RouteTabs
