@@ -53,6 +53,12 @@
   ],
   "subjects": [
     {
+      "code": "ACT-analytics-hands-on",
+      "name": "Analytics Hands on",
+      "semester": 4,
+      "stream": "SUPPLY_CHAIN"
+    },
+    {
       "code": "ACT-apti",
       "name": "APTI",
       "semester": 4,
@@ -63,12 +69,6 @@
       "name": "Case Study",
       "semester": 1,
       "stream": "COMMON"
-    },
-    {
-      "code": "ACT-crm-with-agentic-ai-hands-on",
-      "name": "CRM with agentic AI Hands on",
-      "semester": 4,
-      "stream": "MARKETING"
     },
     {
       "code": "ACT-domain-expertise-for-placement",
@@ -104,19 +104,13 @@
       "code": "ACT-soft-skill-and-grooming-for-placement",
       "name": "Soft skill and grooming for placement",
       "semester": 4,
-      "stream": "FINANCE"
+      "stream": "HR"
     },
     {
       "code": "ACT-sports",
       "name": "Sports",
       "semester": 1,
       "stream": "COMMON"
-    },
-    {
-      "code": "ACT-supply-chain-analytics-hands-on",
-      "name": "Supply Chain Analytics Hands on",
-      "semester": 4,
-      "stream": "SUPPLY_CHAIN"
     },
     {
       "code": "CM401",
@@ -242,7 +236,7 @@
       "code": "MBA471",
       "name": "Corporate Strategy",
       "semester": 4,
-      "stream": "HR"
+      "stream": "FINANCE"
     },
     {
       "code": "MBA491",
@@ -708,9 +702,9 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "subjectCode": "MBA471",
       "sectionName": "Finance 2",
-      "teacherInitials": "PC",
+      "teacherInitials": "BM",
       "term": "2026-T4"
     },
     {
@@ -774,13 +768,13 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "CM402",
+      "subjectCode": "MBA471",
       "sectionName": "SC",
-      "teacherInitials": "DS",
+      "teacherInitials": "BM",
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-supply-chain-analytics-hands-on",
+      "subjectCode": "ACT-analytics-hands-on",
       "sectionName": "SC",
       "teacherInitials": "PK",
       "term": "2026-T4"
@@ -810,9 +804,9 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-domain-expertise-for-placement",
+      "subjectCode": "ACT-analytics-hands-on",
       "sectionName": "MM",
-      "teacherInitials": "SM",
+      "teacherInitials": "PK",
       "term": "2026-T4"
     },
     {
@@ -1110,12 +1104,6 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "MBA471",
-      "sectionName": "Finance 2",
-      "teacherInitials": "BM",
-      "term": "2026-T4"
-    },
-    {
       "subjectCode": "MBA492",
       "sectionName": "Finance 2",
       "teacherInitials": "AB",
@@ -1128,9 +1116,9 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "CM401",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
       "sectionName": "Finance 2",
-      "teacherInitials": "KKG",
+      "teacherInitials": "DBS",
       "term": "2026-T4"
     },
     {
@@ -1154,7 +1142,7 @@
     {
       "subjectCode": "ACT-hr-analytics-hands-on",
       "sectionName": "HR",
-      "teacherInitials": "GUEST",
+      "teacherInitials": "WM",
       "term": "2026-T4"
     },
     {
@@ -1200,9 +1188,9 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-domain-expertise-for-placement",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
       "sectionName": "MM",
-      "teacherInitials": "KKG",
+      "teacherInitials": "CM",
       "term": "2026-T4"
     },
     {
@@ -1218,9 +1206,9 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "subjectCode": "ACT-domain-expertise-for-placement",
       "sectionName": "MM",
-      "teacherInitials": "CM",
+      "teacherInitials": "KKG",
       "term": "2026-T4"
     },
     {
@@ -1323,6 +1311,12 @@
       "subjectCode": "MBA101",
       "sectionName": "Sec C",
       "teacherInitials": "UDC",
+      "term": "2026-T1"
+    },
+    {
+      "subjectCode": "MBA193",
+      "sectionName": "Sec C",
+      "teacherInitials": "SNG",
       "term": "2026-T1"
     },
     {
@@ -1638,12 +1632,6 @@
       "term": "2026-T1"
     },
     {
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "sectionName": "Finance 1",
-      "teacherInitials": "PC",
-      "term": "2026-T4"
-    },
-    {
       "subjectCode": "MBA492",
       "sectionName": "Finance 1",
       "teacherInitials": "WM",
@@ -1653,6 +1641,12 @@
       "subjectCode": "ACT-mentoring",
       "sectionName": "Finance 1",
       "teacherInitials": "NA",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM401",
+      "sectionName": "Finance 2",
+      "teacherInitials": "KKG",
       "term": "2026-T4"
     },
     {
@@ -1680,12 +1674,6 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "CM402",
-      "sectionName": "HR",
-      "teacherInitials": "SM",
-      "term": "2026-T4"
-    },
-    {
       "subjectCode": "MBA471",
       "sectionName": "HR",
       "teacherInitials": "BM",
@@ -1698,15 +1686,15 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-mentoring",
+      "subjectCode": "CM402",
       "sectionName": "HR",
-      "teacherInitials": "NA",
+      "teacherInitials": "SM",
       "term": "2026-T4"
     },
     {
-      "subjectCode": "MBA471",
-      "sectionName": "SC",
-      "teacherInitials": "BM",
+      "subjectCode": "ACT-mentoring",
+      "sectionName": "HR",
+      "teacherInitials": "NA",
       "term": "2026-T4"
     },
     {
@@ -1725,6 +1713,12 @@
       "subjectCode": "CM402",
       "sectionName": "MM",
       "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "sectionName": "MM",
+      "teacherInitials": "SM",
       "term": "2026-T4"
     },
     {
@@ -1848,12 +1842,6 @@
       "term": "2026-T1"
     },
     {
-      "subjectCode": "MBA193",
-      "sectionName": "Sec C",
-      "teacherInitials": "SNG",
-      "term": "2026-T1"
-    },
-    {
       "subjectCode": "MBA171",
       "sectionName": "Sec D",
       "teacherInitials": "DBS",
@@ -1956,12 +1944,6 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "sectionName": "Finance 2",
-      "teacherInitials": "DBS",
-      "term": "2026-T4"
-    },
-    {
       "subjectCode": "ACT-domain-expertise-for-placement",
       "sectionName": "Finance 2",
       "teacherInitials": "AKH",
@@ -2000,6 +1982,12 @@
     {
       "subjectCode": "CM402",
       "sectionName": "SC",
+      "teacherInitials": "DS",
+      "term": "2026-T4"
+    },
+    {
+      "subjectCode": "CM402",
+      "sectionName": "SC",
       "teacherInitials": "DM",
       "term": "2026-T4"
     },
@@ -2022,12 +2010,6 @@
       "term": "2026-T4"
     },
     {
-      "subjectCode": "ACT-crm-with-agentic-ai-hands-on",
-      "sectionName": "MM",
-      "teacherInitials": "GUEST",
-      "term": "2026-T4"
-    },
-    {
       "subjectCode": "ACT-esp-sdp",
       "sectionName": "MM",
       "teacherInitials": "NA",
@@ -2042,13 +2024,13 @@
     {
       "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
       "sectionName": "TM",
-      "teacherInitials": "CM",
+      "teacherInitials": "SRN",
       "term": "2026-T4"
     },
     {
       "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
       "sectionName": "TM",
-      "teacherInitials": "SRN",
+      "teacherInitials": "CM",
       "term": "2026-T4"
     },
     {
@@ -2648,10 +2630,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "PC",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
       "subgroup": null,
-      "rawLabel": "Soft skill and grooming for placement (PC)"
+      "rawLabel": "Corporate Strategy(BM)"
     },
     {
       "sectionName": "Finance 2",
@@ -2813,10 +2795,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "CM402",
-      "teacherInitials": "DS",
+      "subjectCode": "MBA471",
+      "teacherInitials": "BM",
       "subgroup": null,
-      "rawLabel": "Retail Strategy(DS)"
+      "rawLabel": "Corporate Strategy(BM)"
     },
     {
       "sectionName": "SC",
@@ -2824,10 +2806,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "ACT-supply-chain-analytics-hands-on",
+      "subjectCode": "ACT-analytics-hands-on",
       "teacherInitials": "PK",
       "subgroup": null,
-      "rawLabel": "Supply Chain Analytics Hands on (PK)"
+      "rawLabel": "Analytics Hands on (PK)"
     },
     {
       "sectionName": "MM",
@@ -2890,10 +2872,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "SM",
+      "subjectCode": "ACT-analytics-hands-on",
+      "teacherInitials": "PK",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (SM)"
+      "rawLabel": "Analytics Hands on (PK)"
     },
     {
       "sectionName": "TM",
@@ -3594,10 +3576,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "CM401",
-      "teacherInitials": "KKG",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "DBS",
       "subgroup": null,
-      "rawLabel": "B2B(KKG)"
+      "rawLabel": "Soft skill and grooming for placement (DBS)"
     },
     {
       "sectionName": "HR",
@@ -3650,9 +3632,9 @@
       "startTime": "03:20",
       "endTime": "04:10",
       "subjectCode": "ACT-hr-analytics-hands-on",
-      "teacherInitials": "GUEST",
+      "teacherInitials": "WM",
       "subgroup": null,
-      "rawLabel": "HR Analytics Hands on (Guest)"
+      "rawLabel": "HR Analytics Hands on (WM)"
     },
     {
       "sectionName": "HR",
@@ -3748,10 +3730,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-domain-expertise-for-placement",
-      "teacherInitials": "KKG",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "Domain Expertise for placement (KKG)"
+      "rawLabel": "Soft skill and grooming for placement (CM)"
     },
     {
       "sectionName": "MM",
@@ -3792,10 +3774,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "CM",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "KKG",
       "subgroup": null,
-      "rawLabel": "Soft skill and grooming for placement (CM)"
+      "rawLabel": "Domain Expertise for placement (KKG)"
     },
     {
       "sectionName": "TM",
@@ -4111,10 +4093,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "MBA194",
-      "teacherInitials": "SAG",
+      "subjectCode": "MBA193",
+      "teacherInitials": "SNG",
       "subgroup": null,
-      "rawLabel": "Tally Lab(SAG)"
+      "rawLabel": "Language Lab(SNG)"
     },
     {
       "sectionName": "Sec C",
@@ -4507,10 +4489,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "CM401",
-      "teacherInitials": "SC",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "PC",
       "subgroup": null,
-      "rawLabel": "B2B(SC)"
+      "rawLabel": "Soft skill and grooming for placement (PC)"
     },
     {
       "sectionName": "HR",
@@ -5076,17 +5058,6 @@
     {
       "sectionName": "Finance 1",
       "day": "THU",
-      "slotIndex": 3,
-      "startTime": "11:10",
-      "endTime": "12:00",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "PC",
-      "subgroup": null,
-      "rawLabel": "Soft skill and grooming for placement (PC)"
-    },
-    {
-      "sectionName": "Finance 1",
-      "day": "THU",
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
@@ -5233,10 +5204,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "CM402",
-      "teacherInitials": "SM",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
       "subgroup": null,
-      "rawLabel": "Retail Strategy(SM)"
+      "rawLabel": "B2B(SC)"
     },
     {
       "sectionName": "HR",
@@ -5299,10 +5270,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "PC",
+      "subjectCode": "CM402",
+      "teacherInitials": "SM",
       "subgroup": null,
-      "rawLabel": "Soft skill and grooming for placement (PC)"
+      "rawLabel": "Retail Strategy(SM)"
     },
     {
       "sectionName": "HR",
@@ -5442,10 +5413,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "CM401",
-      "teacherInitials": "SC",
+      "subjectCode": "ACT-domain-expertise-for-placement",
+      "teacherInitials": "SM",
       "subgroup": null,
-      "rawLabel": "B2B(SC)"
+      "rawLabel": "Domain Expertise for placement (SM)"
     },
     {
       "sectionName": "MM",
@@ -5871,10 +5842,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "MBA193",
-      "teacherInitials": "SNG",
+      "subjectCode": "MBA194",
+      "teacherInitials": "SAG",
       "subgroup": null,
-      "rawLabel": "Language Lab(SNG)"
+      "rawLabel": "Tally Lab(SAG)"
     },
     {
       "sectionName": "Sec D",
@@ -6190,10 +6161,10 @@
       "slotIndex": 5,
       "startTime": "01:40",
       "endTime": "02:30",
-      "subjectCode": "MBA471",
-      "teacherInitials": "BM",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
       "subgroup": null,
-      "rawLabel": "Corporate Strategy(BM)"
+      "rawLabel": "B2B(KKG)"
     },
     {
       "sectionName": "Finance 2",
@@ -6300,10 +6271,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "MBA471",
-      "teacherInitials": "BM",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Corporate Strategy(BM)"
+      "rawLabel": "Retail Strategy(DS)"
     },
     {
       "sectionName": "SC",
@@ -6377,10 +6348,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-crm-with-agentic-ai-hands-on",
-      "teacherInitials": "GUEST",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "CRM with agentic AI Hands on (GUEST)"
+      "rawLabel": "Soft skill and grooming for placement (CM)"
     },
     {
       "sectionName": "MM",
@@ -6410,10 +6381,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "CM",
+      "subjectCode": "CM401",
+      "teacherInitials": "SC",
       "subgroup": null,
-      "rawLabel": "Soft skill and grooming for placement (CM)"
+      "rawLabel": "B2B(SC)"
     },
     {
       "sectionName": "MM",
@@ -6432,10 +6403,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "CM402",
-      "teacherInitials": "DS",
+      "subjectCode": "CM401",
+      "teacherInitials": "KKG",
       "subgroup": null,
-      "rawLabel": "Retail Strategy(DS)"
+      "rawLabel": "B2B(KKG)"
     },
     {
       "sectionName": "TM",
@@ -6443,10 +6414,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
-      "teacherInitials": "CM",
+      "subjectCode": "CM402",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Soft skill and grooming for Placement (CM)"
+      "rawLabel": "Retail Strategy(DS)"
     },
     {
       "sectionName": "TM",
@@ -6465,10 +6436,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "CM401",
-      "teacherInitials": "KKG",
+      "subjectCode": "ACT-soft-skill-and-grooming-for-placement",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "B2B(KKG)"
+      "rawLabel": "Soft skill and grooming for Placement (CM)"
     },
     {
       "sectionName": "TM",
