@@ -24,6 +24,7 @@ export const FACULTY: Record<string, string> = {
   BM: "Dr. Bikash Chandra Mandal",
   DM: "Prof. Debjit Mukherjee",
   DD: "Prof. Diptiman Dasgupta",
+  SS: "Dr. Sanmitra Sarkar",
   AG: "Prof. Abhijit Ganguly",
   GUEST: "Guest Faculty",
   NA: "Staff / NA",

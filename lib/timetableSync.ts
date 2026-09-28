@@ -52,6 +52,55 @@ const ALIAS: Record<string, string> = {
   "tech enablers for digital business": "MBA491",
 };
 
+// Per-trimester overrides, keyed by the trimester the section is in (Year 1 → 1/2/3, Year 2
+// → 4/5/6). Checked before ALIAS so the same display text can map to a different code each
+// term (e.g. "Entrepreneurship Masterclass" is MBA195 in T1 but MBA295 in T2). Codes/names
+// come from the "Subject Allocation" sheet of Timetable_term2_term5_September,2026.xlsx.
+const TERM_ALIAS: Record<number, Record<string, string>> = {
+  2: {
+    "macro economics": "MBA201",
+    "supply chain & operations": "MBA202",
+    "human resource management": "MBA203",
+    esmp: "ESMP201",
+    "finance lab i": "MBA291",
+    "analytics lab i - excel power query": "MBA292",
+    "language lab ii": "MBA293",
+    "entrepreneurship lab ii": "MBA294",
+    "entrepreneurship masterclass": "MBA295",
+  },
+  5: {
+    plc: "CM501", // "Product Life Cycle" — taught to every Year-2 section (KKG/SM/BM/DS)
+    esmp: "ESMP501",
+    "tech enablers for digital business ii": "MBA591",
+    "advanced excel ii": "MBA592",
+    "ai in business": "MBA593",
+  },
+};
+
+// Canonical names for codes introduced by TERM_ALIAS / direct course-code cells, so they
+// don't end up named after the bare code (e.g. "FM501").
+const CODE_NAMES: Record<string, string> = {
+  MBA201: "Macro Economics",
+  MBA202: "Supply Chain & Operations Management",
+  MBA203: "Human Resource Management",
+  ESMP201: "Essential Studies for Management Professionals II",
+  MBA291: "Finance Lab I",
+  MBA292: "Analytics Lab I - Excel Power Query",
+  MBA293: "Language Lab II",
+  MBA294: "Entrepreneurship Lab II",
+  MBA295: "Entrepreneurship Masterclass",
+  CM501: "Product Life Cycle",
+  MM501: "International Marketing",
+  FM501: "Financial Derivatives",
+  HR501: "Emotional Intelligence and Effective Performance Management System",
+  SC501: "Service Operations Management",
+  TM501: "Social Networking & Web Analytics",
+  ESMP501: "Essential Studies for Management Professionals V",
+  MBA591: "Tech enablers for Digital Business II",
+  MBA592: "Advanced Excel II",
+  MBA593: "AI in Business",
+};
+
 export const SECTIONS: Record<string, { name: string; year: number; stream: string }> = {
   A: { name: "Sec A", year: 1, stream: "COMMON" },
   B: { name: "Sec B", year: 1, stream: "COMMON" },
@@ -100,6 +149,12 @@ export interface ParsedTimetable {
   usedInitials: Set<string>;
   unresolved: Set<string>;
   newInitials: Set<string>;
+  /** Cells that name several teachers for one slot (e.g. "SC501(RB/SBC)") — only the first
+   *  can own the offering, so these are surfaced for manual review. */
+  coTaught: Set<string>;
+  /** Trimester per year and the matching Offering.term strings, read from the sheet title
+   *  ("Time Table MBA (Trimester 2 & Trimester 5)"); defaults to 1 & 4 if absent. */
+  terms: { y1: number; y2: number; term1: string; term2: string };
   /** Per-call copy of lib/facultyInitials.ts's FACULTY map, extended with any
    *  brand-new initials found in this file — never mutates the shared import. */
   faculty: Record<string, string>;
@@ -115,6 +170,31 @@ function pad(t: string) {
 function norm(s: string) {
   return s.replace(/\s+/g, " ").trim();
 }
+/** Splits on `sep` only outside parentheses, so "SC501(RB/SBC)" stays one piece. */
+function splitTopLevel(s: string, sep: string): string[] {
+  const parts: string[] = [];
+  let depth = 0;
+  let cur = "";
+  for (const ch of s) {
+    if (ch === "(") depth++;
+    else if (ch === ")") depth = Math.max(0, depth - 1);
+    if (ch === sep && depth === 0) {
+      parts.push(cur);
+      cur = "";
+    } else cur += ch;
+  }
+  parts.push(cur);
+  return parts;
+}
+/** Title-cases shouting labels ("MENTORING" → "Mentoring"); short acronyms (GD, ESMP) are kept. */
+function activityName(name: string) {
+  return name.replace(/\b[A-Z]{6,}\b/g, (w) => w[0] + w.slice(1).toLowerCase());
+}
+function detectTrimesters(title: string) {
+  const m = title.match(/trimester\s*(\d)\s*&\s*trimester\s*(\d)/i);
+  const [y1, y2] = m ? [Number(m[1]), Number(m[2])].sort((a, b) => a - b) : [1, 4];
+  return { y1, y2, term1: `2026-T${y1}`, term2: `2026-T${y2}` };
+}
 
 /** Parses a timetable .xlsx buffer into subjects/offerings/schedule — pure
  *  parsing, no DB access, all state local to this call. */
@@ -125,6 +205,7 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
   const usedInitials = new Set<string>(["NA"]);
   const unresolved = new Set<string>();
   const newInitials = new Set<string>();
+  const coTaught = new Set<string>();
   const faculty: Record<string, string> = { ...FACULTY };
 
   function addSubject(code: string, name: string, semester: number, stream: string) {
@@ -139,17 +220,18 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
     const codeMatch = name.match(/^([A-Za-z]{2,4})\s?-?\s?(\d{3})$/);
     if (codeMatch) {
       const code = (codeMatch[1] + codeMatch[2]).toUpperCase();
-      addSubject(code, name.toUpperCase(), semester, stream);
+      addSubject(code, CODE_NAMES[code] ?? name.toUpperCase(), semester, stream);
       return code;
     }
-    const alias = ALIAS[name.toLowerCase()];
+    // `semester` is the trimester number (1..6), so it picks the right per-term alias table.
+    const alias = TERM_ALIAS[semester]?.[name.toLowerCase()] ?? ALIAS[name.toLowerCase()];
     if (alias) {
-      addSubject(alias, name, semester, stream);
+      addSubject(alias, CODE_NAMES[alias] ?? name, semester, stream);
       return alias;
     }
     const code = "ACT-" + slug(name);
     if (!subjects.has(code)) unresolved.add(name);
-    addSubject(code, name, semester, stream);
+    addSubject(code, activityName(name), semester, stream);
     return code;
   }
   function teacherOf(initials: string): string {
@@ -168,7 +250,7 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
     const out: { sectionName: string; subjectText: string; teacherInitials: string; subgroup: string | null }[] = [];
     const cell = norm(text);
     if (!cell) return out;
-    const parts = /\d/.test(cell) && cell.includes("/") ? cell.split("/") : [cell];
+    const parts = /\d/.test(cell) && cell.includes("/") ? splitTopLevel(cell, "/") : [cell];
     for (const partRaw of parts) {
       const part = norm(partRaw);
       if (!part) continue;
@@ -190,7 +272,10 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
         }
         continue;
       }
-      const init = inside || "NA";
+      // "SC501(RB/SBC)": several teachers on one slot — an offering has a single teacher, so
+      // the first listed owns it and the cell is reported for review.
+      if (inside.includes("/")) coTaught.add(part);
+      const init = norm(inside.split("/")[0]) || "NA";
       if (routedSections) {
         for (const sec of routedSections) out.push({ sectionName: sec, subjectText, teacherInitials: init, subgroup: null });
       } else {
@@ -203,6 +288,7 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
   const wb = XLSX.read(buffer, { type: "buffer" });
   const sheet = wb.Sheets["Timetable"];
   const tt: any[][] = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: false, defval: "" });
+  const terms = detectTrimesters(String(tt[0]?.[0] ?? ""));
 
   // Merged cells: SheetJS only keeps the value in the merge's top-left cell — every other
   // cell it visually covers comes back blank in `tt`, which the day/section/slot walk below
@@ -250,8 +336,8 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
       const entries = parseCell(raw, sec.name);
       for (const e of entries) {
         const target = SECTIONS[Object.keys(SECTIONS).find((k) => SECTIONS[k].name === e.sectionName) ?? ""] ?? sec;
-        const term = target.year === 1 ? "2026-T1" : "2026-T4";
-        const sem = target.year === 1 ? 1 : 4;
+        const term = target.year === 1 ? terms.term1 : terms.term2;
+        const sem = target.year === 1 ? terms.y1 : terms.y2;
         const code = resolveSubject(e.subjectText, sem, target.stream);
         const tInit = teacherOf(e.teacherInitials);
         addOffering(code, e.sectionName, tInit, term);
@@ -284,7 +370,7 @@ export function parseTimetableWorkbook(buffer: Buffer): ParsedTimetable {
     return true;
   });
 
-  return { subjects, offerings, schedule: dedupedSchedule, usedInitials, unresolved, newInitials, faculty };
+  return { subjects, offerings, schedule: dedupedSchedule, usedInitials, unresolved, newInitials, coTaught, terms, faculty };
 }
 
 function scheduleKey(e: { sectionName: string; day: string; slotIndex: number; subgroup: string | null }) {
@@ -319,7 +405,7 @@ export interface DiffResult {
  *  deletes/nulls-out ScheduledClass rows). Read-only when `apply` is false,
  *  identical to the diff a subsequent `apply` run would perform. */
 export async function syncTimetable(parsed: ParsedTimetable, apply: boolean): Promise<DiffResult> {
-  const { subjects, offerings, schedule, usedInitials, faculty } = parsed;
+  const { subjects, offerings, schedule, usedInitials, faculty, terms } = parsed;
 
   const dept = await prisma.department.findFirst({ where: { name: "Master of Business Administration (MBA)" } });
   if (!dept) throw new Error("Department not found — run the initial seed first.");
@@ -444,7 +530,7 @@ export async function syncTimetable(parsed: ParsedTimetable, apply: boolean): Pr
   for (const e of schedule) {
     const csid = sectionId.get(e.sectionName);
     if (!csid) continue;
-    const term = e.sectionName.startsWith("Sec") ? "2026-T1" : "2026-T4";
+    const term = e.sectionName.startsWith("Sec") ? terms.term1 : terms.term2;
     const offId = offeringId.get(`${e.subjectCode}|${e.sectionName}|${e.teacherInitials}|${term}`) ?? null;
     const key = scheduleKey(e);
     const live = liveByKey.get(key);

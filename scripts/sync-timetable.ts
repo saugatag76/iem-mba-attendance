@@ -26,6 +26,8 @@ async function main() {
   const parsed = parseTimetableWorkbook(buffer);
 
   console.log(`Parsed ${XLSX_PATH}: subjects=${parsed.subjects.size} offerings=${parsed.offerings.size} schedule=${parsed.schedule.length}`);
+  console.log(`  Terms: Year 1 = ${parsed.terms.term1}, Year 2 = ${parsed.terms.term2}`);
+  if (parsed.coTaught.size) console.log(`  Co-taught cells (first teacher listed owns the offering — review): ${[...parsed.coTaught].join(" | ")}`);
   if (parsed.unresolved.size) console.log(`  New/unrecognized subjects (created as activities): ${[...parsed.unresolved].join(" | ")}`);
   if (parsed.newInitials.size) console.log(`  New teacher initials (not in lib/facultyInitials.ts, using initials as name): ${[...parsed.newInitials].join(", ")}`);
 
