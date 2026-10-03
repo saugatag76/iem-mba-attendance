@@ -547,9 +547,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-case-study",
+      "subjectCode": "ACT-aptitude-class",
       "sectionName": "Sec C",
-      "teacherInitials": "AR",
+      "teacherInitials": "UDC",
       "term": "2026-T2"
     },
     {
@@ -565,9 +565,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "MBA294",
+      "subjectCode": "ACT-aptitude-class",
       "sectionName": "Sec D",
-      "teacherInitials": "RB",
+      "teacherInitials": "UDC",
       "term": "2026-T2"
     },
     {
@@ -595,9 +595,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-aptitude-class",
+      "subjectCode": "MBA294",
       "sectionName": "Sec D",
-      "teacherInitials": "UDC",
+      "teacherInitials": "RB",
       "term": "2026-T2"
     },
     {
@@ -733,9 +733,9 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-soft-skill-training",
+      "subjectCode": "ACT-remedial-class",
       "sectionName": "SC",
-      "teacherInitials": "SNG",
+      "teacherInitials": "NA",
       "term": "2026-T5"
     },
     {
@@ -751,15 +751,15 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-leadership-session",
+      "subjectCode": "ACT-soft-skill-training",
       "sectionName": "SC",
-      "teacherInitials": "CM",
+      "teacherInitials": "SNG",
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-remedial-class",
+      "subjectCode": "ACT-leadership-session",
       "sectionName": "SC",
-      "teacherInitials": "NA",
+      "teacherInitials": "CM",
       "term": "2026-T5"
     },
     {
@@ -859,9 +859,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-case-study",
+      "subjectCode": "ACT-research",
       "sectionName": "Sec A",
-      "teacherInitials": "AR",
+      "teacherInitials": "SRN",
       "term": "2026-T2"
     },
     {
@@ -907,9 +907,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-placement-preparation",
+      "subjectCode": "ACT-leadership-session",
       "sectionName": "Sec B",
-      "teacherInitials": "SNG",
+      "teacherInitials": "CM",
       "term": "2026-T2"
     },
     {
@@ -1003,9 +1003,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-case-study",
+      "subjectCode": "ACT-business-trends",
       "sectionName": "Sec D",
-      "teacherInitials": "AR",
+      "teacherInitials": "AKH",
       "term": "2026-T2"
     },
     {
@@ -1093,9 +1093,9 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-domain-expertise",
+      "subjectCode": "CM501",
       "sectionName": "Finance 2",
-      "teacherInitials": "NM",
+      "teacherInitials": "DS",
       "term": "2026-T5"
     },
     {
@@ -1195,21 +1195,21 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "CM501",
-      "sectionName": "TM",
-      "teacherInitials": "DS",
-      "term": "2026-T5"
-    },
-    {
       "subjectCode": "MBA592",
       "sectionName": "TM",
       "teacherInitials": "AB",
       "term": "2026-T5"
     },
     {
-      "subjectCode": "MBA202",
+      "subjectCode": "CM501",
+      "sectionName": "TM",
+      "teacherInitials": "DS",
+      "term": "2026-T5"
+    },
+    {
+      "subjectCode": "MBA294",
       "sectionName": "Sec A",
-      "teacherInitials": "SC",
+      "teacherInitials": "WM",
       "term": "2026-T2"
     },
     {
@@ -1219,9 +1219,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "MBA294",
+      "subjectCode": "MBA202",
       "sectionName": "Sec A",
-      "teacherInitials": "WM",
+      "teacherInitials": "SC",
       "term": "2026-T2"
     },
     {
@@ -1288,12 +1288,6 @@
       "subjectCode": "MBA295",
       "sectionName": "Sec C",
       "teacherInitials": "DD",
-      "term": "2026-T2"
-    },
-    {
-      "subjectCode": "ACT-case-study",
-      "sectionName": "Sec C",
-      "teacherInitials": "SC",
       "term": "2026-T2"
     },
     {
@@ -1441,6 +1435,12 @@
       "term": "2026-T5"
     },
     {
+      "subjectCode": "CM501",
+      "sectionName": "HR",
+      "teacherInitials": "DS",
+      "term": "2026-T5"
+    },
+    {
       "subjectCode": "ACT-domain-expertise",
       "sectionName": "HR",
       "teacherInitials": "CM",
@@ -1477,21 +1477,27 @@
       "term": "2026-T5"
     },
     {
+      "subjectCode": "ACT-business-trends",
+      "sectionName": "SC",
+      "teacherInitials": "AKH",
+      "term": "2026-T5"
+    },
+    {
       "subjectCode": "ACT-sports",
       "sectionName": "SC",
       "teacherInitials": "NA",
       "term": "2026-T5"
     },
     {
-      "subjectCode": "CM501",
+      "subjectCode": "ACT-business-trends",
       "sectionName": "MM",
-      "teacherInitials": "DS",
+      "teacherInitials": "AKH",
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-soft-skill-training",
+      "subjectCode": "CM501",
       "sectionName": "MM",
-      "teacherInitials": "PC",
+      "teacherInitials": "DS",
       "term": "2026-T5"
     },
     {
@@ -1555,15 +1561,15 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-hr-tutorial",
+      "subjectCode": "ACT-aptitude-class",
       "sectionName": "Sec B",
-      "teacherInitials": "CM",
+      "teacherInitials": "UDC",
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-case-study",
+      "subjectCode": "ACT-hr-tutorial",
       "sectionName": "Sec B",
-      "teacherInitials": "AR",
+      "teacherInitials": "CM",
       "term": "2026-T2"
     },
     {
@@ -1579,15 +1585,21 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-leadership-session",
+      "subjectCode": "ACT-business-trends",
       "sectionName": "Sec B",
-      "teacherInitials": "CM",
+      "teacherInitials": "KKG",
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-aptitude-class",
+      "subjectCode": "ACT-supply-chain-tutorial",
       "sectionName": "Sec B",
-      "teacherInitials": "UDC",
+      "teacherInitials": "SC",
+      "term": "2026-T2"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec B",
+      "teacherInitials": "AR",
       "term": "2026-T2"
     },
     {
@@ -1597,15 +1609,21 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-aptitude-class",
+      "subjectCode": "ACT-case-study",
       "sectionName": "Sec C",
-      "teacherInitials": "UDC",
+      "teacherInitials": "AR",
       "term": "2026-T2"
     },
     {
       "subjectCode": "ACT-placement-preparation",
       "sectionName": "Sec C",
       "teacherInitials": "SHD",
+      "term": "2026-T2"
+    },
+    {
+      "subjectCode": "ACT-case-study",
+      "sectionName": "Sec C",
+      "teacherInitials": "SC",
       "term": "2026-T2"
     },
     {
@@ -1724,6 +1742,12 @@
     },
     {
       "subjectCode": "CM501",
+      "sectionName": "SC",
+      "teacherInitials": "DS",
+      "term": "2026-T5"
+    },
+    {
+      "subjectCode": "CM501",
       "sectionName": "MM",
       "teacherInitials": "BM",
       "term": "2026-T5"
@@ -1771,9 +1795,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-research",
+      "subjectCode": "ACT-case-study",
       "sectionName": "Sec A",
-      "teacherInitials": "SRN",
+      "teacherInitials": "AR",
       "term": "2026-T2"
     },
     {
@@ -1807,21 +1831,15 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-business-trends",
+      "subjectCode": "ACT-placement-preparation",
       "sectionName": "Sec B",
-      "teacherInitials": "KKG",
+      "teacherInitials": "SNG",
       "term": "2026-T2"
     },
     {
       "subjectCode": "MBA293",
       "sectionName": "Sec B",
       "teacherInitials": "SHD",
-      "term": "2026-T2"
-    },
-    {
-      "subjectCode": "ACT-supply-chain-tutorial",
-      "sectionName": "Sec B",
-      "teacherInitials": "SC",
       "term": "2026-T2"
     },
     {
@@ -1837,15 +1855,15 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "MBA294",
-      "sectionName": "Sec C",
-      "teacherInitials": "RB",
-      "term": "2026-T2"
-    },
-    {
       "subjectCode": "MBA293",
       "sectionName": "Sec C",
       "teacherInitials": "SNG",
+      "term": "2026-T2"
+    },
+    {
+      "subjectCode": "MBA294",
+      "sectionName": "Sec C",
+      "teacherInitials": "RB",
       "term": "2026-T2"
     },
     {
@@ -1881,7 +1899,7 @@
     {
       "subjectCode": "ACT-marketing-tutorial",
       "sectionName": "Sec D",
-      "teacherInitials": "SM",
+      "teacherInitials": "BM",
       "term": "2026-T2"
     },
     {
@@ -1891,9 +1909,9 @@
       "term": "2026-T2"
     },
     {
-      "subjectCode": "ACT-business-trends",
+      "subjectCode": "ACT-case-study",
       "sectionName": "Sec D",
-      "teacherInitials": "AKH",
+      "teacherInitials": "AR",
       "term": "2026-T2"
     },
     {
@@ -1933,6 +1951,12 @@
       "term": "2026-T5"
     },
     {
+      "subjectCode": "ACT-domain-expertise",
+      "sectionName": "Finance 2",
+      "teacherInitials": "NM",
+      "term": "2026-T5"
+    },
+    {
       "subjectCode": "ACT-business-trends",
       "sectionName": "Finance 2",
       "teacherInitials": "KKG",
@@ -1942,18 +1966,6 @@
       "subjectCode": "ACT-industry-session",
       "sectionName": "Finance 2",
       "teacherInitials": "NA",
-      "term": "2026-T5"
-    },
-    {
-      "subjectCode": "ACT-domain-expertise",
-      "sectionName": "HR",
-      "teacherInitials": "PC",
-      "term": "2026-T5"
-    },
-    {
-      "subjectCode": "CM501",
-      "sectionName": "HR",
-      "teacherInitials": "DS",
       "term": "2026-T5"
     },
     {
@@ -1975,15 +1987,15 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-industry-session",
+      "subjectCode": "ACT-domain-expertise",
       "sectionName": "HR",
-      "teacherInitials": "NA",
+      "teacherInitials": "PC",
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-business-trends",
-      "sectionName": "SC",
-      "teacherInitials": "AKH",
+      "subjectCode": "ACT-industry-session",
+      "sectionName": "HR",
+      "teacherInitials": "NA",
       "term": "2026-T5"
     },
     {
@@ -1996,12 +2008,6 @@
       "subjectCode": "ACT-gd",
       "sectionName": "SC",
       "teacherInitials": "DBS",
-      "term": "2026-T5"
-    },
-    {
-      "subjectCode": "CM501",
-      "sectionName": "SC",
-      "teacherInitials": "DS",
       "term": "2026-T5"
     },
     {
@@ -2029,9 +2035,9 @@
       "term": "2026-T5"
     },
     {
-      "subjectCode": "ACT-business-trends",
+      "subjectCode": "ACT-soft-skill-training",
       "sectionName": "MM",
-      "teacherInitials": "AKH",
+      "teacherInitials": "PC",
       "term": "2026-T5"
     },
     {
@@ -2320,10 +2326,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-case-study",
-      "teacherInitials": "AR",
+      "subjectCode": "ACT-aptitude-class",
+      "teacherInitials": "UDC",
       "subgroup": null,
-      "rawLabel": "Case Study (AR)"
+      "rawLabel": "Aptitude class(UDC)"
     },
     {
       "sectionName": "Sec C",
@@ -2353,10 +2359,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "MBA294",
-      "teacherInitials": "RB",
+      "subjectCode": "ACT-aptitude-class",
+      "teacherInitials": "UDC",
       "subgroup": null,
-      "rawLabel": "Entrepreneurship Lab II(RB)"
+      "rawLabel": "Aptitude class(UDC)"
     },
     {
       "sectionName": "Sec D",
@@ -2408,10 +2414,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-aptitude-class",
-      "teacherInitials": "UDC",
+      "subjectCode": "MBA294",
+      "teacherInitials": "RB",
       "subgroup": null,
-      "rawLabel": "Aptitude class(UDC)"
+      "rawLabel": "Entrepreneurship Lab II(RB)"
     },
     {
       "sectionName": "Sec D",
@@ -2760,10 +2766,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "ACT-soft-skill-training",
-      "teacherInitials": "SNG",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "Soft Skill Training(SNG)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "SC",
@@ -2793,10 +2799,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "ACT-leadership-session",
-      "teacherInitials": "CM",
+      "subjectCode": "ACT-soft-skill-training",
+      "teacherInitials": "SNG",
       "subgroup": null,
-      "rawLabel": "Leadership Session(CM)"
+      "rawLabel": "Soft Skill Training(SNG)"
     },
     {
       "sectionName": "SC",
@@ -2804,10 +2810,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "ACT-leadership-session",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "Leadership Session(CM)"
     },
     {
       "sectionName": "SC",
@@ -3002,10 +3008,10 @@
       "slotIndex": 5,
       "startTime": "01:40",
       "endTime": "02:30",
-      "subjectCode": "ACT-case-study",
-      "teacherInitials": "AR",
+      "subjectCode": "ACT-research",
+      "teacherInitials": "SRN",
       "subgroup": null,
-      "rawLabel": "Case Study (AR)"
+      "rawLabel": "Research(SRN)"
     },
     {
       "sectionName": "Sec A",
@@ -3101,10 +3107,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "ACT-placement-preparation",
-      "teacherInitials": "SNG",
+      "subjectCode": "ACT-leadership-session",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "Placement Preparation (SNG)"
+      "rawLabel": "Leadership Session (CM)"
     },
     {
       "sectionName": "Sec B",
@@ -3277,10 +3283,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "ACT-case-study",
-      "teacherInitials": "AR",
+      "subjectCode": "ACT-business-trends",
+      "teacherInitials": "AKH",
       "subgroup": null,
-      "rawLabel": "Case Study (AR)"
+      "rawLabel": "Business Trends(AKH)"
     },
     {
       "sectionName": "Sec D",
@@ -3519,10 +3525,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "ACT-domain-expertise",
-      "teacherInitials": "NM",
+      "subjectCode": "CM501",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Domain Expertise(NM)"
+      "rawLabel": "PLC (DS)"
     },
     {
       "sectionName": "Finance 2",
@@ -3783,10 +3789,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "CM501",
-      "teacherInitials": "DS",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "PLC (DS)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "TM",
@@ -3816,10 +3822,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "CM501",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "PLC (DS)"
     },
     {
       "sectionName": "TM",
@@ -3838,10 +3844,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "MBA202",
-      "teacherInitials": "SC",
+      "subjectCode": "MBA294",
+      "teacherInitials": "WM",
       "subgroup": null,
-      "rawLabel": "Supply Chain & Operations(SC)"
+      "rawLabel": "Entrepreneurship Lab II(WM)"
     },
     {
       "sectionName": "Sec A",
@@ -3860,10 +3866,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "MBA294",
-      "teacherInitials": "WM",
+      "subjectCode": "MBA202",
+      "teacherInitials": "SC",
       "subgroup": null,
-      "rawLabel": "Entrepreneurship Lab II(WM)"
+      "rawLabel": "Supply Chain & Operations(SC)"
     },
     {
       "sectionName": "Sec A",
@@ -4036,10 +4042,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "ACT-case-study",
-      "teacherInitials": "SC",
+      "subjectCode": "MBA203",
+      "teacherInitials": "SRN",
       "subgroup": null,
-      "rawLabel": "Case Study (SC)"
+      "rawLabel": "Human Resource Management(SRN)"
     },
     {
       "sectionName": "Sec C",
@@ -4058,10 +4064,10 @@
       "slotIndex": 5,
       "startTime": "01:40",
       "endTime": "02:30",
-      "subjectCode": "MBA203",
-      "teacherInitials": "SRN",
+      "subjectCode": "MBA292",
+      "teacherInitials": "WM",
       "subgroup": null,
-      "rawLabel": "Human Resource Management(SRN)"
+      "rawLabel": "Analytics Lab I - Excel Power Query (WM)"
     },
     {
       "sectionName": "Sec C",
@@ -4465,10 +4471,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "ACT-domain-expertise",
-      "teacherInitials": "CM",
+      "subjectCode": "CM501",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Domain Expertise (CM)"
+      "rawLabel": "PLC (DS)"
     },
     {
       "sectionName": "HR",
@@ -4476,10 +4482,10 @@
       "slotIndex": 5,
       "startTime": "01:40",
       "endTime": "02:30",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "ACT-domain-expertise",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "Domain Expertise (CM)"
     },
     {
       "sectionName": "HR",
@@ -4564,10 +4570,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "ACT-business-trends",
+      "teacherInitials": "AKH",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "Business Trends(AKH)"
     },
     {
       "sectionName": "SC",
@@ -4586,10 +4592,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "CM501",
-      "teacherInitials": "DS",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "PLC (DS)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "MM",
@@ -4597,10 +4603,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "ACT-soft-skill-training",
-      "teacherInitials": "PC",
+      "subjectCode": "ACT-business-trends",
+      "teacherInitials": "AKH",
       "subgroup": null,
-      "rawLabel": "Soft Skill Training(PC)"
+      "rawLabel": "Business Trends(AKH)"
     },
     {
       "sectionName": "MM",
@@ -4608,10 +4614,10 @@
       "slotIndex": 5,
       "startTime": "01:40",
       "endTime": "02:30",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "CM501",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "PLC (DS)"
     },
     {
       "sectionName": "MM",
@@ -4806,10 +4812,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "ACT-hr-tutorial",
-      "teacherInitials": "CM",
+      "subjectCode": "ACT-aptitude-class",
+      "teacherInitials": "UDC",
       "subgroup": null,
-      "rawLabel": "HR Tutorial (CM)"
+      "rawLabel": "Aptitude class(UDC)"
     },
     {
       "sectionName": "Sec B",
@@ -4817,10 +4823,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-case-study",
-      "teacherInitials": "AR",
+      "subjectCode": "ACT-hr-tutorial",
+      "teacherInitials": "CM",
       "subgroup": null,
-      "rawLabel": "Case Study (AR)"
+      "rawLabel": "HR Tutorial (CM)"
     },
     {
       "sectionName": "Sec B",
@@ -4861,10 +4867,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "MBA201",
-      "teacherInitials": "NM",
+      "subjectCode": "ACT-business-trends",
+      "teacherInitials": "KKG",
       "subgroup": null,
-      "rawLabel": "Macro Economics(NM)"
+      "rawLabel": "Business Trends(KKG)"
     },
     {
       "sectionName": "Sec B",
@@ -4872,10 +4878,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-leadership-session",
-      "teacherInitials": "CM",
+      "subjectCode": "ACT-supply-chain-tutorial",
+      "teacherInitials": "SC",
       "subgroup": null,
-      "rawLabel": "Leadership Session (CM)"
+      "rawLabel": "Supply Chain Tutorial (SC)"
     },
     {
       "sectionName": "Sec B",
@@ -4883,10 +4889,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "ACT-aptitude-class",
-      "teacherInitials": "UDC",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "AR",
       "subgroup": null,
-      "rawLabel": "Aptitude class(UDC)"
+      "rawLabel": "Case Study (AR)"
     },
     {
       "sectionName": "Sec C",
@@ -4905,10 +4911,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-aptitude-class",
-      "teacherInitials": "UDC",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "AR",
       "subgroup": null,
-      "rawLabel": "Aptitude class(UDC)"
+      "rawLabel": "Case Study (AR)"
     },
     {
       "sectionName": "Sec C",
@@ -4927,10 +4933,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "MBA201",
-      "teacherInitials": "NM",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "SC",
       "subgroup": null,
-      "rawLabel": "Macro Economics(NM)"
+      "rawLabel": "Case Study (SC)"
     },
     {
       "sectionName": "Sec C",
@@ -5411,10 +5417,10 @@
       "slotIndex": 8,
       "startTime": "04:10",
       "endTime": "05:00",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "CM501",
+      "teacherInitials": "DS",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "PLC (DS)"
     },
     {
       "sectionName": "MM",
@@ -5620,10 +5626,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "ACT-research",
-      "teacherInitials": "SRN",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "AR",
       "subgroup": null,
-      "rawLabel": "Research(SRN)"
+      "rawLabel": "Case Study (AR)"
     },
     {
       "sectionName": "Sec A",
@@ -5708,10 +5714,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "ACT-business-trends",
-      "teacherInitials": "KKG",
+      "subjectCode": "ACT-placement-preparation",
+      "teacherInitials": "SNG",
       "subgroup": null,
-      "rawLabel": "Business Trends(KKG)"
+      "rawLabel": "Placement Preparation (SNG)"
     },
     {
       "sectionName": "Sec B",
@@ -5741,10 +5747,10 @@
       "slotIndex": 6,
       "startTime": "02:30",
       "endTime": "03:20",
-      "subjectCode": "ACT-supply-chain-tutorial",
-      "teacherInitials": "SC",
+      "subjectCode": "MBA201",
+      "teacherInitials": "NM",
       "subgroup": null,
-      "rawLabel": "Supply Chain Tutorial (SC)"
+      "rawLabel": "Macro Economics(NM)"
     },
     {
       "sectionName": "Sec B",
@@ -5774,10 +5780,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "MBA294",
-      "teacherInitials": "RB",
+      "subjectCode": "MBA293",
+      "teacherInitials": "SNG",
       "subgroup": null,
-      "rawLabel": "Entrepreneurship Lab II(RB)"
+      "rawLabel": "Language Lab II(SNG)"
     },
     {
       "sectionName": "Sec C",
@@ -5785,10 +5791,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "MBA293",
-      "teacherInitials": "SNG",
+      "subjectCode": "MBA201",
+      "teacherInitials": "NM",
       "subgroup": null,
-      "rawLabel": "Language Lab II(SNG)"
+      "rawLabel": "Macro Economics(NM)"
     },
     {
       "sectionName": "Sec C",
@@ -5807,10 +5813,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "MBA292",
-      "teacherInitials": "WM",
+      "subjectCode": "MBA294",
+      "teacherInitials": "RB",
       "subgroup": null,
-      "rawLabel": "Analytics Lab I - Excel Power Query (WM)"
+      "rawLabel": "Entrepreneurship Lab II(RB)"
     },
     {
       "sectionName": "Sec C",
@@ -5907,9 +5913,9 @@
       "startTime": "01:40",
       "endTime": "02:30",
       "subjectCode": "ACT-marketing-tutorial",
-      "teacherInitials": "SM",
+      "teacherInitials": "BM",
       "subgroup": null,
-      "rawLabel": "Marketing Tutorial (SM)"
+      "rawLabel": "Marketing Tutorial (BM)"
     },
     {
       "sectionName": "Sec D",
@@ -5928,10 +5934,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-business-trends",
-      "teacherInitials": "AKH",
+      "subjectCode": "ACT-case-study",
+      "teacherInitials": "AR",
       "subgroup": null,
-      "rawLabel": "Business Trends(AKH)"
+      "rawLabel": "Case Study (AR)"
     },
     {
       "sectionName": "Sec D",
@@ -5950,10 +5956,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "CM501",
-      "teacherInitials": "DS",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "PLC (DS)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "Finance 1",
@@ -6049,10 +6055,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "ACT-domain-expertise",
+      "teacherInitials": "NM",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "Domain Expertise(NM)"
     },
     {
       "sectionName": "Finance 2",
@@ -6126,10 +6132,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "ACT-domain-expertise",
-      "teacherInitials": "PC",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "Domain Expertise (PC)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "HR",
@@ -6137,10 +6143,10 @@
       "slotIndex": 2,
       "startTime": "10:20",
       "endTime": "11:10",
-      "subjectCode": "CM501",
-      "teacherInitials": "DS",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "PLC (DS)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "HR",
@@ -6192,10 +6198,10 @@
       "slotIndex": 7,
       "startTime": "03:20",
       "endTime": "04:10",
-      "subjectCode": "ACT-remedial-class",
-      "teacherInitials": "NA",
+      "subjectCode": "ACT-domain-expertise",
+      "teacherInitials": "PC",
       "subgroup": null,
-      "rawLabel": "Remedial class"
+      "rawLabel": "Domain Expertise (PC)"
     },
     {
       "sectionName": "HR",
@@ -6214,10 +6220,10 @@
       "slotIndex": 1,
       "startTime": "09:30",
       "endTime": "10:20",
-      "subjectCode": "ACT-business-trends",
-      "teacherInitials": "AKH",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "Business Trends(AKH)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "SC",
@@ -6247,10 +6253,10 @@
       "slotIndex": 4,
       "startTime": "12:00",
       "endTime": "12:50",
-      "subjectCode": "CM501",
-      "teacherInitials": "DS",
+      "subjectCode": "ACT-remedial-class",
+      "teacherInitials": "NA",
       "subgroup": null,
-      "rawLabel": "PLC (DS)"
+      "rawLabel": "Remedial class"
     },
     {
       "sectionName": "SC",
@@ -6324,10 +6330,10 @@
       "slotIndex": 3,
       "startTime": "11:10",
       "endTime": "12:00",
-      "subjectCode": "ACT-business-trends",
-      "teacherInitials": "AKH",
+      "subjectCode": "ACT-soft-skill-training",
+      "teacherInitials": "PC",
       "subgroup": null,
-      "rawLabel": "Business Trends(AKH)"
+      "rawLabel": "Soft Skill Training(PC)"
     },
     {
       "sectionName": "MM",
