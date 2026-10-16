@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Download, MapPin, SmartphoneNfc } from "lucide-react";
+import { ArrowLeft, Download, MapPin, SmartphoneNfc } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { sessionRegister } from "@/lib/attendance";
 import { Badge, Avatar } from "@/app/_components/ui";
 import { ScanMapClient } from "./ScanMapClient";
+import { OverrideButton } from "./OverrideButton";
 import { resetStudentDevice } from "@/app/teacher/actions";
 
 export default async function SessionReport({
@@ -19,6 +21,9 @@ export default async function SessionReport({
 
   const { session, rows, nonCompliant } = data;
   const presentCount = rows.filter((r) => r.present).length;
+  // Admins can correct any session; teachers only within 24h (mirrors /api/attendance/override).
+  const canOverride =
+    user.role === "ADMIN" || Date.now() - new Date(session.date).getTime() <= 24 * 60 * 60 * 1000;
 
   const anchor =
     session.geoLat != null && session.geoLng != null
@@ -37,6 +42,12 @@ export default async function SessionReport({
 
   return (
     <div>
+      <Link
+        href={`/reports/offering/${session.offering.id}`}
+        className="mb-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary"
+      >
+        <ArrowLeft className="h-4 w-4" /> Back to attendance register
+      </Link>
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-foreground">{session.offering.subject.name}</h1>
@@ -158,6 +169,9 @@ export default async function SessionReport({
                 </td>
                 <td className="px-4 py-2.5 text-right">
                   <div className="flex items-center justify-end gap-2">
+                    {!r.present && canOverride && (
+                      <OverrideButton sessionId={id} studentId={r.studentId} name={r.name} />
+                    )}
                     <Badge tone={r.present ? "green" : "gray"}>{r.present ? "Present" : "Absent"}</Badge>
                     {/* Device reset — shown for flagged records so teacher can unlock new device */}
                     {r.flagged && r.flagReason?.includes("Device mismatch") && (

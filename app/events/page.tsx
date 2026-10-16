@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Plus, Calendar, MapPin, Users2, CheckCircle2, XCircle } from "lucide-react";
+import { Plus, Calendar, MapPin, Users2, CheckCircle2, XCircle, Download } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Badge, Avatar } from "@/app/_components/ui";
@@ -38,6 +38,7 @@ export default async function EventsPage() {
   });
 
   const pending = events.filter((e) => e.status === "PENDING_APPROVAL");
+  const hasClosed = events.some((e) => e.status === "CLOSED");
 
   return (
     <div>
@@ -45,12 +46,22 @@ export default async function EventsPage() {
         title="Events"
         subtitle={isAdmin ? "Manage all events and approve teacher requests" : "Events you've created"}
         action={
-          <Link
-            href="/events/new"
-            className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
-          >
-            <Plus className="h-4 w-4" /> New event
-          </Link>
+          <div className="flex flex-wrap items-center gap-2">
+            {hasClosed && (
+              <a
+                href="/api/events/export/xlsx"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-accent"
+              >
+                <Download className="h-4 w-4" /> Export all completed
+              </a>
+            )}
+            <Link
+              href="/events/new"
+              className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary/90"
+            >
+              <Plus className="h-4 w-4" /> New event
+            </Link>
+          </div>
         }
       />
 

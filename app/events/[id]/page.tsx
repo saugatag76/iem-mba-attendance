@@ -1,6 +1,6 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, MapPin, Calendar, Users2 } from "lucide-react";
+import { ArrowLeft, MapPin, Calendar, Users2, Download } from "lucide-react";
 import { requireRole } from "@/lib/session";
 import { prisma } from "@/lib/prisma";
 import { PageHeader, Badge, Avatar } from "@/app/_components/ui";
@@ -52,7 +52,7 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
       </div>
 
       {/* Event info */}
-      <div className="mb-6 flex flex-wrap gap-4 text-sm text-muted-foreground">
+      <div className="mb-6 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
         <span className="flex items-center gap-1.5">
           <Calendar className="h-4 w-4" />
           {event.eventDate.toLocaleDateString("en-IN", { weekday: "short", day: "2-digit", month: "short", year: "numeric" })}
@@ -68,6 +68,14 @@ export default async function EventDetailPage({ params }: { params: Promise<{ id
             ? "All students"
             : event.targetSections.map((s) => s.classSection.name).join(", ")}
         </span>
+        {event.status === "CLOSED" && (
+          <a
+            href={`/api/events/export/xlsx?id=${event.id}`}
+            className="ml-auto inline-flex items-center gap-1.5 rounded-md bg-blue-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-700"
+          >
+            <Download className="h-3.5 w-3.5" /> Export
+          </a>
+        )}
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
